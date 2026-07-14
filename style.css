@@ -54,6 +54,11 @@ h1 {
     border-color: #3498db;
 }
 
+.error-border {
+    border-color: #e74c3c !important;
+    box-shadow: 0 0 5px rgba(231, 76, 60, 0.5);
+}
+
 #addButton {
     padding: 12px 24px;
     font-size: 16px;
