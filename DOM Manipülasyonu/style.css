@@ -1,0 +1,79 @@
+body {
+    font-family: 'Inter Tight', sans-serif;
+    background-color: #f8f9fa;
+    color: #2c3e50;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 60px;
+    margin: 0;
+}
+
+h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    margin-bottom: 30px;
+    color: #1a252f;
+}
+
+#itemInput {
+    padding: 12px 20px;
+    font-size: 16px;
+    font-family: 'Inter Tight', sans-serif;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    width: 280px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+#itemInput:focus {
+    border-color: #3498db;
+}
+
+#addButton {
+    padding: 12px 24px;
+    font-size: 16px;
+    font-family: 'Inter Tight', sans-serif;
+    font-weight: 600;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: all 0.2s ease;
+}
+
+#addButton:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+}
+
+#addButton:active {
+    transform: translateY(0);
+}
+
+#itemList {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 40px;
+    width: 400px;
+}
+
+#itemList li {
+    background-color: white;
+    padding: 16px 20px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    font-size: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.2s;
+}
+
+#itemList li:hover {
+    transform: scale(1.02);
+}
