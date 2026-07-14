@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&family=Playfair+Display:wght@600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1>Alışveriş Listesi</h1>
+    <div class="input-container">
+        <input type="text" id="itemInput" placeholder="Ürün adı giriniz...">
+        <input type="number" id="itemQuantity" placeholder="Adet" min="1">
+    </div>
+    <button id="addButton">Ekle</button>
+
+    <div class="list-header">
+        <span class="header-name">Ürün Adı</span>
+        <span class="header-quantity">Adet</span>
+        <span class="header-action">İşlem</span>
+    </div>
+    <ul id="itemList"></ul>
+    <script src="app.js"></script>
+</body>
+
+</html>
