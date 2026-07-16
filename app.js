@@ -106,4 +106,5 @@ itemQuantity.addEventListener("keydown", function (event) {
 
 itemQuantity.addEventListener("input", function (event) {
     this.value = this.value.replace(/[^0-9]/g, "");
+
 });
