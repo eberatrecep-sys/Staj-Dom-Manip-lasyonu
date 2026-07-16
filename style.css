@@ -29,7 +29,6 @@ h1 {
     border: 2px solid #e0e0e0;
     border-radius: 8px;
     flex: 3;
-    outline: none;
     transition: border-color 0.3s ease;
 }
 
@@ -41,7 +40,6 @@ h1 {
     border-radius: 8px;
     flex: 1;
     max-width: 70px;
-    outline: none;
     transition: border-color 0.3s ease;
 }
 
@@ -163,4 +161,140 @@ h1 {
 
 #itemList li:hover {
     transform: scale(1.02);
+}
+
+/* --- New Styles Added --- */
+
+/* Accessibility: Visually hidden but readable by screen readers */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* Accessibility: Focus indicator */
+:focus, .focus {
+    outline: 3px solid #e67e22 !important;
+    outline-offset: 2px;
+}
+
+/* Navbar */
+#navbar {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.tab-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-family: 'Inter Tight', sans-serif;
+    background-color: #ecf0f1;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.tab-btn:hover {
+    background-color: #bdc3c7;
+}
+
+.tab-btn.active {
+    background-color: #3498db;
+    color: white;
+}
+
+/* Tabs */
+.tab-content {
+    display: none;
+    width: 100%;
+    max-width: 600px;
+    flex-direction: column;
+    align-items: center;
+}
+
+.tab-content.active {
+    display: flex;
+}
+
+.tab-content h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #2c3e50;
+}
+
+/* Error Message */
+.error-message {
+    color: #e74c3c;
+    font-weight: 600;
+    margin-bottom: 10px;
+    min-height: 24px;
+}
+
+/* Theme Toggle */
+#themeToggleBtn {
+    padding: 12px 24px;
+    font-size: 16px;
+    font-family: 'Inter Tight', sans-serif;
+    font-weight: 600;
+    background-color: #2ecc71;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#themeToggleBtn:hover {
+    background-color: #27ae60;
+}
+
+/* Dark Theme */
+body.dark-theme {
+    background-color: #2c3e50;
+    color: #ecf0f1;
+}
+
+body.dark-theme h1,
+body.dark-theme .tab-content h2 {
+    color: #ecf0f1;
+}
+
+body.dark-theme #itemList li {
+    background-color: #34495e;
+    color: #ecf0f1;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .input-container {
+        flex-direction: column;
+        width: 100%;
+        max-width: 450px;
+    }
+
+    #itemInput,
+    #itemQuantity {
+        max-width: 100%;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .list-header {
+        width: 100%;
+        max-width: 450px;
+    }
+
+    #itemList {
+        width: 100%;
+        max-width: 450px;
+    }
 }
