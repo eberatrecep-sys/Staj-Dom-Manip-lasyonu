@@ -163,9 +163,6 @@ h1 {
     transform: scale(1.02);
 }
 
-/* --- New Styles Added --- */
-
-/* Accessibility: Visually hidden but readable by screen readers */
 .sr-only {
     position: absolute;
     width: 1px;
@@ -178,13 +175,12 @@ h1 {
     border-width: 0;
 }
 
-/* Accessibility: Focus indicator */
-:focus, .focus {
+:focus,
+.focus {
     outline: 3px solid #e67e22 !important;
     outline-offset: 2px;
 }
 
-/* Navbar */
 #navbar {
     display: flex;
     gap: 15px;
@@ -211,7 +207,6 @@ h1 {
     color: white;
 }
 
-/* Tabs */
 .tab-content {
     display: none;
     width: 100%;
@@ -231,7 +226,6 @@ h1 {
     color: #2c3e50;
 }
 
-/* Error Message */
 .error-message {
     color: #e74c3c;
     font-weight: 600;
@@ -239,7 +233,6 @@ h1 {
     min-height: 24px;
 }
 
-/* Theme Toggle */
 #themeToggleBtn {
     padding: 12px 24px;
     font-size: 16px;
@@ -257,7 +250,6 @@ h1 {
     background-color: #27ae60;
 }
 
-/* Dark Theme */
 body.dark-theme {
     background-color: #2c3e50;
     color: #ecf0f1;
@@ -273,7 +265,7 @@ body.dark-theme #itemList li {
     color: #ecf0f1;
 }
 
-/* Responsive Design */
+
 @media (max-width: 768px) {
     .input-container {
         flex-direction: column;
