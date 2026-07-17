@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: ["main"] # Sadece main branch'ine kod push edildiğinde çalışır
+    branches: ["main", "feature/react-enterprise-gecis"] # Sadece main ve yeni feature branch'te çalışır
 
 # GitHub Pages'e deploy yapabilmek için gerekli güvenlik izinleri
 permissions:
@@ -25,28 +25,19 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # 🔍 Statik Kod Analizi (Linting) Adımı
-      # Bu adım kodlardaki kritik hataları denetler. Hata bulursa süreci durdurur (Fail ettirir).
-      - name: HTML and JS Code Linting
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: 'react-enterprise-app/package-lock.json'
+
+      - name: Install Dependencies & Build React App
         run: |
-          echo "Statik kod analizi başlatılıyor..."
-          
-          # 1. Kontrol: JavaScript dosyalarında konsolda kalan syntax hatası var mı?
-          node --check app.js
-          
-          # 2. Kontrol: index.html dosyasında semantik yapı için zorunlu <html> etiketi var mı?
-          if ! grep -q "<html" index.html; then
-            echo "HATA: index.html dosyasında <html> etiketi bulunamadı!"
-            exit 1
-          fi
-          
-          # 3. Kontrol: Mobil uyumluluk için hayati önem taşıyan viewport meta etiketi eklenmiş mi?
-          if ! grep -q "<meta name=\"viewport\"" index.html; then
-            echo "HATA: Mobil uyumluluk için viewport meta etiketi eksik!"
-            exit 1
-          fi
-          
-          echo "Statik kod analizi başarıyla tamamlandı!"
+          echo "React Enterprise App derleniyor..."
+          cd react-enterprise-app
+          npm ci
+          npm run build
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -54,8 +45,8 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Projenizin ana dizinindeki statik dosyaları yükler (index.html, style.css, app.js)
-          path: '.'
+          # Eski kök dizini değil, yeni derlenen React projesinin dist klasörünü yüklüyoruz
+          path: './react-enterprise-app/dist'
 
       - name: Deploy to GitHub Actions
         id: deployment
