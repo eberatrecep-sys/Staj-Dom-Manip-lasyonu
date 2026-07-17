@@ -1,0 +1,16 @@
+{
+    "translation": {
+        "title": "Alışveriş Listesi",
+        "lang_tr": "Türkçe",
+        "lang_en": "İngilizce",
+        "product_name": "Ürün Adı",
+        "quantity": "Adet",
+        "add_button": "Ekle",
+        "errors": {
+            "product_required": "Ürün adı zorunludur",
+            "quantity_required": "Adet zorunludur",
+            "quantity_positive": "Adet 0'dan büyük olmalıdır",
+            "quantity_integer": "Adet ondalıklı sayı olamaz"
+        }
+    }
+}
