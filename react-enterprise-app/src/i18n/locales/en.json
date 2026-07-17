@@ -1,0 +1,16 @@
+{
+    "translation": {
+        "title": "Shopping List",
+        "lang_tr": "Turkish",
+        "lang_en": "English",
+        "product_name": "Product Name",
+        "quantity": "Quantity",
+        "add_button": "Add",
+        "errors": {
+            "product_required": "Product name is required",
+            "quantity_required": "Quantity is required",
+            "quantity_positive": "Quantity must be greater than 0",
+            "quantity_integer": "Quantity cannot be a decimal"
+        }
+    }
+}

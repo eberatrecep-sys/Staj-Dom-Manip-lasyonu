@@ -1,0 +1,20 @@
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
+import trTranslation from './locales/tr.json';
+import enTranslation from './locales/en.json';
+
+i18n
+    .use(initReactI18next)
+    .init({
+        resources: {
+            en: enTranslation,
+            tr: trTranslation
+        },
+        lng: 'tr',
+        fallbackLng: 'en',
+        interpolation: {
+            escapeValue: false
+        }
+    });
+
+export default i18n;
