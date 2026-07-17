@@ -1,0 +1,62 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: ["main"] # Sadece main branch'ine kod push edildiğinde çalışır
+
+# GitHub Pages'e deploy yapabilmek için gerekli güvenlik izinleri
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Aynı anda birden fazla deploy çalışırsa çakışmayı önlemek için kuyruğa alır
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # 🔍 Statik Kod Analizi (Linting) Adımı
+      # Bu adım kodlardaki kritik hataları denetler. Hata bulursa süreci durdurur (Fail ettirir).
+      - name: HTML and JS Code Linting
+        run: |
+          echo "Statik kod analizi başlatılıyor..."
+          
+          # 1. Kontrol: JavaScript dosyalarında konsolda kalan syntax hatası var mı?
+          node --check app.js
+          
+          # 2. Kontrol: index.html dosyasında semantik yapı için zorunlu <html> etiketi var mı?
+          if ! grep -q "<html" index.html; then
+            echo "HATA: index.html dosyasında <html> etiketi bulunamadı!"
+            exit 1
+          fi
+          
+          # 3. Kontrol: Mobil uyumluluk için hayati önem taşıyan viewport meta etiketi eklenmiş mi?
+          if ! grep -q "<meta name=\"viewport\"" index.html; then
+            echo "HATA: Mobil uyumluluk için viewport meta etiketi eksik!"
+            exit 1
+          fi
+          
+          echo "Statik kod analizi başarıyla tamamlandı!"
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Projenizin ana dizinindeki statik dosyaları yükler (index.html, style.css, app.js)
+          path: '.'
+
+      - name: Deploy to GitHub Actions
+        id: deployment
+        uses: actions/deploy-pages@v4
