@@ -2,15 +2,13 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: ["main", "feature/react-enterprise-gecis"] # Sadece main ve yeni feature branch'te çalışır
+    branches: ["main", "feature/react-enterprise-gecis"]
 
-# GitHub Pages'e deploy yapabilmek için gerekli güvenlik izinleri
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Aynı anda birden fazla deploy çalışırsa çakışmayı önlemek için kuyruğa alır
 concurrency:
   group: "pages"
   cancel-in-progress: true
@@ -45,7 +43,6 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Eski kök dizini değil, yeni derlenen React projesinin dist klasörünü yüklüyoruz
           path: './react-enterprise-app/dist'
 
       - name: Deploy to GitHub Actions

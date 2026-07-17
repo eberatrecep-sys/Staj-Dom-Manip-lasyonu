@@ -15,10 +15,10 @@ export const ShoppingForm = () => {
     const [items, setItems] = useState<ListItem[]>([]);
 
     const schema = z.object({
-        productName: z.string().min(1, { message: t('errors.product_required', 'Ürün adı boş olamaz.') }),
-        quantity: z.number({ invalid_type_error: t('errors.quantity_required', 'Adet alanı boş olamaz.') })
-            .int({ message: t('errors.quantity_integer', 'Adet tam sayı olmalıdır.') })
-            .positive({ message: t('errors.quantity_positive', 'Adet değeri 0 veya negatif olamaz.') })
+        productName: z.string().min(1, { message: t('errors.product_required', 'Ürün adı boş olamaz.') as string }),
+        quantity: z.number({ message: t('errors.quantity_required', 'Adet alanı boş olamaz.') as string })
+            .int({ message: t('errors.quantity_integer', 'Adet tam sayı olmalıdır.') as string })
+            .positive({ message: t('errors.quantity_positive', 'Adet değeri 0 veya negatif olamaz.') as string })
     });
 
     type FormData = z.infer<typeof schema>;
@@ -34,7 +34,7 @@ export const ShoppingForm = () => {
     });
 
     const onSubmit = (data: FormData) => {
-        setItems([...items, { id: Date.now().toString(), name: data.productName, quantity: data.quantity }]);
+        setItems([...items, { id: crypto.randomUUID(), name: data.productName, quantity: data.quantity }]);
         reset();
         setTimeout(() => setFocus('productName'), 0);
     };
