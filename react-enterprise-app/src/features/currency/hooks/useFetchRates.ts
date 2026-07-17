@@ -17,8 +17,8 @@ export const useFetchRates = () => {
                     undefined,
                     undefined,
                     undefined,
-                    'EUR',
-                    'USD,TRY'
+                    'TRY',
+                    'USD,EUR'
                 );
                 
                 setRates(response);
