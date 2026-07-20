@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               Int            @id @default(autoincrement())
+  email            String         @unique
+  password_hash    String
+  resetToken       String?
+  resetTokenExpiry DateTime?
+  role             Role           @default(USER)
+  shoppingLists    ShoppingList[]
+}
+
+model ShoppingList {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  itemName  String
+  amount    Int
+  updatedAt DateTime @default(now()) @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model SiteSettings {
+  id            Int    @id @default(autoincrement())
+  homepageTitle String @default("Alışveriş Uygulaması")
+}
+
+enum Role {
+  USER
+  CURRENCY_ADMIN
+  CONTENT_ADMIN
+  SUPER_ADMIN
+}
+
+model CurrencyRate {
+  id        Int      @id @default(autoincrement())
+  currency  String   @unique
+  rate      Float
+  updatedAt DateTime @default(now())
+}
