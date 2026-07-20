@@ -23,6 +23,26 @@
             "quantity_required": "Quantity is required",
             "quantity_positive": "Quantity must be greater than 0",
             "quantity_integer": "Quantity cannot be a decimal"
-        }
+        },
+        "home": "Home",
+        "edit_button": "Edit",
+        "save_button": "Save",
+        "cancel_button": "Cancel",
+        "logout": "Logout",
+        "admin_panel": "Admin Panel",
+        "super_admin_panel": "Super Admin Panel",
+        "current_role": "Current Role:",
+        "content_management": "Content Management (Title)",
+        "change_homepage_title": "Change the main heading (h1) on the homepage:",
+        "new_title": "New Title...",
+        "update_btn": "Update",
+        "currency_panel": "Currency Panel",
+        "test_currency_fluctuations": "Test currency fluctuations in the system:",
+        "update_currency_data": "Update Currency Data (403 Test)",
+        "role_and_user_management": "Role & User Management",
+        "make_content_admin": "Make Content Admin",
+        "make_currency_admin": "Make Currency Admin",
+        "make_user": "Make Normal User",
+        "show": "Show"
     }
 }

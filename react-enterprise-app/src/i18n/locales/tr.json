@@ -23,6 +23,26 @@
             "quantity_required": "Adet zorunludur",
             "quantity_positive": "Adet 0'dan büyük olmalıdır",
             "quantity_integer": "Adet ondalıklı sayı olamaz"
-        }
+        },
+        "home": "Anasayfa",
+        "edit_button": "Düzenle",
+        "save_button": "Kaydet",
+        "cancel_button": "İptal",
+        "logout": "Çıkış Yap",
+        "admin_panel": "Admin Paneli",
+        "super_admin_panel": "Super Admin Paneli",
+        "current_role": "Mevcut Rolünüz:",
+        "content_management": "İçerik Yönetimi (Title)",
+        "change_homepage_title": "Anasayfadaki ana başlığı (h1) değiştirin:",
+        "new_title": "Yeni Başlık...",
+        "update_btn": "Güncelle",
+        "currency_panel": "Döviz Paneli",
+        "test_currency_fluctuations": "Sistemdeki kur dalgalanmalarını test edin:",
+        "update_currency_data": "Döviz Verilerini Güncelle (403 Testi)",
+        "role_and_user_management": "Yetki ve Kullanıcı Yönetimi",
+        "make_content_admin": "Content Admin Yap",
+        "make_currency_admin": "Currency Admin Yap",
+        "make_user": "Normal User Yap",
+        "show": "Göster"
     }
 }
