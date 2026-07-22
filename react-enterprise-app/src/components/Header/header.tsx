@@ -45,13 +45,19 @@ export const Header = () => {
         </div>
       </div>
       <div style={styles.right}>
-        <button style={styles.iconBtn}>
-          {/* Bookmark İkonu */}
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#667085" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+        <button style={styles.iconBtnPurple}>
+          {/* Badge/Award İkonu (Mor) */}
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9E77ED" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="12" cy="8" r="6"/>
+            <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>
+          </svg>
         </button>
-        <button style={styles.iconBtn}>
-          {/* Bildirim (Bell) İkonu */}
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#667085" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+        <button style={styles.iconBtnGray}>
+          {/* Bildirim (Bell) İkonu (Gri) */}
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#667085" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
         </button>
       </div>
     </div>
@@ -99,12 +105,23 @@ const styles = {
     display: 'flex',
     gap: '8px' // İkonlar arası tahmini boşluk
   },
-  iconBtn: {
-    background: '#F9FAFB', // Figma: Colors Gray/50 (#F9FAFB)
+  iconBtnPurple: {
+    background: '#F9F5FF', 
+    border: 'none',
+    borderRadius: '36px', 
+    width: '40px', 
+    height: '40px', 
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    cursor: 'pointer'
+  },
+  iconBtnGray: {
+    background: '#F9FAFB', 
     border: '1px solid #EAECF0',
-    borderRadius: '36px', // Figma: Radius 36px
-    width: '32px', // Figma: Fixed 32px
-    height: '32px', // Figma: Fixed 32px
+    borderRadius: '36px', 
+    width: '40px', 
+    height: '40px', 
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
