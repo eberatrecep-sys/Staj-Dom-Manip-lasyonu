@@ -59,7 +59,6 @@ export const Dashboard = () => {
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginTop: '24px' }}>
                 {filteredLists.length === 0 ? (
-                    // Boş Durum (Empty State)
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', marginTop: '32px' }}>
                         <img 
                             src="https://cdni.iconscout.com/illustration/premium/thumb/empty-cart-2130356-1800917.png" 
@@ -94,7 +93,6 @@ export const Dashboard = () => {
                 )}
             </div>
 
-            {/* Sağ Alt "+" Butonu (FAB) */}
             <button 
                 onClick={handleCreateList}
                 style={{

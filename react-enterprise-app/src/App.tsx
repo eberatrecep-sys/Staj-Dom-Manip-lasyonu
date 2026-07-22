@@ -38,14 +38,12 @@ function App() {
 
   const renderLayout = (children: React.ReactNode, title?: string) => (
     <div className="app-container">
-      {/* Sol Taraf: Mobil Uygulama Arayüzü */}
       <div style={{ position: 'relative' }}>
         <main>
           {children}
         </main>
       </div>
       
-      {/* Sağ Taraf: Sadece Masaüstünde (1024px+) Görünecek CurrencyWidget */}
       <div style={{ display: 'none' }} className="desktop-widget">
         <CurrencyWidget />
       </div>

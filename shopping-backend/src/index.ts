@@ -246,7 +246,6 @@ app.post('/api/shopping-list', authenticateToken, async (req: any, res: any) => 
     res.json(newList);
 });
 
-// Get a specific list and its items
 app.get('/api/shopping-list/:id', authenticateToken, async (req: any, res: any) => {
     const id = parseInt(req.params.id);
     const list = await prisma.shoppingList.findUnique({
@@ -257,7 +256,6 @@ app.get('/api/shopping-list/:id', authenticateToken, async (req: any, res: any) 
     res.json(list);
 });
 
-// Delete a list
 app.delete('/api/shopping-list/:id', authenticateToken, async (req: any, res: any) => {
     try {
         const id = parseInt(req.params.id);
@@ -271,12 +269,10 @@ app.delete('/api/shopping-list/:id', authenticateToken, async (req: any, res: an
     }
 });
 
-// Add an item to a list
 app.post('/api/shopping-list/:id/items', authenticateToken, async (req: any, res: any) => {
     const listId = parseInt(req.params.id);
     const { itemName, amount } = req.body;
     
-    // Verify list ownership
     const list = await prisma.shoppingList.findUnique({ where: { id: listId } });
     if (!list || list.userId !== req.user.userId) return res.status(403).json({ error: 'Yetkisiz erişim' });
 
@@ -290,7 +286,6 @@ app.post('/api/shopping-list/:id/items', authenticateToken, async (req: any, res
     res.json(newItem);
 });
 
-// Update an item in a list
 app.put('/api/shopping-list/:listId/items/:itemId', authenticateToken, async (req: any, res: any) => {
     try {
         const listId = parseInt(req.params.listId);
@@ -312,7 +307,6 @@ app.put('/api/shopping-list/:listId/items/:itemId', authenticateToken, async (re
     }
 });
 
-// Delete an item from a list
 app.delete('/api/shopping-list/:listId/items/:itemId', authenticateToken, async (req: any, res: any) => {
     try {
         const listId = parseInt(req.params.listId);

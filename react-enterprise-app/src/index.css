@@ -1,8 +1,6 @@
-/* src/index.css */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-    /* Renk Paleti (Figma Design Tokens) */
     --bg-main: #FFFFFF;
     --primary-50: #F9F5FF;
     --primary-700: #7F56D9;
@@ -12,10 +10,8 @@
     --gray-500: #667085;
     --gray-900: #101828;
     
-    /* Tipografi */
     --font-family: 'Inter', sans-serif;
     
-    /* Köşe Yuvarlama (Border Radius) */
     --radius-sm: 8px;
     --radius-md: 16px;
     --radius-lg: 24px;
@@ -32,13 +28,11 @@ body {
     padding: 0;
 }
 
-/* Erişilebilirlik (A11y) */
 *:focus-visible {
     outline: 2px solid var(--primary-700);
     outline-offset: 2px;
 }
 
-/* Desktop Responsive Layout */
 .app-container {
     max-width: 414px;
     margin: 0 auto;
