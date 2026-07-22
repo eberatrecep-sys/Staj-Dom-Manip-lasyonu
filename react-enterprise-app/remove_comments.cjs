@@ -17,7 +17,7 @@ function cleanComments(content, ext) {
     // For CSS files, remove all /* ... */
     if (ext === '.css') {
         newContent = newContent.replace(/\/\*[\s\S]*?\*\//g, '');
-    } 
+    }
     // For TS/TSX files
     else {
         // Remove // comments except URLs (http:// or https://)
