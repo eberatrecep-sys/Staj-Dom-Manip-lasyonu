@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { CurrencyWidget } from './features/currency/components/CurrencyWidget';
 import { ShoppingForm } from './features/shopping-list/components/ShoppingForm';
+import { Dashboard } from './features/shopping-list/components/Dashboard';
 import { LoginForm } from './features/auth/components/LoginForm';
 import { RegisterForm } from './features/auth/components/RegisterForm';
 import { AdminDashboard } from './features/admin/components/AdminDashboard';
@@ -36,39 +37,19 @@ function App() {
   };
 
   const renderLayout = (children: React.ReactNode, title?: string) => (
-    <>
-      <CurrencyWidget />
-      <nav id="navbar" style={{ width: '100%', maxWidth: '800px', display: 'flex', justifyContent: 'space-between', margin: '0 auto 20px auto' }}>
-        <div style={{ display: 'flex', gap: '15px' }}>
-          <button
-            className="tab-btn"
-            onClick={() => window.location.href = import.meta.env.BASE_URL + 'shopping-list'}
-          >
-            {t('home', 'Anasayfa')}
-          </button>
-
-          {isAuthenticated && <button className="tab-btn" onClick={handleLogout}>Çıkış Yap</button>}
-
-          {isAdminOrSuper && (
-            <button className="tab-btn active" onClick={() => window.location.href = import.meta.env.BASE_URL + 'admin'}>
-              {isSuperAdmin ? 'Super Admin' : 'Admin Paneli'}
-            </button>
-          )}
-        </div>
-        <div style={{ display: 'flex', gap: '10px' }}>
-          <button className={`tab-btn ${i18n.language === 'tr' ? 'active' : ''}`} onClick={() => changeLanguage('tr')}>TR</button>
-          <button className={`tab-btn ${i18n.language === 'en' ? 'active' : ''}`} onClick={() => changeLanguage('en')}>EN</button>
-          <button className="tab-btn" onClick={toggleTheme}>{t('theme_toggle', 'Tema')}</button>
-        </div>
-      </nav>
-
-      <main style={{ maxWidth: '800px', margin: '0 auto' }}>
-        <h1 style={{ textAlign: 'center' }}>{title || appTitle}</h1>
-        <section className="tab-content active">
+    <div className="app-container">
+      {/* Sol Taraf: Mobil Uygulama Arayüzü */}
+      <div style={{ position: 'relative' }}>
+        <main>
           {children}
-        </section>
-      </main>
-    </>
+        </main>
+      </div>
+      
+      {/* Sağ Taraf: Sadece Masaüstünde (1024px+) Görünecek CurrencyWidget */}
+      <div style={{ display: 'none' }} className="desktop-widget">
+        <CurrencyWidget />
+      </div>
+    </div>
   );
 
   return (
@@ -82,17 +63,12 @@ function App() {
         <Route path="/reset-password" element={renderLayout(<ResetPasswordForm />)} />
 
         <Route
-          path="/admin"
-          element={isAdminOrSuper ? renderLayout(<AdminDashboard />, isSuperAdmin ? "👑 Super Admin Paneli" : "🛠️ Admin Paneli") : <Navigate to="/shopping-list" />}
-        />
-
-        <Route
           path="/shopping-list"
-          element={isAuthenticated ? renderLayout(<ShoppingForm />) : <Navigate to="/login" />}
+          element={isAuthenticated ? renderLayout(<Dashboard />) : <Navigate to="/login" />}
         />
-
+        
         <Route
-          path="/shopping-list"
+          path="/list/:id"
           element={isAuthenticated ? renderLayout(<ShoppingForm />) : <Navigate to="/login" />}
         />
       </Routes>
