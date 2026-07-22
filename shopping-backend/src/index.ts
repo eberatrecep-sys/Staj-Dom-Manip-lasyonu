@@ -40,8 +40,15 @@ app.post('/api/auth/login', async (req, res) => {
         const isPasswordValid = await bcrypt.compare(password, user.password_hash);
         if (!isPasswordValid) return res.status(401).json({ error: 'Yanlış şifre.' });
 
+        const previousLoginAt = user.lastLoginAt;
+
+        await prisma.user.update({
+            where: { id: user.id },
+            data: { lastLoginAt: new Date() }
+        });
+
         const token = jwt.sign({ userId: user.id, role: user.role }, JWT_SECRET, { expiresIn: '1d' });
-        res.json({ message: 'Giriş başarılı', token, role: user.role });
+        res.json({ message: 'Giriş başarılı', token, role: user.role, lastLoginAt: previousLoginAt });
     } catch (error) {
         res.status(500).json({ error: 'Sunucu hatası.' });
     }
@@ -133,7 +140,7 @@ const authorizeCurrencyAdmin = (req: any, res: any, next: any) => {
 app.get('/api/admin/db-view', authenticateToken, authorizeSuperAdmin, async (req: any, res: any) => {
     try {
         const allData = await prisma.user.findMany({
-            include: { shoppingLists: true }
+            include: { shoppingLists: { include: { items: true } } }
         });
         res.json(allData);
     } catch (error) {
@@ -144,6 +151,7 @@ app.get('/api/admin/db-view', authenticateToken, authorizeSuperAdmin, async (req
 app.get('/api/shopping-list', authenticateToken, async (req: any, res: any) => {
     const lists = await prisma.shoppingList.findMany({
         where: { userId: req.user.userId },
+        include: { items: true },
         orderBy: { updatedAt: 'desc' }
     });
     res.json(lists);
@@ -226,34 +234,101 @@ app.post('/api/settings/currency', authenticateToken, authorizeCurrencyAdmin, as
 });
 
 app.post('/api/shopping-list', authenticateToken, async (req: any, res: any) => {
-    const { itemName, amount } = req.body;
-    const newItem = await prisma.shoppingList.create({
+    const { title, category, tag } = req.body;
+    const newList = await prisma.shoppingList.create({
         data: {
-            itemName,
-            amount,
+            title: title || "New List",
+            category: category || "Recents",
+            tag: tag || null,
             userId: req.user.userId
+        }
+    });
+    res.json(newList);
+});
+
+// Get a specific list and its items
+app.get('/api/shopping-list/:id', authenticateToken, async (req: any, res: any) => {
+    const id = parseInt(req.params.id);
+    const list = await prisma.shoppingList.findUnique({
+        where: { id },
+        include: { items: true }
+    });
+    if (!list || list.userId !== req.user.userId) return res.status(403).json({ error: 'Yetkisiz erişim' });
+    res.json(list);
+});
+
+// Delete a list
+app.delete('/api/shopping-list/:id', authenticateToken, async (req: any, res: any) => {
+    try {
+        const id = parseInt(req.params.id);
+        const list = await prisma.shoppingList.findUnique({ where: { id } });
+        if (!list || list.userId !== req.user.userId) return res.status(403).json({ error: 'Yetkisiz işlem.' });
+
+        await prisma.shoppingList.delete({ where: { id } });
+        res.json({ message: 'Liste silindi.' });
+    } catch (error) {
+        res.status(500).json({ error: 'Liste silinemedi.' });
+    }
+});
+
+// Add an item to a list
+app.post('/api/shopping-list/:id/items', authenticateToken, async (req: any, res: any) => {
+    const listId = parseInt(req.params.id);
+    const { itemName, amount } = req.body;
+    
+    // Verify list ownership
+    const list = await prisma.shoppingList.findUnique({ where: { id: listId } });
+    if (!list || list.userId !== req.user.userId) return res.status(403).json({ error: 'Yetkisiz erişim' });
+
+    const newItem = await prisma.shoppingListItem.create({
+        data: {
+            listId,
+            itemName,
+            amount
         }
     });
     res.json(newItem);
 });
 
-app.put('/api/shopping-list/:id', authenticateToken, async (req: any, res: any) => {
+// Update an item in a list
+app.put('/api/shopping-list/:listId/items/:itemId', authenticateToken, async (req: any, res: any) => {
     try {
-        const id = parseInt(req.params.id);
-        const { itemName, amount } = req.body;
-        const item = await prisma.shoppingList.findUnique({ where: { id } });
-        if (!item || item.userId !== req.user.userId) {
-            return res.status(403).json({ error: 'Yetkisiz işlem veya ürün bulunamadı.' });
-        }
+        const listId = parseInt(req.params.listId);
+        const itemId = parseInt(req.params.itemId);
+        const { itemName, amount, isCompleted } = req.body;
+        
+        // Verify list ownership
+        const list = await prisma.shoppingList.findUnique({ where: { id: listId } });
+        if (!list || list.userId !== req.user.userId) return res.status(403).json({ error: 'Yetkisiz işlem.' });
 
-        const updatedItem = await prisma.shoppingList.update({
-            where: { id },
-            data: { itemName, amount }
+        const updatedItem = await prisma.shoppingListItem.update({
+            where: { id: itemId },
+            data: { itemName, amount, isCompleted }
         });
 
         res.json(updatedItem);
     } catch (error) {
         res.status(500).json({ error: 'Ürün güncellenemedi.' });
+    }
+});
+
+// Delete an item from a list
+app.delete('/api/shopping-list/:listId/items/:itemId', authenticateToken, async (req: any, res: any) => {
+    try {
+        const listId = parseInt(req.params.listId);
+        const itemId = parseInt(req.params.itemId);
+        
+        // Verify list ownership
+        const list = await prisma.shoppingList.findUnique({ where: { id: listId } });
+        if (!list || list.userId !== req.user.userId) return res.status(403).json({ error: 'Yetkisiz işlem.' });
+
+        await prisma.shoppingListItem.delete({
+            where: { id: itemId }
+        });
+
+        res.json({ message: 'Ürün başarıyla silindi.' });
+    } catch (error) {
+        res.status(500).json({ error: 'Ürün silinemedi.' });
     }
 });
 
