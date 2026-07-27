@@ -94,7 +94,10 @@ export const Dashboard = () => {
                         borderRadius: '24px',
                         border: '1px dashed #EAECF0',
                         padding: '24px',
-                        boxSizing: 'border-box'
+                        boxSizing: 'border-box',
+                        backgroundColor: '#ffffff',
+                        position: 'relative',
+                        zIndex: 10
                     }}>
 
                         <img
@@ -134,15 +137,17 @@ export const Dashboard = () => {
             {lists.length === 0 && (
                 <div style={{
                     position: 'fixed',
-                    bottom: '110px',
-                    right: 'calc(50% - 207px + 45px)',
-                    width: '241.28px',
+                    bottom: '175px',
+                    right: 'calc(50% - 207px + 30px)',
+                    width: '241.29px',
                     height: '130.71px',
                     opacity: 1,
-                    pointerEvents: 'none'
+                    pointerEvents: 'none',
+                    // transform: 'rotate(+15deg)',//
+                    transformOrigin: 'center right',
+                    zIndex: 1
                 }}>
-
-                    <img src="/arrow.png" alt="Arrow" style={{ width: '100%', height: '100%', objectFit: 'contain', transform: 'rotate(-15deg)' }} />
+                    <img src="/arrow.png" alt="Arrow" style={{ width: '120%', height: '120%', objectFit: 'contain' }} />
                 </div>
             )}
 
