@@ -62,7 +62,7 @@ export const Dashboard = () => {
             const newList = await response.json();
 
             if (response.ok && newList.id) {
-                // Listeyi oluşturur oluşturmaz doğrudan detay sayfasına yönlendir.
+
                 navigate(`/list/${newList.id}`);
             } else {
                 fetchLists();
@@ -141,7 +141,7 @@ export const Dashboard = () => {
                     opacity: 1,
                     pointerEvents: 'none'
                 }}>
-                    {/* Ok görseli PNG olarak yüklenecek */}
+
                     <img src="/arrow.png" alt="Arrow" style={{ width: '100%', height: '100%', objectFit: 'contain', transform: 'rotate(-15deg)' }} />
                 </div>
             )}
