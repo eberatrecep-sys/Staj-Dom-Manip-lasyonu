@@ -1,4 +1,6 @@
 import React from 'react';
+import avatar1 from '../../assets/avatars/avatar1.png';
+import avatar2 from '../../assets/avatars/avatar2.png';
 
 
 interface ListCardProps {
@@ -13,8 +15,8 @@ export const ListCard = ({ title, count, completedCount = 0, tag = 'Kitchen item
     <div style={styles.card}>
       <h3 style={styles.title}>{title}</h3>
       <div style={styles.avatars}>
-        <img src="/avatars/avatar2.png" style={styles.avatar} alt="P1" />
-        <img src="/avatars/avatar1.png" style={{ ...styles.avatar, marginLeft: '-10px' }} alt="P2" />
+        <img src={avatar2} style={styles.avatar} alt="P1" />
+        <img src={avatar1} style={{ ...styles.avatar, marginLeft: '-10px' }} alt="P2" />
         <div style={styles.moreAvatar}>+2</div>
       </div>
       <div style={styles.footer}>
