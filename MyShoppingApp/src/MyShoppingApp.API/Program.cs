@@ -11,12 +11,13 @@ using MyShoppingApp.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// JWT Secret
-var jwtSecret = "secret_key_that_is_at_least_32_bytes_long!";
+// Configuration
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var jwtSecret = builder.Configuration["JwtSettings:Secret"] ?? throw new InvalidOperationException("JWT Secret is missing");
 
 // Database (PostgreSQL)
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql("Host=localhost;Port=5432;Database=shopping_dotnet_db;Username=ekremberatrecep"));
+    options.UseNpgsql(connectionString));
 
 // Repositories (Infrastructure -> Domain)
 builder.Services.AddScoped<IUserRepository, UserRepository>();

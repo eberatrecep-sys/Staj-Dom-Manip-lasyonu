@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using MyShoppingApp.Application.DTOs.Auth;
+using MyShoppingApp.Application.DTOs.Common;
 using MyShoppingApp.Application.Interfaces;
 using MyShoppingApp.Domain.Entities;
 using MyShoppingApp.Domain.Interfaces;
@@ -21,7 +22,7 @@ public class AuthService : IAuthService
         _jwtSecret = jwtSecret;
     }
 
-    public async Task<object> RegisterAsync(RegisterDto dto)
+    public async Task<MessageResponseDto> RegisterAsync(RegisterDto dto)
     {
         var passwordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password);
 
@@ -32,7 +33,7 @@ public class AuthService : IAuthService
         };
 
         await _userRepository.CreateAsync(user);
-        return new { message = "Kullanıcı oluşturuldu" };
+        return new MessageResponseDto("Kullanıcı oluşturuldu");
     }
 
     public async Task<LoginResponseDto> LoginAsync(LoginDto dto)
@@ -51,7 +52,7 @@ public class AuthService : IAuthService
         return new LoginResponseDto("Giriş başarılı", token, user.Role.ToString(), previousLoginAt);
     }
 
-    public async Task<object> ForgotPasswordAsync(ForgotPasswordDto dto)
+    public async Task<MessageResponseDto> ForgotPasswordAsync(ForgotPasswordDto dto)
     {
         var user = await _userRepository.GetByEmailAsync(dto.Email)
             ?? throw new KeyNotFoundException("Kullanıcı bulunamadı.");
@@ -64,10 +65,10 @@ public class AuthService : IAuthService
         Console.WriteLine($"\n[GİZLİ KOD] {dto.Email} için şifre sıfırlama linkiniz:");
         Console.WriteLine($"http://localhost:5173/reset-password?token={resetToken}\n");
 
-        return new { message = "Sıfırlama linki oluşturuldu (Terminali kontrol et)" };
+        return new MessageResponseDto("Sıfırlama linki oluşturuldu (Terminali kontrol et)");
     }
 
-    public async Task<object> ResetPasswordAsync(ResetPasswordDto dto)
+    public async Task<MessageResponseDto> ResetPasswordAsync(ResetPasswordDto dto)
     {
         var user = await _userRepository.GetByResetTokenAsync(dto.Token)
             ?? throw new InvalidOperationException("Geçersiz veya süresi dolmuş kod.");
@@ -80,7 +81,7 @@ public class AuthService : IAuthService
         user.ResetTokenExpiry = null;
         await _userRepository.UpdateAsync(user);
 
-        return new { message = "Şifreniz başarıyla değiştirildi." };
+        return new MessageResponseDto("Şifreniz başarıyla değiştirildi.");
     }
 
     private string GenerateJwtToken(User user)
