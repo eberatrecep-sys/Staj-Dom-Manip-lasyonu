@@ -199,7 +199,7 @@ export const ShoppingForm = () => {
 
     return (
         <div style={{ maxWidth: '414px', margin: '0 auto', padding: '16px', position: 'relative', minHeight: '100vh' }}>
-            {/* Özelleştirilmiş Detay Sayfası Üst Barı */}
+            {/* Üst Bar */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
                 <button onClick={() => navigate(-1)} style={{ background: '#F9F5FF', border: 'none', borderRadius: '32px', width: '32px', height: '32px', display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer' }}>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9E77ED" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M12 19l-7-7 7-7" /></svg>
@@ -219,7 +219,7 @@ export const ShoppingForm = () => {
                 >
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                         <img
-                            src="https://i.pravatar.cc/100?img=1"
+                            src="/avatars/avatar2.png"
                             alt="avatar"
                             style={{
                                 width: '32px',
@@ -231,7 +231,7 @@ export const ShoppingForm = () => {
                             }}
                         />
                         <img
-                            src="https://i.pravatar.cc/100?img=2"
+                            src="/avatars/avatar1.png"
                             alt="avatar"
                             style={{
                                 width: '32px',
@@ -332,8 +332,8 @@ export const ShoppingForm = () => {
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '4px', height: '20px', cursor: 'pointer' }}>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
-                        <input 
-                            type="text" 
+                        <input
+                            type="text"
                             value={tagName}
                             onChange={(e) => setTagName(e.target.value)}
                             onFocus={() => setIsTagEditing(true)}
@@ -415,7 +415,7 @@ export const ShoppingForm = () => {
                                     backgroundColor: isChecked ? '#F9F5FF' : '#FCFCFD',
                                     boxSizing: 'border-box'
                                 }}>
-                                    <div 
+                                    <div
                                         style={{ display: 'flex', alignItems: 'center', gap: '12px', flex: 1, cursor: 'pointer' }}
                                         onClick={() => {
                                             setEditingItem(item);
@@ -486,7 +486,7 @@ export const ShoppingForm = () => {
                 </div>
             </div>
 
-            {/* Add New Item Popup Overlay */}
+            {/* New Item Popup Overlay */}
             {isAddItemPopupOpen && (
                 <div style={{
                     position: 'fixed',
@@ -537,7 +537,7 @@ export const ShoppingForm = () => {
                                     <label style={{ fontSize: '14px', fontWeight: '500', lineHeight: '20px', color: '#344054', fontFamily: 'Inter, sans-serif' }}>Quantity</label>
                                     <input
                                         type="number"
-                                        placeholder="9999"
+                                        placeholder={editingItem ? "9999" : ""}
                                         {...register('quantity', { valueAsNumber: true })}
                                         style={{ width: '100%', height: '44px', padding: '10px 14px', borderRadius: '8px', border: '1px solid #D0D5DD', boxSizing: 'border-box', fontFamily: 'Inter, sans-serif', fontSize: '16px' }}
                                     />
@@ -547,7 +547,7 @@ export const ShoppingForm = () => {
                                     <label style={{ fontSize: '14px', fontWeight: '500', lineHeight: '20px', color: '#344054', fontFamily: 'Inter, sans-serif' }}>Unit</label>
                                     <input
                                         type="text"
-                                        placeholder="9999"
+                                        placeholder={editingItem ? "9999" : ""}
                                         style={{ width: '100%', height: '44px', padding: '10px 14px', borderRadius: '8px', border: '1px solid #D0D5DD', boxSizing: 'border-box', fontFamily: 'Inter, sans-serif', fontSize: '16px' }}
                                     />
                                 </div>
@@ -559,7 +559,7 @@ export const ShoppingForm = () => {
                                     <span style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#667085', fontFamily: 'Inter, sans-serif', fontSize: '16px' }}>₹</span>
                                     <input
                                         type="text"
-                                        placeholder="99999"
+                                        placeholder={editingItem ? "99999" : ""}
                                         style={{ width: '100%', height: '44px', padding: '10px 14px 10px 32px', borderRadius: '8px', border: '1px solid #D0D5DD', boxSizing: 'border-box', fontFamily: 'Inter, sans-serif', fontSize: '16px' }}
                                     />
                                 </div>
@@ -673,10 +673,10 @@ export const ShoppingForm = () => {
                         {/* Invite List */}
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                             <h3 style={{ margin: 0, fontSize: '14px', fontWeight: '500', color: '#667085', fontFamily: 'Inter, sans-serif' }}>Invite</h3>
-                            
+
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                    <img src="https://i.pravatar.cc/100?img=5" alt="Anjali Arora" style={{ width: '40px', height: '40px', borderRadius: '50%' }} />
+                                    <img src="/avatars/avatar2.png" alt="Anjali Arora" style={{ width: '40px', height: '40px', borderRadius: '50%' }} />
                                     <span style={{ fontSize: '14px', fontWeight: '500', color: '#344054', fontFamily: 'Inter, sans-serif' }}>Anjali Arora</span>
                                 </div>
                                 <span style={{ fontSize: '14px', fontWeight: '500', color: '#667085', fontFamily: 'Inter, sans-serif' }}>Owner</span>
@@ -684,7 +684,7 @@ export const ShoppingForm = () => {
 
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                    <img src="https://i.pravatar.cc/100?img=4" alt="Shiya Singh" style={{ width: '40px', height: '40px', borderRadius: '50%' }} />
+                                    <img src="/avatars/avatar1.png" alt="Shiya Singh" style={{ width: '40px', height: '40px', borderRadius: '50%' }} />
                                     <span style={{ fontSize: '14px', fontWeight: '500', color: '#344054', fontFamily: 'Inter, sans-serif' }}>Shiya Singh</span>
                                 </div>
                                 <div style={{

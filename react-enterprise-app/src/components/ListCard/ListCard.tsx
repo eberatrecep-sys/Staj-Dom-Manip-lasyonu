@@ -1,6 +1,6 @@
 import React from 'react';
 
-// ListCard bileşenimiz: Figma'daki liste kartını temsil eder
+
 interface ListCardProps {
   title: string;
   count: number;
@@ -13,8 +13,8 @@ export const ListCard = ({ title, count, completedCount = 0, tag = 'Kitchen item
     <div style={styles.card}>
       <h3 style={styles.title}>{title}</h3>
       <div style={styles.avatars}>
-        <img src="https://i.pravatar.cc/100?img=1" style={styles.avatar} alt="P1" />
-        <img src="https://i.pravatar.cc/100?img=2" style={{...styles.avatar, marginLeft: '-10px'}} alt="P2" />
+        <img src="/avatars/avatar2.png" style={styles.avatar} alt="P1" />
+        <img src="/avatars/avatar1.png" style={{ ...styles.avatar, marginLeft: '-10px' }} alt="P2" />
         <div style={styles.moreAvatar}>+2</div>
       </div>
       <div style={styles.footer}>
