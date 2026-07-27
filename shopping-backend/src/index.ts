@@ -256,6 +256,23 @@ app.get('/api/shopping-list/:id', authenticateToken, async (req: any, res: any) 
     res.json(list);
 });
 
+app.put('/api/shopping-list/:id', authenticateToken, async (req: any, res: any) => {
+    try {
+        const id = parseInt(req.params.id);
+        const { tag } = req.body;
+        const list = await prisma.shoppingList.findUnique({ where: { id } });
+        if (!list || list.userId !== req.user.userId) return res.status(403).json({ error: 'Yetkisiz işlem.' });
+
+        const updatedList = await prisma.shoppingList.update({
+            where: { id },
+            data: { tag }
+        });
+        res.json(updatedList);
+    } catch (error) {
+        res.status(500).json({ error: 'Liste güncellenemedi.' });
+    }
+});
+
 app.delete('/api/shopping-list/:id', authenticateToken, async (req: any, res: any) => {
     try {
         const id = parseInt(req.params.id);

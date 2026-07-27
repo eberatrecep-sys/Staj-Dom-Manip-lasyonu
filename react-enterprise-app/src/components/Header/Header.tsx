@@ -5,8 +5,8 @@ const parseJwt = (token: string) => {
   try {
     const base64Url = token.split('.')[1];
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
     }).join(''));
     return JSON.parse(jsonPayload);
   } catch (e) {
@@ -15,7 +15,7 @@ const parseJwt = (token: string) => {
 };
 
 export const Header = () => {
-  const [userInfo, setUserInfo] = useState({ name: 'Misafir', email: '' }); 
+  const [userInfo, setUserInfo] = useState({ name: 'Misafir', email: '' });
 
   // Sayfa yüklendiğinde token'ı okuyup kullanıcı bilgilerini (isim, e-posta) state'e kaydediyoruz.
   useEffect(() => {
@@ -23,8 +23,8 @@ export const Header = () => {
     if (token) {
       const decoded = parseJwt(token);
       if (decoded) {
-        setUserInfo({ 
-          name: decoded.name || decoded.username || decoded.sub || 'Kullanıcı', 
+        setUserInfo({
+          name: decoded.name || decoded.username || decoded.sub || 'Kullanıcı',
           email: decoded.email || ''
         });
       }
@@ -34,10 +34,10 @@ export const Header = () => {
   return (
     <div style={styles.container}>
       <div style={styles.left}>
-        <img 
-          src={`https://ui-avatars.com/api/?name=${userInfo.name}&background=random`} 
-          alt="Profile" 
-          style={styles.avatar} 
+        <img
+          src={`https://ui-avatars.com/api/?name=${userInfo.name}&background=random`}
+          alt="Profile"
+          style={styles.avatar}
         />
         <div style={styles.userInfo}>
           <div style={styles.name}>{userInfo.name}</div>
@@ -48,8 +48,8 @@ export const Header = () => {
         <button style={styles.iconBtnPurple}>
           {/* Badge/Award İkonu (Mor) */}
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9E77ED" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <circle cx="12" cy="8" r="6"/>
-            <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>
+            <circle cx="12" cy="8" r="6" />
+            <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11" />
           </svg>
         </button>
         <button style={styles.iconBtnGray}>
@@ -64,23 +64,23 @@ export const Header = () => {
   );
 };
 
-// Figma'daki net ölçüleri ve renkleri (Pixel-Perfect) buraya işliyoruz.
+
 const styles = {
   container: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: '24px' // Figma'ya göre Header alt boşluğu
+    marginBottom: '24px'
   },
   left: {
     display: 'flex',
     alignItems: 'center',
-    gap: '10px' // Figma'da Avatar ve Yazı grubu arası boşluk (Gap: 10px)
+    gap: '10px'
   },
   avatar: {
-    width: '32px', // Figma: Fixed 32px
-    height: '32px', // Figma: Fixed 32px
-    borderRadius: '200px', // Figma: Radius 200px
+    width: '32px',
+    height: '32px',
+    borderRadius: '200px',
     objectFit: 'cover' as const
   },
   userInfo: {
@@ -88,40 +88,40 @@ const styles = {
     flexDirection: 'column' as const
   },
   name: {
-    fontSize: '14px', // Figma: Text sm/Semibold
+    fontSize: '14px',
     fontWeight: '600',
     lineHeight: '20px',
-    color: '#344054', // Figma: Gray/700 (#344054)
+    color: '#344054',
     fontFamily: 'Inter, sans-serif'
   },
   email: {
-    fontSize: '12px', // Figma: Text xs/Regular
+    fontSize: '12px',
     fontWeight: '400',
     lineHeight: '18px',
-    color: '#667085', // Figma: Gray/500 (#667085)
+    color: '#667085',
     fontFamily: 'Inter, sans-serif'
   },
   right: {
     display: 'flex',
-    gap: '8px' // İkonlar arası tahmini boşluk
+    gap: '8px'
   },
   iconBtnPurple: {
-    background: '#F9F5FF', 
+    background: '#F9F5FF',
     border: 'none',
-    borderRadius: '36px', 
-    width: '40px', 
-    height: '40px', 
+    borderRadius: '36px',
+    width: '40px',
+    height: '40px',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     cursor: 'pointer'
   },
   iconBtnGray: {
-    background: '#F9FAFB', 
+    background: '#F9FAFB',
     border: '1px solid #EAECF0',
-    borderRadius: '36px', 
-    width: '40px', 
-    height: '40px', 
+    borderRadius: '36px',
+    width: '40px',
+    height: '40px',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',

@@ -42,7 +42,7 @@ export const Dashboard = () => {
     const handleCreateList = async () => {
         const title = "Grocery Shopping List";
         const token = localStorage.getItem('token');
-        
+
         try {
             const response = await fetch('http://localhost:5050/api/shopping-list', {
                 method: 'POST',
@@ -50,9 +50,9 @@ export const Dashboard = () => {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ title, category: activeTab, tag: 'General' })
+                body: JSON.stringify({ title, category: activeTab })
             });
-            
+
             if (response.status === 401 || response.status === 403) {
                 localStorage.removeItem('token');
                 navigate('/login');
@@ -60,7 +60,7 @@ export const Dashboard = () => {
             }
 
             const newList = await response.json();
-            
+
             if (response.ok && newList.id) {
                 // Listeyi oluşturur oluşturmaz doğrudan detay sayfasına yönlendir.
                 navigate(`/list/${newList.id}`);
@@ -123,7 +123,7 @@ export const Dashboard = () => {
                                     title={list.title}
                                     count={totalItems}
                                     completedCount={completedItems}
-                                    tag={list.tag || 'General'}
+                                    tag={(list.tag && list.tag !== 'General') ? list.tag : 'Add tag'}
                                 />
                             </div>
                         );
