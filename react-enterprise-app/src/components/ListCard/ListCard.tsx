@@ -4,9 +4,11 @@ import React from 'react';
 interface ListCardProps {
   title: string;
   count: number;
+  completedCount?: number;
+  tag?: string;
 }
 
-export const ListCard = ({ title, count }: ListCardProps) => {
+export const ListCard = ({ title, count, completedCount = 0, tag = 'Kitchen items' }: ListCardProps) => {
   return (
     <div style={styles.card}>
       <h3 style={styles.title}>{title}</h3>
@@ -17,10 +19,10 @@ export const ListCard = ({ title, count }: ListCardProps) => {
       </div>
       <div style={styles.footer}>
         <div style={styles.footerItem}>
-          <span>📋</span> List {count} Items
+          <span>📋</span> List {completedCount}/{count} Items
         </div>
         <div style={styles.footerItem}>
-          <span>🏷️</span> Kitchen items
+          <span>🏷️</span> {tag}
         </div>
       </div>
     </div>

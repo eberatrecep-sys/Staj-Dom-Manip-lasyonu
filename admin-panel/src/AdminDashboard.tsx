@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 
-export const AdminDashboard = () => {
-    const userRole = localStorage.getItem('role');
-    const token = localStorage.getItem('token');
+export const AdminDashboard = ({ onLogout }: { onLogout: () => void }) => {
+    const userRole = localStorage.getItem('adminRole');
+    const token = localStorage.getItem('adminToken');
+    const lastLogin = localStorage.getItem('adminLastLogin');
 
-    const [dbData, setDbData] = useState<{ id: number, email: string, role: string }[]>([]);
-
+    const [dbData, setDbData] = useState<{id: number, email: string, role: string, lastLoginAt: string}[]>([]);
     const [titleInput, setTitleInput] = useState('');
 
     useEffect(() => {
@@ -27,6 +27,7 @@ export const AdminDashboard = () => {
         const data = await response.json();
         if (response.ok) {
             alert('Rol güncellendi! Değişikliği görmek için giriş/çıkış yapılmalı.');
+            window.location.reload();
         } else {
             alert(`HATA: ${data.error}`);
         }
@@ -42,7 +43,6 @@ export const AdminDashboard = () => {
 
         if (response.ok) {
             alert('Başlık başarıyla değiştirildi!');
-            window.location.reload();
         } else {
             alert(`HATA: ${data.error}`);
         }
@@ -68,27 +68,36 @@ export const AdminDashboard = () => {
         : { display: 'flex', flexDirection: 'column' as const, gap: '20px' };
 
     return (
-
-        <div style={{ width: '100%', padding: '20px' }}>
-            <p style={{ textAlign: 'center', color: '#666', marginBottom: '30px' }}>Mevcut Rolünüz: <strong>{userRole}</strong></p>
+        <div style={{ width: '100%', padding: '20px', maxWidth: '1000px', margin: '0 auto', fontFamily: 'sans-serif', boxSizing: 'border-box' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px', flexWrap: 'wrap', gap: '15px' }}>
+                <h2 style={{ margin: 0 }}>Admin Kontrol Paneli</h2>
+                <button onClick={onLogout} style={{ padding: '8px 16px', cursor: 'pointer', backgroundColor: '#f44336', color: 'white', border: 'none', borderRadius: '4px' }}>Çıkış Yap</button>
+            </div>
+            
+            <div style={{ backgroundColor: '#f9f9f9', padding: '15px', borderRadius: '8px', marginBottom: '30px' }}>
+                <p style={{ margin: '0 0 10px 0' }}>Mevcut Rolünüz: <strong>{userRole}</strong></p>
+                {lastLogin && <p style={{ margin: 0, color: '#666' }}>Son Giriş Tarihiniz: <strong>{lastLogin}</strong></p>}
+            </div>
 
             <div style={containerStyle}>
                 <div style={{ padding: '20px', border: '2px solid #4CAF50', borderRadius: '10px' }}>
                     <h3>📝 İçerik Yönetimi (Title)</h3>
-                    <p>Anasayfadaki ana başlığı (h1) değiştirin:</p>
-                    <input
-                        type="text" placeholder="Yeni Başlık..."
-                        value={titleInput} onChange={(e) => setTitleInput(e.target.value)}
-                        style={{ padding: '8px', marginRight: '10px' }}
-                    />
-                    <button onClick={handleTitleChange} style={{ padding: '8px', cursor: 'pointer' }}>Güncelle</button>
+                    <p>Ana uygulamadaki ana başlığı (h1) değiştirin:</p>
+                    <div style={{ display: 'flex', gap: '10px', marginTop: '10px', flexWrap: 'wrap' }}>
+                        <input
+                            type="text" placeholder="Yeni Başlık..."
+                            value={titleInput} onChange={(e) => setTitleInput(e.target.value)}
+                            style={{ padding: '8px', flex: 1, minWidth: '150px' }}
+                        />
+                        <button onClick={handleTitleChange} style={{ padding: '8px', cursor: 'pointer' }}>Güncelle</button>
+                    </div>
                 </div>
 
                 <div style={{ padding: '20px', border: '2px solid #2196F3', borderRadius: '10px' }}>
                     <h3>💱 Döviz Paneli</h3>
                     <p>Sistemdeki kur dalgalanmalarını test edin:</p>
                     <button onClick={handleCurrencyTest} style={{ padding: '8px', cursor: 'pointer' }}>
-                        Döviz Verilerini Güncelle (403 Testi)
+                        Döviz Verilerini Güncelle
                     </button>
                 </div>
 
@@ -100,7 +109,11 @@ export const AdminDashboard = () => {
                                 {dbData.map((user) => (
                                     <div key={user.id} style={{ border: '1px solid #ccc', padding: '15px', borderRadius: '8px' }}>
                                         <strong>{user.email}</strong>
-
+                                        {user.lastLoginAt && (
+                                            <div style={{ fontSize: '13px', color: '#555', marginTop: '5px' }}>
+                                                Son Giriş: {new Date(user.lastLoginAt).toLocaleString('tr-TR')}
+                                            </div>
+                                        )}
                                         <div style={{ marginTop: '10px' }}>
                                             <label>Yetki (Rol): </label>
                                             <select
