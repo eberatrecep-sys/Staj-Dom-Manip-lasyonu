@@ -1,7 +1,10 @@
+using MyShoppingApp.Application.DTOs.Common;
+using MyShoppingApp.Application.DTOs.Currency;
+
 namespace MyShoppingApp.Application.Interfaces;
 
 public interface ICurrencyService
 {
-    Task<object> GetRatesAsync();
-    Task<object> UpdateRatesAsync();
+    Task<CurrencyRatesResponseDto> GetRatesAsync();
+    Task<MessageResponseDto> UpdateRatesAsync();
 }

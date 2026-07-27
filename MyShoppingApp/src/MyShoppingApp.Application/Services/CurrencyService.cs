@@ -1,4 +1,6 @@
 using System.Text.Json;
+using MyShoppingApp.Application.DTOs.Common;
+using MyShoppingApp.Application.DTOs.Currency;
 using MyShoppingApp.Application.Interfaces;
 using MyShoppingApp.Domain.Interfaces;
 
@@ -15,21 +17,21 @@ public class CurrencyService : ICurrencyService
         _httpClient = httpClient;
     }
 
-    public async Task<object> GetRatesAsync()
+    public async Task<CurrencyRatesResponseDto> GetRatesAsync()
     {
         var rates = await _repository.GetAllAsync();
 
         if (rates.Count == 0)
-            return new { rates = new { USD = 0.0, EUR = 0.0, GBP = 0.0 } };
+            return new CurrencyRatesResponseDto(new Dictionary<string, double> { { "USD", 0.0 }, { "EUR", 0.0 }, { "GBP", 0.0 } });
 
         var ratesObj = new Dictionary<string, double>();
         foreach (var r in rates)
             ratesObj[r.Currency] = r.Rate;
 
-        return new { rates = ratesObj };
+        return new CurrencyRatesResponseDto(ratesObj);
     }
 
-    public async Task<object> UpdateRatesAsync()
+    public async Task<MessageResponseDto> UpdateRatesAsync()
     {
         var response = await _httpClient.GetStringAsync("https://api.frankfurter.dev/v1/latest?base=TRY");
         var data = JsonSerializer.Deserialize<JsonElement>(response);
@@ -46,6 +48,6 @@ public class CurrencyService : ICurrencyService
             }
         }
 
-        return new { message = "Döviz kurları başarıyla güncellendi!" };
+        return new MessageResponseDto("Döviz kurları başarıyla güncellendi!");
     }
 }
