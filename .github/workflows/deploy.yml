@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: ["main", "feature/react-enterprise-gecis"]
+    branches: ["main", "feature/react-enterprise-gecis", "feature/ui-updates"]
 
 permissions:
   contents: read
@@ -36,6 +36,8 @@ jobs:
           cd react-enterprise-app
           npm ci
           npm run build
+          # React Router için 404 yönlendirmesi ekliyoruz
+          cp dist/index.html dist/404.html
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
