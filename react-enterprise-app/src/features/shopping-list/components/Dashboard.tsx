@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { Header } from '../../../components/Header/Header';
 import { TabBar } from '../../../components/TabBar/TabBar';
 import { ListCard } from '../../../components/ListCard/ListCard';
+import emptyStateImg from '../../../assets/empty-state.png';
+import arrowImg from '../../../assets/arrow.png';
 
 interface ShoppingList {
     id: number;
@@ -101,7 +103,7 @@ export const Dashboard = () => {
                     }}>
 
                         <img
-                            src="/empty-state.png"
+                            src={emptyStateImg}
                             alt="Start by creating list"
                             style={{ width: '250px', objectFit: 'contain' }}
                             onError={(e) => { e.currentTarget.src = 'https://cdni.iconscout.com/illustration/premium/thumb/folder-with-cross-mark-4279226-3561332.png' }}
@@ -147,7 +149,7 @@ export const Dashboard = () => {
                     transformOrigin: 'center right',
                     zIndex: 1
                 }}>
-                    <img src="/arrow.png" alt="Arrow" style={{ width: '120%', height: '120%', objectFit: 'contain' }} />
+                    <img src={arrowImg} alt="Arrow" style={{ width: '120%', height: '120%', objectFit: 'contain' }} />
                 </div>
             )}
 
