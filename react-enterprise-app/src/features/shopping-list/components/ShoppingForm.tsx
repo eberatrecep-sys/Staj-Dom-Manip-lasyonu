@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
+import * as z from 'zod';
+import avatar1 from '../../../assets/avatars/avatar1.png';
+import avatar2 from '../../../assets/avatars/avatar2.png';
 import { useTranslation } from 'react-i18next';
 import { Header } from '../../../components/Header/Header';
 import { ListCard } from '../../../components/ListCard/ListCard';
@@ -219,7 +221,7 @@ export const ShoppingForm = () => {
                 >
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                         <img
-                            src="/avatars/avatar2.png"
+                            src={avatar2}
                             alt="avatar"
                             style={{
                                 width: '32px',
@@ -231,7 +233,7 @@ export const ShoppingForm = () => {
                             }}
                         />
                         <img
-                            src="/avatars/avatar1.png"
+                            src={avatar1}
                             alt="avatar"
                             style={{
                                 width: '32px',
@@ -676,7 +678,7 @@ export const ShoppingForm = () => {
 
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                    <img src="/avatars/avatar2.png" alt="Anjali Arora" style={{ width: '40px', height: '40px', borderRadius: '50%' }} />
+                                    <img src={avatar2} alt="Anjali Arora" style={{ width: '40px', height: '40px', borderRadius: '50%' }} />
                                     <span style={{ fontSize: '14px', fontWeight: '500', color: '#344054', fontFamily: 'Inter, sans-serif' }}>Anjali Arora</span>
                                 </div>
                                 <span style={{ fontSize: '14px', fontWeight: '500', color: '#667085', fontFamily: 'Inter, sans-serif' }}>Owner</span>
@@ -684,7 +686,7 @@ export const ShoppingForm = () => {
 
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                    <img src="/avatars/avatar1.png" alt="Shiya Singh" style={{ width: '40px', height: '40px', borderRadius: '50%' }} />
+                                    <img src={avatar1} alt="Shiya Singh" style={{ width: '40px', height: '40px', borderRadius: '50%' }} />
                                     <span style={{ fontSize: '14px', fontWeight: '500', color: '#344054', fontFamily: 'Inter, sans-serif' }}>Shiya Singh</span>
                                 </div>
                                 <div style={{
