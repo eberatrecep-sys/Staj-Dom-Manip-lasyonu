@@ -1,0 +1,33 @@
+using MyShoppingApp.Application.Interfaces;
+using MyShoppingApp.Domain.Enums;
+using MyShoppingApp.Domain.Interfaces;
+
+namespace MyShoppingApp.Application.Services;
+
+public class AdminService : IAdminService
+{
+    private readonly IUserRepository _userRepository;
+
+    public AdminService(IUserRepository userRepository)
+    {
+        _userRepository = userRepository;
+    }
+
+    public async Task<object> GetDbViewAsync()
+    {
+        return await _userRepository.GetAllWithListsAsync();
+    }
+
+    public async Task<object> UpdateRoleAsync(int targetUserId, string newRole)
+    {
+        var user = await _userRepository.GetByIdAsync(targetUserId)
+            ?? throw new KeyNotFoundException("Kullanıcı bulunamadı.");
+
+        if (!Enum.TryParse<Role>(newRole, true, out var role))
+            throw new InvalidOperationException("Geçersiz rol.");
+
+        user.Role = role;
+        await _userRepository.UpdateAsync(user);
+        return new { message = "Rol başarıyla güncellendi." };
+    }
+}
