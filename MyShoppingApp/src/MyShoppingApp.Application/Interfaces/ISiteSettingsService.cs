@@ -1,7 +1,10 @@
+using MyShoppingApp.Application.DTOs.Common;
+using MyShoppingApp.Application.DTOs.Settings;
+
 namespace MyShoppingApp.Application.Interfaces;
 
 public interface ISiteSettingsService
 {
-    Task<object> GetTitleAsync();
-    Task<object> UpdateTitleAsync(string newTitle);
+    Task<SiteTitleResponseDto> GetTitleAsync();
+    Task<MessageResponseDto> UpdateTitleAsync(string newTitle);
 }

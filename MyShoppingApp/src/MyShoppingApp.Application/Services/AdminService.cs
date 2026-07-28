@@ -1,4 +1,6 @@
+using MyShoppingApp.Application.DTOs.Common;
 using MyShoppingApp.Application.Interfaces;
+using MyShoppingApp.Domain.Entities;
 using MyShoppingApp.Domain.Enums;
 using MyShoppingApp.Domain.Interfaces;
 
@@ -13,12 +15,12 @@ public class AdminService : IAdminService
         _userRepository = userRepository;
     }
 
-    public async Task<object> GetDbViewAsync()
+    public async Task<List<User>> GetDbViewAsync()
     {
         return await _userRepository.GetAllWithListsAsync();
     }
 
-    public async Task<object> UpdateRoleAsync(int targetUserId, string newRole)
+    public async Task<MessageResponseDto> UpdateRoleAsync(int targetUserId, string newRole)
     {
         var user = await _userRepository.GetByIdAsync(targetUserId)
             ?? throw new KeyNotFoundException("Kullanıcı bulunamadı.");
@@ -28,6 +30,6 @@ public class AdminService : IAdminService
 
         user.Role = role;
         await _userRepository.UpdateAsync(user);
-        return new { message = "Rol başarıyla güncellendi." };
+        return new MessageResponseDto("Rol başarıyla güncellendi.");
     }
 }
