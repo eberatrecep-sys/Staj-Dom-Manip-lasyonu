@@ -3,6 +3,10 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: ["main", "feature/react-enterprise-gecis", "feature/ui-updates"]
+  workflow_run:
+    workflows: ["Auto Create Pull Request"]
+    types:
+      - completed
 
 permissions:
   contents: read
@@ -22,6 +26,8 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_branch || github.ref }}
 
       - name: Setup Node
         uses: actions/setup-node@v4
