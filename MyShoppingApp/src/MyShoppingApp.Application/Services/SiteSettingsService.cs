@@ -1,3 +1,5 @@
+using MyShoppingApp.Application.DTOs.Common;
+using MyShoppingApp.Application.DTOs.Settings;
 using MyShoppingApp.Application.Interfaces;
 using MyShoppingApp.Domain.Entities;
 using MyShoppingApp.Domain.Interfaces;
@@ -13,17 +15,17 @@ public class SiteSettingsService : ISiteSettingsService
         _repository = repository;
     }
 
-    public async Task<object> GetTitleAsync()
+    public async Task<SiteTitleResponseDto> GetTitleAsync()
     {
         var settings = await _repository.GetFirstAsync();
         if (settings == null)
         {
             settings = await _repository.CreateAsync(new SiteSettings { HomepageTitle = "Alışveriş Uygulaması" });
         }
-        return new { title = settings.HomepageTitle };
+        return new SiteTitleResponseDto(settings.HomepageTitle);
     }
 
-    public async Task<object> UpdateTitleAsync(string newTitle)
+    public async Task<MessageResponseDto> UpdateTitleAsync(string newTitle)
     {
         var settings = await _repository.GetFirstAsync();
         if (settings != null)
@@ -31,6 +33,6 @@ public class SiteSettingsService : ISiteSettingsService
             settings.HomepageTitle = newTitle;
             await _repository.UpdateAsync(settings);
         }
-        return new { message = "Başlık güncellendi" };
+        return new MessageResponseDto("Başlık güncellendi");
     }
 }

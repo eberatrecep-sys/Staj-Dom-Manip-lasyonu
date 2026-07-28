@@ -5,8 +5,11 @@ using MyShoppingApp.Application.Interfaces;
 
 namespace MyShoppingApp.API.Controllers;
 
+// [ApiController]: Bu denetleyicinin (Controller) RESTful HTTP isteklerine cevap vereceğini belirtir.
 [ApiController]
+// [Route]: API isteklerinin yönlendirileceği genel URL şablonunu belirler ("api/admin").
 [Route("api/admin")]
+// [Authorize]: Bu denetleyici içindeki tüm işlemlere erişmek için kullanıcının sisteme giriş yapmış olması (JWT taşıması) gerektiğini zorunlu kılar.
 [Authorize]
 public class AdminController : ControllerBase
 {
@@ -17,6 +20,8 @@ public class AdminController : ControllerBase
         _adminService = adminService;
     }
 
+    // [HttpGet("db-view")]: GET metoduyla "api/admin/db-view" uç noktasına gelen istekleri dinler.
+    // [Authorize(Roles = "SUPER_ADMIN")]: Sadece sisteme giriş yapmış olan VE rolü "SUPER_ADMIN" olan kullanıcıların bu uç noktayı çağırabilmesini sağlar.
     [HttpGet("db-view")]
     [Authorize(Roles = "SUPER_ADMIN")]
     public async Task<IActionResult> GetDbView()
