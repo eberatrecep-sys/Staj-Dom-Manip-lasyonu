@@ -19,7 +19,7 @@ function App() {
   const [appTitle, setAppTitle] = useState('Yükleniyor...');
 
   useEffect(() => {
-    fetch('http://localhost:5050/api/settings/title')
+    fetch('/api/settings/title')
       .then(res => res.json())
       .then(data => setAppTitle(data.title))
       .catch(() => setAppTitle('Alışveriş Uygulaması'));
