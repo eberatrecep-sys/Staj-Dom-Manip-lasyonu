@@ -36,7 +36,7 @@ export const Dashboard = () => {
     const fetchLists = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch('http://localhost:5050/api/shopping-list', {
+            const response = await fetch('/api/shopping-list', {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             if (response.status === 401 || response.status === 403) {
@@ -60,7 +60,7 @@ export const Dashboard = () => {
         const token = localStorage.getItem('token');
 
         try {
-            const response = await fetch('http://localhost:5050/api/shopping-list', {
+            const response = await fetch('/api/shopping-list', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,

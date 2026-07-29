@@ -8,7 +8,7 @@ export const useFetchRates = () => {
         const fetchRates = async () => {
             try {
                 setLoading(true);
-                const response = await fetch('http://localhost:5050/api/currency');
+                const response = await fetch('/api/currency');
                 const data = await response.json();
 
                 const formattedRates = Object.keys(data.rates).map(key => ({

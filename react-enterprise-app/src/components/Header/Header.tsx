@@ -23,7 +23,7 @@ export const Header = () => {
     try {
       const token = localStorage.getItem('token');
       if (!token) return;
-      const response = await fetch('http://localhost:5050/api/share/pending', {
+      const response = await fetch('/api/share/pending', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (response.ok) {
@@ -38,7 +38,7 @@ export const Header = () => {
   const handleAction = async (id: number, action: 'accept' | 'reject') => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5050/api/share/${id}/${action}`, {
+      const response = await fetch(`/api/share/${id}/${action}`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}` }
       });

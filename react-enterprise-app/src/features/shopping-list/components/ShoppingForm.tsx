@@ -58,7 +58,7 @@ export const ShoppingForm = () => {
     const fetchListDetails = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch(`http://localhost:5050/api/shopping-list/${id}`, {
+            const response = await fetch(`/api/shopping-list/${id}`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const data = await response.json();
@@ -75,7 +75,7 @@ export const ShoppingForm = () => {
     const handleTagUpdate = async (newTag: string) => {
         try {
             const token = localStorage.getItem('token');
-            await fetch(`http://localhost:5050/api/shopping-list/${id}`, {
+            await fetch(`/api/shopping-list/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -105,7 +105,7 @@ export const ShoppingForm = () => {
     const onSubmit = async (data: FormData) => {
         const token = localStorage.getItem('token');
         if (editingItem) {
-            await fetch(`http://localhost:5050/api/shopping-list/${id}/items/${editingItem.id}`, {
+            await fetch(`/api/shopping-list/${id}/items/${editingItem.id}`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -114,7 +114,7 @@ export const ShoppingForm = () => {
                 body: JSON.stringify({ ...editingItem, itemName: data.productName, amount: data.quantity })
             });
         } else {
-            await fetch(`http://localhost:5050/api/shopping-list/${id}/items`, {
+            await fetch(`/api/shopping-list/${id}/items`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -130,7 +130,7 @@ export const ShoppingForm = () => {
 
     const toggleCompletion = async (item: ListItem) => {
         const token = localStorage.getItem('token');
-        await fetch(`http://localhost:5050/api/shopping-list/${id}/items/${item.id}`, {
+        await fetch(`/api/shopping-list/${id}/items/${item.id}`, {
             method: 'PUT',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -144,7 +144,7 @@ export const ShoppingForm = () => {
     const deleteList = async () => {
         if (!window.confirm("Bu listeyi silmek istediğinize emin misiniz?")) return;
         const token = localStorage.getItem('token');
-        await fetch(`http://localhost:5050/api/shopping-list/${id}`, {
+        await fetch(`/api/shopping-list/${id}`, {
             method: 'DELETE',
             headers: { 'Authorization': `Bearer ${token}` }
         });
@@ -161,7 +161,7 @@ export const ShoppingForm = () => {
             navigate(`/share/${id}`);
         } else if (action === 'copy') {
             try {
-                const response = await fetch('http://localhost:5050/api/shopping-list', {
+                const response = await fetch('/api/shopping-list', {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -177,7 +177,7 @@ export const ShoppingForm = () => {
             const completedItems = items.filter((item) => item.isCompleted);
             for (const item of completedItems) {
                 try {
-                    await fetch(`http://localhost:5050/api/shopping-list/${id}/items/${item.id}`, {
+                    await fetch(`/api/shopping-list/${id}/items/${item.id}`, {
                         method: 'DELETE',
                         headers: { 'Authorization': `Bearer ${token}` }
                     });
@@ -195,7 +195,7 @@ export const ShoppingForm = () => {
         if (!targetEmail) return;
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch('http://localhost:5050/api/share/invite', {
+            const response = await fetch('/api/share/invite', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
