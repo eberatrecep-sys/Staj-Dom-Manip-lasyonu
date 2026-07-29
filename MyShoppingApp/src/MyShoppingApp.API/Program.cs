@@ -123,9 +123,8 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi(); // API dokümantasyonunu geliştirme ortamında aktif et
 }
 
-app.UseMiddleware<GlobalExceptionMiddleware>();
-
 app.UseCors(); // CORS kurallarını uygula
+app.UseMiddleware<GlobalExceptionMiddleware>();
 app.UseAuthentication(); // Kullanıcının kim olduğunu doğrula (JWT oku)
 app.UseAuthorization();  // Kullanıcının bu işlemi yapmaya izni var mı denetle (Rol kontrolü)
 app.MapControllers();    // İstekleri ilgili Controller sınıflarına yönlendir
