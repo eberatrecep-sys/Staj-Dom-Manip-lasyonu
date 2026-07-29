@@ -13,4 +13,9 @@ public class User
     public Role Role { get; set; } = Role.USER;
 
     public ICollection<ShoppingList> ShoppingLists { get; set; } = new List<ShoppingList>();
+    
+    // Sharing relationships
+    public ICollection<ShoppingList> SharedLists { get; set; } = new List<ShoppingList>();
+    public ICollection<ListShareRequest> SentShareRequests { get; set; } = new List<ListShareRequest>();
+    public ICollection<ListShareRequest> ReceivedShareRequests { get; set; } = new List<ListShareRequest>();
 }

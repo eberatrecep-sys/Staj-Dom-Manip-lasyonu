@@ -24,7 +24,7 @@ public class ShoppingListService : IShoppingListService
         var list = await _repository.GetByIdWithItemsAsync(id)
             ?? throw new KeyNotFoundException("Liste bulunamadı.");
 
-        if (list.UserId != userId)
+        if (list.UserId != userId && !list.SharedWithUsers.Any(u => u.Id == userId))
             throw new UnauthorizedAccessException("Yetkisiz erişim");
 
         return list;
@@ -48,7 +48,7 @@ public class ShoppingListService : IShoppingListService
         var list = await _repository.GetByIdWithItemsAsync(id)
             ?? throw new KeyNotFoundException("Liste bulunamadı.");
 
-        if (list.UserId != userId)
+        if (list.UserId != userId && !list.SharedWithUsers.Any(u => u.Id == userId))
             throw new UnauthorizedAccessException("Yetkisiz işlem.");
 
         list.Tag = dto.Tag;
@@ -62,7 +62,7 @@ public class ShoppingListService : IShoppingListService
         var list = await _repository.GetByIdWithItemsAsync(id)
             ?? throw new KeyNotFoundException("Liste bulunamadı.");
 
-        if (list.UserId != userId)
+        if (list.UserId != userId && !list.SharedWithUsers.Any(u => u.Id == userId))
             throw new UnauthorizedAccessException("Yetkisiz işlem.");
 
         await _repository.DeleteAsync(list);
@@ -73,7 +73,7 @@ public class ShoppingListService : IShoppingListService
         var list = await _repository.GetByIdWithItemsAsync(listId)
             ?? throw new KeyNotFoundException("Liste bulunamadı.");
 
-        if (list.UserId != userId)
+        if (list.UserId != userId && !list.SharedWithUsers.Any(u => u.Id == userId))
             throw new UnauthorizedAccessException("Yetkisiz erişim");
 
         var item = new ShoppingListItem
@@ -91,7 +91,7 @@ public class ShoppingListService : IShoppingListService
         var list = await _repository.GetByIdWithItemsAsync(listId)
             ?? throw new KeyNotFoundException("Liste bulunamadı.");
 
-        if (list.UserId != userId)
+        if (list.UserId != userId && !list.SharedWithUsers.Any(u => u.Id == userId))
             throw new UnauthorizedAccessException("Yetkisiz işlem.");
 
         var item = await _repository.GetItemByIdAsync(itemId)
@@ -110,7 +110,7 @@ public class ShoppingListService : IShoppingListService
         var list = await _repository.GetByIdWithItemsAsync(listId)
             ?? throw new KeyNotFoundException("Liste bulunamadı.");
 
-        if (list.UserId != userId)
+        if (list.UserId != userId && !list.SharedWithUsers.Any(u => u.Id == userId))
             throw new UnauthorizedAccessException("Yetkisiz işlem.");
 
         var item = await _repository.GetItemByIdAsync(itemId)

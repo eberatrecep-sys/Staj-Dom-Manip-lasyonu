@@ -28,6 +28,7 @@ export const ShoppingForm = () => {
     const [editingItem, setEditingItem] = useState<ListItem | null>(null);
     const [tagName, setTagName] = useState('');
     const [isTagEditing, setIsTagEditing] = useState(false);
+    const [targetEmail, setTargetEmail] = useState('');
 
     const closePopup = () => {
         setIsAddItemPopupOpen(false);
@@ -187,6 +188,31 @@ export const ShoppingForm = () => {
             fetchListDetails();
         } else if (action === 'connect') {
             console.log("Connect to store clicked");
+        }
+    };
+
+    const handleInvite = async () => {
+        if (!targetEmail) return;
+        const token = localStorage.getItem('token');
+        try {
+            const response = await fetch('http://localhost:5050/api/share/invite', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ listId: parseInt(id!), targetEmail })
+            });
+            const data = await response.json();
+            if (response.ok) {
+                alert('Davet gönderildi!');
+                setTargetEmail('');
+                setIsSharePopupOpen(false);
+            } else {
+                alert(data.error || 'Davet gönderilemedi');
+            }
+        } catch (error) {
+            console.error("Davet hatası", error);
         }
     };
 
@@ -650,8 +676,10 @@ export const ShoppingForm = () => {
                             gap: '8px'
                         }}>
                             <input
-                                type="text"
+                                type="email"
                                 placeholder="Email"
+                                value={targetEmail}
+                                onChange={(e) => setTargetEmail(e.target.value)}
                                 style={{
                                     border: 'none',
                                     outline: 'none',
@@ -663,12 +691,13 @@ export const ShoppingForm = () => {
                                     padding: 0
                                 }}
                             />
-                            <div style={{
+                            <div 
+                                onClick={handleInvite}
+                                style={{
                                 display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer',
-                                color: '#667085', fontSize: '14px', fontWeight: '600', fontFamily: 'Inter, sans-serif'
+                                color: '#7F56D9', fontSize: '14px', fontWeight: '600', fontFamily: 'Inter, sans-serif'
                             }}>
-                                <span>Edit</span>
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                <span>Gönder</span>
                             </div>
                         </div>
 

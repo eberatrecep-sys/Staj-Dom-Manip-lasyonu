@@ -12,4 +12,8 @@ public class ShoppingList
 
     public User User { get; set; } = null!;
     public ICollection<ShoppingListItem> Items { get; set; } = new List<ShoppingListItem>();
+    
+    // Sharing relationships
+    public ICollection<User> SharedWithUsers { get; set; } = new List<User>();
+    public ICollection<ListShareRequest> ShareRequests { get; set; } = new List<ListShareRequest>();
 }

@@ -12,7 +12,21 @@ interface ShoppingList {
     category: string;
     tag: string | null;
     items: any[];
+    userId: number;
 }
+
+const parseJwt = (token: string) => {
+    try {
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+        return JSON.parse(jsonPayload);
+    } catch (e) {
+        return null;
+    }
+};
 
 export const Dashboard = () => {
     const navigate = useNavigate();
@@ -74,7 +88,10 @@ export const Dashboard = () => {
         }
     };
 
-    const filteredLists = lists.filter(list => list.category === activeTab);
+    const myUserId = localStorage.getItem('token') ? parseJwt(localStorage.getItem('token')!)?.userId : null;
+    const filteredLists = activeTab === 'Shared'
+        ? lists.filter(list => list.userId !== Number(myUserId))
+        : lists.filter(list => list.category === activeTab && list.userId === Number(myUserId));
 
     return (
         <div style={{ maxWidth: '414px', margin: '0 auto', padding: '16px', position: 'relative', minHeight: '100vh' }}>
