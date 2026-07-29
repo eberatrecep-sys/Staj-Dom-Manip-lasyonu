@@ -13,6 +13,7 @@ public class AppDbContext : DbContext
     public DbSet<ShoppingListItem> ShoppingListItems => Set<ShoppingListItem>();
     public DbSet<SiteSettings> SiteSettings => Set<SiteSettings>();
     public DbSet<CurrencyRate> CurrencyRates => Set<CurrencyRate>();
+    public DbSet<ListShareRequest> ListShareRequests => Set<ListShareRequest>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -63,5 +64,36 @@ public class AppDbContext : DbContext
             entity.HasKey(e => e.Id);
             entity.HasIndex(e => e.Currency).IsUnique();
         });
+
+        // ListShareRequest
+        modelBuilder.Entity<ListShareRequest>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            
+            entity.HasOne(e => e.List)
+                  .WithMany(l => l.ShareRequests)
+                  .HasForeignKey(e => e.ListId)
+                  .OnDelete(DeleteBehavior.Cascade);
+                  
+            entity.HasOne(e => e.Sender)
+                  .WithMany(u => u.SentShareRequests)
+                  .HasForeignKey(e => e.SenderId)
+                  .OnDelete(DeleteBehavior.Restrict); // Prevent multiple cascade paths
+                  
+            entity.HasOne(e => e.Receiver)
+                  .WithMany(u => u.ReceivedShareRequests)
+                  .HasForeignKey(e => e.ReceiverId)
+                  .OnDelete(DeleteBehavior.Restrict);
+                  
+            entity.Property(e => e.Status)
+                  .HasConversion<string>()
+                  .HasDefaultValue(ShareRequestStatus.Pending);
+        });
+
+        // User - ShoppingList Many-to-Many (Shared Lists)
+        modelBuilder.Entity<User>()
+            .HasMany(u => u.SharedLists)
+            .WithMany(l => l.SharedWithUsers)
+            .UsingEntity(j => j.ToTable("SharedShoppingLists"));
     }
 }

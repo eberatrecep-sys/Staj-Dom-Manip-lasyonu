@@ -8,8 +8,19 @@ using MyShoppingApp.Application.Services;
 using MyShoppingApp.Domain.Interfaces;
 using MyShoppingApp.Infrastructure.Context;
 using MyShoppingApp.Infrastructure.Repositories;
+using Serilog;
+using MyShoppingApp.API.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Configure Serilog
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .WriteTo.Console()
+    .WriteTo.File("logs/log.txt")
+    .CreateLogger();
+
+builder.Host.UseSerilog();
 
 // ==========================================
 // 1. YAPILANDIRMA VE SABİTLER (CONFIGURATIONS)
@@ -34,12 +45,14 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IShoppingListRepository, ShoppingListRepository>();
 builder.Services.AddScoped<ISiteSettingsRepository, SiteSettingsRepository>();
 builder.Services.AddScoped<ICurrencyRateRepository, CurrencyRateRepository>();
+builder.Services.AddScoped<IShareRepository, ShareRepository>();
 
 builder.Services.AddScoped<IAuthService>(sp =>
     new AuthService(sp.GetRequiredService<IUserRepository>(), jwtSecret));
 builder.Services.AddScoped<IShoppingListService, ShoppingListService>();
 builder.Services.AddScoped<ISiteSettingsService, SiteSettingsService>();
 builder.Services.AddScoped<IAdminService, AdminService>();
+builder.Services.AddScoped<IShareService, ShareService>();
 
 // HttpClient sınıfını kullanan ICurrencyService/CurrencyService bağımlılığını kaydediyoruz.
 builder.Services.AddHttpClient<ICurrencyService, CurrencyService>();
@@ -109,6 +122,8 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi(); // API dokümantasyonunu geliştirme ortamında aktif et
 }
+
+app.UseMiddleware<GlobalExceptionMiddleware>();
 
 app.UseCors(); // CORS kurallarını uygula
 app.UseAuthentication(); // Kullanıcının kim olduğunu doğrula (JWT oku)

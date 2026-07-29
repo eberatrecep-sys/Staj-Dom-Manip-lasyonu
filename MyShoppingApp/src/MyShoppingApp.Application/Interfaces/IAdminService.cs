@@ -1,4 +1,4 @@
-,using MyShoppingApp.Application.DTOs.Common;
+using MyShoppingApp.Application.DTOs.Common;
 using MyShoppingApp.Domain.Entities;
 
 namespace MyShoppingApp.Application.Interfaces;
