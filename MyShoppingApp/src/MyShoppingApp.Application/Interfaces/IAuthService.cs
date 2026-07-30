@@ -9,4 +9,5 @@ public interface IAuthService
     Task<LoginResponseDto> LoginAsync(LoginDto dto);
     Task<MessageResponseDto> ForgotPasswordAsync(ForgotPasswordDto dto);
     Task<MessageResponseDto> ResetPasswordAsync(ResetPasswordDto dto);
+    Task<string> UploadProfilePictureAsync(int userId, Stream fileStream, string fileName, string contentType);
 }

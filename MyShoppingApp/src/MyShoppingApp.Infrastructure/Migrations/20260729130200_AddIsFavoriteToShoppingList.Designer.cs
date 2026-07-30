@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyShoppingApp.Infrastructure.Context;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MyShoppingApp.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260729130200_AddIsFavoriteToShoppingList")]
+    partial class AddIsFavoriteToShoppingList
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,31 +49,6 @@ namespace MyShoppingApp.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("CurrencyRates");
-                });
-
-            modelBuilder.Entity("MyShoppingApp.Domain.Entities.ItemImage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("ShoppingListItemId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ShoppingListItemId");
-
-                    b.ToTable("ItemImages");
                 });
 
             modelBuilder.Entity("MyShoppingApp.Domain.Entities.ListShareRequest", b =>
@@ -223,9 +201,6 @@ namespace MyShoppingApp.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("ProfilePictureUrl")
-                        .HasColumnType("text");
-
                     b.Property<string>("ResetToken")
                         .HasColumnType("text");
 
@@ -259,17 +234,6 @@ namespace MyShoppingApp.Infrastructure.Migrations
                     b.HasIndex("SharedWithUsersId");
 
                     b.ToTable("SharedShoppingLists", (string)null);
-                });
-
-            modelBuilder.Entity("MyShoppingApp.Domain.Entities.ItemImage", b =>
-                {
-                    b.HasOne("MyShoppingApp.Domain.Entities.ShoppingListItem", "ShoppingListItem")
-                        .WithMany("Images")
-                        .HasForeignKey("ShoppingListItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ShoppingListItem");
                 });
 
             modelBuilder.Entity("MyShoppingApp.Domain.Entities.ListShareRequest", b =>
@@ -341,11 +305,6 @@ namespace MyShoppingApp.Infrastructure.Migrations
                     b.Navigation("Items");
 
                     b.Navigation("ShareRequests");
-                });
-
-            modelBuilder.Entity("MyShoppingApp.Domain.Entities.ShoppingListItem", b =>
-                {
-                    b.Navigation("Images");
                 });
 
             modelBuilder.Entity("MyShoppingApp.Domain.Entities.User", b =>

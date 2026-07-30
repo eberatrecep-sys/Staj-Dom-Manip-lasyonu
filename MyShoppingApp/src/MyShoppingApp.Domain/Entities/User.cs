@@ -11,6 +11,7 @@ public class User
     public DateTime? ResetTokenExpiry { get; set; }
     public DateTime? LastLoginAt { get; set; }
     public Role Role { get; set; } = Role.USER;
+    public string? ProfilePictureUrl { get; set; }
 
     public ICollection<ShoppingList> ShoppingLists { get; set; } = new List<ShoppingList>();
     

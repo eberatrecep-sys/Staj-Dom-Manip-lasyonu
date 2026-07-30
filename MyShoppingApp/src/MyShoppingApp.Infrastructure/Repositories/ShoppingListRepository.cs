@@ -18,7 +18,7 @@ public class ShoppingListRepository : IShoppingListRepository
     {
         return await _context.ShoppingLists
             .Where(sl => sl.UserId == userId || sl.SharedWithUsers.Any(u => u.Id == userId))
-            .Include(sl => sl.Items)
+            .Include(sl => sl.Items).ThenInclude(i => i.Images)
             .Include(sl => sl.SharedWithUsers)
             .OrderByDescending(sl => sl.UpdatedAt)
             .ToListAsync();
@@ -27,7 +27,7 @@ public class ShoppingListRepository : IShoppingListRepository
     public async Task<ShoppingList?> GetByIdWithItemsAsync(int id)
     {
         return await _context.ShoppingLists
-            .Include(sl => sl.Items)
+            .Include(sl => sl.Items).ThenInclude(i => i.Images)
             .Include(sl => sl.SharedWithUsers)
             .FirstOrDefaultAsync(sl => sl.Id == id);
     }
@@ -60,7 +60,9 @@ public class ShoppingListRepository : IShoppingListRepository
 
     public async Task<ShoppingListItem?> GetItemByIdAsync(int itemId)
     {
-        return await _context.ShoppingListItems.FindAsync(itemId);
+        return await _context.ShoppingListItems
+            .Include(i => i.Images)
+            .FirstOrDefaultAsync(i => i.Id == itemId);
     }
 
     public async Task UpdateItemAsync(ShoppingListItem item)

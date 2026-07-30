@@ -10,7 +10,7 @@ export const AdminDashboard = () => {
 
     useEffect(() => {
         if (userRole === 'SUPER_ADMIN') {
-            fetch('/api/admin/db-view', {
+            fetch('http://localhost:5050/api/v1/admin/db-view', {
                 headers: { 'Authorization': `Bearer ${token}` }
             })
                 .then(res => res.json())
@@ -19,7 +19,7 @@ export const AdminDashboard = () => {
     }, [userRole, token]);
 
     const handleRoleChange = async (targetUserId: number, newRole: string) => {
-        const response = await fetch('/api/admin/role', {
+        const response = await fetch('http://localhost:5050/api/v1/admin/role', {
             method: 'PUT',
             headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
             body: JSON.stringify({ targetUserId, newRole })
@@ -33,7 +33,7 @@ export const AdminDashboard = () => {
     };
 
     const handleTitleChange = async () => {
-        const response = await fetch('/api/settings/title', {
+        const response = await fetch('http://localhost:5050/api/v1/settings/title', {
             method: 'PUT',
             headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
             body: JSON.stringify({ newTitle: titleInput })
@@ -49,7 +49,7 @@ export const AdminDashboard = () => {
     };
 
     const handleCurrencyTest = async () => {
-        const response = await fetch('/api/settings/currency', {
+        const response = await fetch('http://localhost:5050/api/v1/settings/currency', {
             method: 'POST',
             headers: { 'Authorization': `Bearer ${token}` }
         });

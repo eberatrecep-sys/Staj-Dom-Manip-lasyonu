@@ -1,3 +1,4 @@
+using Asp.Versioning;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +8,8 @@ using MyShoppingApp.Application.Interfaces;
 namespace MyShoppingApp.API.Controllers;
 
 [ApiController]
-[Route("api/shopping-list")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/shopping-list")]
 [Authorize]
 public class ShoppingListController : ControllerBase
 {
@@ -84,6 +86,24 @@ public class ShoppingListController : ControllerBase
         }
     }
 
+    [HttpPut("{id}/favorite")]
+    public async Task<IActionResult> ToggleFavorite(int id)
+    {
+        try
+        {
+            var list = await _service.ToggleFavoriteAsync(id, GetUserId());
+            return Ok(list);
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return StatusCode(403, new { error = "Yetkisiz erişim" });
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(new { error = ex.Message });
+        }
+    }
+
     [HttpPost("{id}/items")]
     public async Task<IActionResult> AddItem(int id, [FromBody] CreateItemDto dto)
     {
@@ -131,6 +151,29 @@ public class ShoppingListController : ControllerBase
         catch (Exception)
         {
             return StatusCode(500, new { error = "Ürün silinemedi." });
+        }
+    }
+
+    [HttpPost("{listId}/items/{itemId}/images")]
+    [MyShoppingApp.API.Attributes.AllowedExtensions(new[] { ".jpg", ".jpeg", ".png" })]
+    [MyShoppingApp.API.Attributes.MaxFileSize(5 * 1024 * 1024)] // 5MB
+    public async Task<IActionResult> UploadItemImage(int listId, int itemId, IFormFile file)
+    {
+        if (file == null || file.Length == 0)
+            return BadRequest(new { Message = "Lütfen bir dosya seçin." });
+
+        try
+        {
+            var url = await _service.UploadItemImageAsync(listId, itemId, GetUserId(), file.OpenReadStream(), file.FileName, file.ContentType);
+            return Ok(new { Url = url, Message = "Fotoğraf başarıyla eklendi." });
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return StatusCode(403, new { error = "Yetkisiz işlem." });
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new { error = ex.Message });
         }
     }
 }

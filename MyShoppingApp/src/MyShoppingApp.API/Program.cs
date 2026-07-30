@@ -1,5 +1,6 @@
 using System.Text;
 using System.Text.Json.Serialization;
+using Asp.Versioning;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -8,16 +9,20 @@ using MyShoppingApp.Application.Services;
 using MyShoppingApp.Domain.Interfaces;
 using MyShoppingApp.Infrastructure.Context;
 using MyShoppingApp.Infrastructure.Repositories;
+using MyShoppingApp.Infrastructure.Services;
 using Serilog;
-using MyShoppingApp.API.Middlewares;
+using MyShoppingApp.API.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Configure Serilog
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Information()
+    .Enrich.FromLogContext()
+    .Enrich.WithProperty("ApplicationName", "MyShoppingApp.API")
+    .Enrich.WithProperty("Environment", "Development")
     .WriteTo.Console()
-    .WriteTo.File("logs/log.txt")
+    .WriteTo.Seq("http://localhost:5341")
     .CreateLogger();
 
 builder.Host.UseSerilog();
@@ -48,11 +53,12 @@ builder.Services.AddScoped<ICurrencyRateRepository, CurrencyRateRepository>();
 builder.Services.AddScoped<IShareRepository, ShareRepository>();
 
 builder.Services.AddScoped<IAuthService>(sp =>
-    new AuthService(sp.GetRequiredService<IUserRepository>(), jwtSecret));
+    new AuthService(sp.GetRequiredService<IUserRepository>(), jwtSecret, sp.GetRequiredService<IFileStorageService>()));
 builder.Services.AddScoped<IShoppingListService, ShoppingListService>();
 builder.Services.AddScoped<ISiteSettingsService, SiteSettingsService>();
 builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<IShareService, ShareService>();
+builder.Services.AddScoped<IFileStorageService, FileStorageService>();
 
 // HttpClient sınıfını kullanan ICurrencyService/CurrencyService bağımlılığını kaydediyoruz.
 builder.Services.AddHttpClient<ICurrencyService, CurrencyService>();
@@ -86,6 +92,28 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles; // İlişkisel verilerde sonsuz döngüyü engeller
         options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
     });
+
+// ==========================================
+// 5.1 API VERSİYONLAMA
+// ==========================================
+builder.Services.AddApiVersioning(options =>
+{
+    options.DefaultApiVersion = new ApiVersion(1, 0);
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.ReportApiVersions = true;
+    // URL tabanlı versiyonlama için okuyucu ayarlıyoruz
+    options.ApiVersionReader = new UrlSegmentApiVersionReader();
+})
+.AddMvc()
+.AddApiExplorer(options =>
+{
+    options.GroupNameFormat = "'v'VVV";
+    options.SubstituteApiVersionInUrl = true;
+});
+
+// 5.1 GLOBAL EXCEPTION HANDLER
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
 
 // ==========================================
 // 6. CORS (CROSS-ORIGIN RESOURCE SHARING)
@@ -124,7 +152,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors(); // CORS kurallarını uygula
-app.UseMiddleware<GlobalExceptionMiddleware>();
+app.UseExceptionHandler(); // Global Hata Yönetimi
 app.UseAuthentication(); // Kullanıcının kim olduğunu doğrula (JWT oku)
 app.UseAuthorization();  // Kullanıcının bu işlemi yapmaya izni var mı denetle (Rol kontrolü)
 app.MapControllers();    // İstekleri ilgili Controller sınıflarına yönlendir

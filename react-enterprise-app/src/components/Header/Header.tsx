@@ -18,12 +18,21 @@ export const Header = () => {
   const [userInfo, setUserInfo] = useState({ name: 'Misafir', email: '' });
   const [pendingRequests, setPendingRequests] = useState<any[]>([]);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const [showProfileModal, setShowProfileModal] = useState(false);
+  const [profilePicUrl, setProfilePicUrl] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    window.location.href = '/login';
+  };
 
   const fetchPendingRequests = async () => {
     try {
       const token = localStorage.getItem('token');
       if (!token) return;
-      const response = await fetch('/api/share/pending', {
+      const response = await fetch('http://localhost:5050/api/v1/share/pending', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (response.ok) {
@@ -38,7 +47,7 @@ export const Header = () => {
   const handleAction = async (id: number, action: 'accept' | 'reject') => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`/api/share/${id}/${action}`, {
+      const response = await fetch(`http://localhost:5050/api/v1/share/${id}/${action}`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -51,10 +60,46 @@ export const Header = () => {
     }
   };
 
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setSelectedFile(e.target.files[0]);
+    }
+  };
+
+  const handleProfilePicUpload = async () => {
+    if (!selectedFile) return;
+    
+    const formData = new FormData();
+    formData.append('file', selectedFile);
+    
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch('http://localhost:5050/api/v1/auth/profile-picture', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` },
+        body: formData
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setProfilePicUrl(data.url);
+        localStorage.setItem('profilePicUrl', data.url);
+        setShowProfileModal(false);
+        setSelectedFile(null); // Reset after upload
+      }
+    } catch (error) {
+      console.error("Profil resmi yüklenemedi", error);
+    }
+  };
+
   // Sayfa yüklendiğinde token'ı okuyup kullanıcı bilgilerini (isim, e-posta) state'e kaydediyoruz.
   useEffect(() => {
     fetchPendingRequests();
     const token = localStorage.getItem('token');
+    const savedPic = localStorage.getItem('profilePicUrl');
+    if (savedPic) {
+      setProfilePicUrl(savedPic);
+    }
+    
     if (token) {
       const decoded = parseJwt(token);
       if (decoded) {
@@ -68,16 +113,30 @@ export const Header = () => {
 
   return (
     <div style={styles.container}>
-      <div style={styles.left}>
+      <div style={{ ...styles.left, cursor: 'pointer', position: 'relative' }} onClick={() => setShowUserMenu(!showUserMenu)}>
         <img
-          src={`https://ui-avatars.com/api/?name=${userInfo.name}&background=random`}
+          src={profilePicUrl || `https://ui-avatars.com/api/?name=${userInfo.name}&background=random`}
           alt="Profile"
           style={styles.avatar}
+          onClick={(e) => { e.stopPropagation(); setShowProfileModal(true); }}
         />
         <div style={styles.userInfo}>
           <div style={styles.name}>{userInfo.name}</div>
           <div style={styles.email}>{userInfo.email}</div>
         </div>
+        
+        {showUserMenu && (
+          <div style={styles.userDropdown}>
+            <button style={styles.btnLogout} onClick={handleLogout}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{marginRight: '8px'}}>
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                <polyline points="16 17 21 12 16 7"></polyline>
+                <line x1="21" y1="12" x2="9" y2="12"></line>
+              </svg>
+              Çıkış Yap
+            </button>
+          </div>
+        )}
       </div>
       <div style={styles.right}>
         <button style={styles.iconBtnPurple}>
@@ -117,6 +176,40 @@ export const Header = () => {
           )}
         </div>
       </div>
+
+      {/* Profile Picture Modal */}
+      {showProfileModal && (
+        <div style={styles.modalOverlay} onClick={() => { setShowProfileModal(false); setSelectedFile(null); }}>
+          <div style={styles.modalContent} onClick={e => e.stopPropagation()}>
+            <h3 style={{marginTop: 0}}>Profil Resmini Değiştir</h3>
+            <p style={{fontSize: '14px', color: '#667085'}}>JPEG veya PNG dosyası seçin (Maks. 5MB).</p>
+            <input 
+              type="file" 
+              accept="image/png, image/jpeg" 
+              onChange={handleFileSelect} 
+              style={{marginTop: '10px'}}
+            />
+            
+            <button 
+              onClick={handleProfilePicUpload} 
+              disabled={!selectedFile}
+              style={{
+                ...styles.btnAccept, 
+                display: 'block', 
+                marginTop: '20px', 
+                width: '100%',
+                opacity: selectedFile ? 1 : 0.5,
+                cursor: selectedFile ? 'pointer' : 'not-allowed'
+              }}
+            >
+              Yükle
+            </button>
+            <button onClick={() => { setShowProfileModal(false); setSelectedFile(null); }} style={{...styles.btnReject, display: 'block', marginTop: '10px', width: '100%'}}>
+              İptal
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -252,5 +345,46 @@ const styles = {
     borderRadius: '6px',
     fontSize: '12px',
     cursor: 'pointer'
+  },
+  userDropdown: {
+    position: 'absolute' as const,
+    top: '48px',
+    left: '0',
+    backgroundColor: 'white',
+    borderRadius: '8px',
+    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+    border: '1px solid #EAECF0',
+    zIndex: 1000,
+    minWidth: '150px',
+    padding: '8px'
+  },
+  btnLogout: {
+    width: '100%',
+    padding: '8px 12px',
+    backgroundColor: '#FEF3F2',
+    color: '#D92D20',
+    border: 'none',
+    borderRadius: '6px',
+    fontSize: '14px',
+    fontWeight: '500',
+    display: 'flex',
+    alignItems: 'center',
+    cursor: 'pointer'
+  },
+  modalOverlay: {
+    position: 'fixed' as const,
+    top: 0, left: 0, right: 0, bottom: 0,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 2000
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: '24px',
+    borderRadius: '12px',
+    width: '320px',
+    boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
   }
 };

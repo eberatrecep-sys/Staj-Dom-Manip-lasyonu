@@ -1,3 +1,4 @@
+using Asp.Versioning;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +8,8 @@ using MyShoppingApp.Application.Interfaces;
 namespace MyShoppingApp.API.Controllers;
 
 [ApiController]
-[Route("api/share")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/share")]
 [Authorize]
 public class ShareController : ControllerBase
 {

@@ -8,16 +8,43 @@ interface ListCardProps {
   count: number;
   completedCount?: number;
   tag?: string;
+  isFavorite?: boolean;
+  onToggleFavorite?: (e: React.MouseEvent) => void;
+  itemImages?: string[];
 }
 
-export const ListCard = ({ title, count, completedCount = 0, tag = 'Kitchen items' }: ListCardProps) => {
+export const ListCard = ({ title, count, completedCount = 0, tag = 'Kitchen items', isFavorite = false, onToggleFavorite, itemImages = [] }: ListCardProps) => {
   return (
     <div style={styles.card}>
-      <h3 style={styles.title}>{title}</h3>
+      <div style={styles.headerRow}>
+        <h3 style={styles.title}>{title}</h3>
+        <button 
+          style={isFavorite ? styles.heartBtnActive : styles.heartBtn} 
+          onClick={onToggleFavorite}
+          title="Favorilere Ekle"
+        >
+          <svg width="14" height="13" viewBox="0 0 24 24" fill={isFavorite ? "#9E77ED" : "none"} stroke={isFavorite ? "#9E77ED" : "#D0D5DD"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+          </svg>
+        </button>
+      </div>
       <div style={styles.avatars}>
-        <img src={avatar2} style={styles.avatar} alt="P1" />
-        <img src={avatar1} style={{ ...styles.avatar, marginLeft: '-10px' }} alt="P2" />
-        <div style={styles.moreAvatar}>+2</div>
+        {itemImages && itemImages.length > 0 ? (
+          <>
+            {itemImages.slice(0, 5).map((url, idx) => (
+              <img key={idx} src={url} style={{ ...styles.avatar, marginLeft: idx > 0 ? '-10px' : '0' }} alt={`Item ${idx}`} />
+            ))}
+            {itemImages.length > 5 && (
+              <div style={styles.moreAvatar}>+{itemImages.length - 5}</div>
+            )}
+          </>
+        ) : (
+          <>
+            <img src={avatar2} style={styles.avatar} alt="P1" />
+            <img src={avatar1} style={{ ...styles.avatar, marginLeft: '-10px' }} alt="P2" />
+            <div style={styles.moreAvatar}>+2</div>
+          </>
+        )}
       </div>
       <div style={styles.footer}>
         <div style={styles.footerItem}>
@@ -40,7 +67,35 @@ const styles = {
     boxShadow: '0 2px 4px rgba(0,0,0,0.02)',
     display: 'flex',
     flexDirection: 'column' as const,
-    gap: '12px'
+    gap: '12px',
+    position: 'relative'
+  },
+  headerRow: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start'
+  },
+  heartBtn: {
+    background: '#F9FAFB',
+    border: 'none',
+    width: '24px',
+    height: '24px',
+    borderRadius: '4px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    cursor: 'pointer'
+  },
+  heartBtnActive: {
+    background: '#F4EBFF',
+    border: 'none',
+    width: '24px',
+    height: '24px',
+    borderRadius: '4px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    cursor: 'pointer'
   },
   title: {
     margin: 0,

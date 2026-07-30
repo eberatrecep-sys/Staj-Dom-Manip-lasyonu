@@ -13,6 +13,7 @@ interface ShoppingList {
     tag: string | null;
     items: any[];
     userId: number;
+    isFavorite?: boolean;
 }
 
 const parseJwt = (token: string) => {
@@ -36,7 +37,7 @@ export const Dashboard = () => {
     const fetchLists = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch('/api/shopping-list', {
+            const response = await fetch('http://localhost:5050/api/v1/shopping-list', {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             if (response.status === 401 || response.status === 403) {
@@ -60,7 +61,7 @@ export const Dashboard = () => {
         const token = localStorage.getItem('token');
 
         try {
-            const response = await fetch('/api/shopping-list', {
+            const response = await fetch('http://localhost:5050/api/v1/shopping-list', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -85,6 +86,24 @@ export const Dashboard = () => {
             }
         } catch (error) {
             console.error("Liste oluşturulamadı", error);
+        }
+    };
+
+    const handleToggleFavorite = async (listId: number, e: React.MouseEvent) => {
+        e.stopPropagation(); // Kart tıklamasını (navigasyon) engelle
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch(`http://localhost:5050/api/v1/shopping-list/${listId}/favorite`, {
+                method: 'PUT',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            if (response.ok) {
+                // Sadece UI'ı güncelle
+                setLists(lists.map(list => list.id === listId ? { ...list, isFavorite: !list.isFavorite } : list));
+            }
+        } catch (error) {
+            console.error("Favori durumu değiştirilemedi", error);
         }
     };
 
@@ -138,6 +157,11 @@ export const Dashboard = () => {
                     filteredLists.map((list) => {
                         const totalItems = list.items?.length || 0;
                         const completedItems = list.items?.filter(item => item.isCompleted).length || 0;
+                        
+                        // Öğelerden tüm resimleri düz bir dizi olarak (flat) topla
+                        const allItemImages = list.items?.flatMap(item => 
+                            item.images?.map((img: any) => img.imageUrl) || []
+                        ) || [];
 
                         return (
                             <div key={list.id} onClick={() => navigate(`/list/${list.id}`)} style={{ cursor: 'pointer' }}>
@@ -146,6 +170,9 @@ export const Dashboard = () => {
                                     count={totalItems}
                                     completedCount={completedItems}
                                     tag={(list.tag && list.tag !== 'General') ? list.tag : 'Add tag'}
+                                    isFavorite={list.isFavorite}
+                                    onToggleFavorite={(e) => handleToggleFavorite(list.id, e)}
+                                    itemImages={allItemImages}
                                 />
                             </div>
                         );

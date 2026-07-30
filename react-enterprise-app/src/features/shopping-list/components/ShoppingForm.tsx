@@ -14,6 +14,7 @@ interface ListItem {
     itemName: string;
     amount: number;
     isCompleted: boolean;
+    images?: { id: number, imageUrl: string }[];
 }
 
 export const ShoppingForm = () => {
@@ -58,7 +59,7 @@ export const ShoppingForm = () => {
     const fetchListDetails = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch(`/api/shopping-list/${id}`, {
+            const response = await fetch(`http://localhost:5050/api/v1/shopping-list/${id}`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const data = await response.json();
@@ -75,7 +76,7 @@ export const ShoppingForm = () => {
     const handleTagUpdate = async (newTag: string) => {
         try {
             const token = localStorage.getItem('token');
-            await fetch(`/api/shopping-list/${id}`, {
+            await fetch(`http://localhost:5050/api/v1/shopping-list/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -105,7 +106,7 @@ export const ShoppingForm = () => {
     const onSubmit = async (data: FormData) => {
         const token = localStorage.getItem('token');
         if (editingItem) {
-            await fetch(`/api/shopping-list/${id}/items/${editingItem.id}`, {
+            await fetch(`http://localhost:5050/api/v1/shopping-list/${id}/items/${editingItem.id}`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -114,7 +115,7 @@ export const ShoppingForm = () => {
                 body: JSON.stringify({ ...editingItem, itemName: data.productName, amount: data.quantity })
             });
         } else {
-            await fetch(`/api/shopping-list/${id}/items`, {
+            await fetch(`http://localhost:5050/api/v1/shopping-list/${id}/items`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -128,9 +129,33 @@ export const ShoppingForm = () => {
         closePopup();
     };
 
+    const handleItemImageUpload = async (itemId: number, e: React.ChangeEvent<HTMLInputElement>) => {
+        if (!e.target.files || e.target.files.length === 0) return;
+        const file = e.target.files[0];
+        const formData = new FormData();
+        formData.append('file', file);
+        
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch(`http://localhost:5050/api/v1/shopping-list/${id}/items/${itemId}/images`, {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${token}` },
+                body: formData
+            });
+            if (response.ok) {
+                fetchListDetails(); // Yeniden yükle
+            } else {
+                const err = await response.json();
+                alert(err.error || err.Message || 'Resim yüklenemedi.');
+            }
+        } catch (error) {
+            console.error("Resim yükleme hatası", error);
+        }
+    };
+
     const toggleCompletion = async (item: ListItem) => {
         const token = localStorage.getItem('token');
-        await fetch(`/api/shopping-list/${id}/items/${item.id}`, {
+        await fetch(`http://localhost:5050/api/v1/shopping-list/${id}/items/${item.id}`, {
             method: 'PUT',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -144,7 +169,7 @@ export const ShoppingForm = () => {
     const deleteList = async () => {
         if (!window.confirm("Bu listeyi silmek istediğinize emin misiniz?")) return;
         const token = localStorage.getItem('token');
-        await fetch(`/api/shopping-list/${id}`, {
+        await fetch(`http://localhost:5050/api/v1/shopping-list/${id}`, {
             method: 'DELETE',
             headers: { 'Authorization': `Bearer ${token}` }
         });
@@ -161,7 +186,7 @@ export const ShoppingForm = () => {
             navigate(`/share/${id}`);
         } else if (action === 'copy') {
             try {
-                const response = await fetch('/api/shopping-list', {
+                const response = await fetch('http://localhost:5050/api/v1/shopping-list', {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -177,7 +202,7 @@ export const ShoppingForm = () => {
             const completedItems = items.filter((item) => item.isCompleted);
             for (const item of completedItems) {
                 try {
-                    await fetch(`/api/shopping-list/${id}/items/${item.id}`, {
+                    await fetch(`http://localhost:5050/api/v1/shopping-list/${id}/items/${item.id}`, {
                         method: 'DELETE',
                         headers: { 'Authorization': `Bearer ${token}` }
                     });
@@ -195,7 +220,7 @@ export const ShoppingForm = () => {
         if (!targetEmail) return;
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch('/api/share/invite', {
+            const response = await fetch('http://localhost:5050/api/v1/share/invite', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -472,17 +497,46 @@ export const ShoppingForm = () => {
                                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#7F56D9" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
                                             )}
                                         </div>
-                                        <span style={{
-                                            fontSize: '14px',
-                                            fontWeight: '500',
-                                            lineHeight: '20px',
-                                            color: isChecked ? '#7F56D9' : '#344054',
-                                            fontFamily: 'Inter, sans-serif',
-                                            textDecoration: isChecked ? 'line-through' : 'none'
-                                        }}>
-                                            {item.itemName}
-                                        </span>
+                                        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '8px' }}>
+                                            <span style={{
+                                                fontSize: '14px',
+                                                fontWeight: '500',
+                                                lineHeight: '20px',
+                                                color: isChecked ? '#7F56D9' : '#344054',
+                                                fontFamily: 'Inter, sans-serif',
+                                                textDecoration: isChecked ? 'line-through' : 'none'
+                                            }}>
+                                                {item.itemName}
+                                            </span>
+                                            {/* Item Images Display */}
+                                            {item.images && item.images.length > 0 && (
+                                                <div style={{ display: 'flex', gap: '4px' }}>
+                                                    {item.images.map((img) => (
+                                                        <img key={img.id} src={img.imageUrl} alt="Item" style={{ width: '24px', height: '24px', borderRadius: '4px', objectFit: 'cover' }} />
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
                                     </div>
+                                    
+                                    {/* Add Image Button */}
+                                    {(!item.images || item.images.length < 3) && (
+                                        <div style={{ position: 'relative' }}>
+                                            <input 
+                                                type="file" 
+                                                accept="image/png, image/jpeg" 
+                                                style={{ opacity: 0, position: 'absolute', width: '24px', height: '24px', right: 0, cursor: 'pointer' }}
+                                                onChange={(e) => handleItemImageUpload(item.id, e)}
+                                                title="Fotoğraf Ekle"
+                                            />
+                                            <button style={{
+                                                width: '24px', height: '24px', borderRadius: '12px', background: '#F9F5FF', border: 'none',
+                                                display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#7F56D9', cursor: 'pointer'
+                                            }}>
+                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                                            </button>
+                                        </div>
+                                    )}
                                 </div>
                             );
                         })
