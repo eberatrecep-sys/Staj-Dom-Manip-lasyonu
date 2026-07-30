@@ -497,7 +497,7 @@ export const ShoppingForm = () => {
                                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#7F56D9" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
                                             )}
                                         </div>
-                                        <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '8px' }}>
                                             <span style={{
                                                 fontSize: '14px',
                                                 fontWeight: '500',
@@ -510,7 +510,7 @@ export const ShoppingForm = () => {
                                             </span>
                                             {/* Item Images Display */}
                                             {item.images && item.images.length > 0 && (
-                                                <div style={{ display: 'flex', gap: '4px', marginTop: '4px' }}>
+                                                <div style={{ display: 'flex', gap: '4px' }}>
                                                     {item.images.map((img) => (
                                                         <img key={img.id} src={img.imageUrl} alt="Item" style={{ width: '24px', height: '24px', borderRadius: '4px', objectFit: 'cover' }} />
                                                     ))}
