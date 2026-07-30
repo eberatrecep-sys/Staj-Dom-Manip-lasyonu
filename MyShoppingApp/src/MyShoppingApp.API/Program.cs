@@ -129,6 +129,7 @@ builder.Services.AddCors(options =>
 
 // Swagger (OpenAPI) belgelerini oluşturmak için servisi ekliyoruz.
 builder.Services.AddOpenApi();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
@@ -149,6 +150,8 @@ using (var scope = app.Services.CreateScope())
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi(); // API dokümantasyonunu geliştirme ortamında aktif et
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseCors(); // CORS kurallarını uygula
