@@ -20,6 +20,7 @@ public class ShoppingListRepository : IShoppingListRepository
             .Where(sl => sl.UserId == userId || sl.SharedWithUsers.Any(u => u.Id == userId))
             .Include(sl => sl.Items).ThenInclude(i => i.Images)
             .Include(sl => sl.SharedWithUsers)
+            .AsSplitQuery()
             .OrderByDescending(sl => sl.UpdatedAt)
             .ToListAsync();
     }
@@ -29,6 +30,7 @@ public class ShoppingListRepository : IShoppingListRepository
         return await _context.ShoppingLists
             .Include(sl => sl.Items).ThenInclude(i => i.Images)
             .Include(sl => sl.SharedWithUsers)
+            .AsSplitQuery()
             .FirstOrDefaultAsync(sl => sl.Id == id);
     }
 

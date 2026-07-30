@@ -21,7 +21,7 @@ export const LoginForm = () => {
                 localStorage.setItem('role', data.role);
                 window.location.href = import.meta.env.BASE_URL + 'shopping-list';
             } else {
-                alert(data.error || "Giriş başarısız");
+                alert(data.detail || data.error || data.title || "Giriş başarısız");
             }
         } catch (error) {
             console.error("Giriş hatası:", error);
