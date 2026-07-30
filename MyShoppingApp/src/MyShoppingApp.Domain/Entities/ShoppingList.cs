@@ -7,6 +7,7 @@ public class ShoppingList
     public string Title { get; set; } = "My List";
     public string Category { get; set; } = "Recents";
     public string? Tag { get; set; }
+    public bool IsFavorite { get; set; } = false;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 

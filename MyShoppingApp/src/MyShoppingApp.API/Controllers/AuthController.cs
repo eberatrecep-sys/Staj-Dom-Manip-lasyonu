@@ -1,3 +1,4 @@
+using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using MyShoppingApp.Application.DTOs.Auth;
 using MyShoppingApp.Application.DTOs.Common;
@@ -9,7 +10,8 @@ namespace MyShoppingApp.API.Controllers;
 // Model doğrulama hatalarını otomatik yakalar (örn: eksik email girildiğinde otomatik 400 Bad Request döner).
 [ApiController]
 // [Route]: İsteklerin hangi URL şablonuyla karşılanacağını belirler. "api/auth" istekleri buraya yönlendirilir.
-[Route("api/auth")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/auth")]
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
@@ -86,18 +88,24 @@ public class AuthController : ControllerBase
     [HttpPost("reset-password")]
     public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto dto)
     {
-        try
-        {
-            var result = await _authService.ResetPasswordAsync(dto);
-            return Ok(result);
-        }
-        catch (InvalidOperationException)
-        {
-            return BadRequest(new { error = "Geçersiz veya süresi dolmuş kod." });
-        }
-        catch (Exception)
-        {
-            return StatusCode(500, new { error = "Sunucu hatası" });
-        }
+        var response = await _authService.ResetPasswordAsync(dto);
+        return Ok(response);
+    }
+
+    [HttpPost("profile-picture")]
+    [MyShoppingApp.API.Attributes.AllowedExtensions(new[] { ".jpg", ".jpeg", ".png" })]
+    [MyShoppingApp.API.Attributes.MaxFileSize(5 * 1024 * 1024)] // 5MB
+    public async Task<IActionResult> UploadProfilePicture(IFormFile file)
+    {
+        if (file == null || file.Length == 0)
+            return BadRequest(new { Message = "Lütfen bir dosya seçin." });
+
+        var userIdClaim = User.FindFirst("userId")?.Value;
+        if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out int userId))
+            return Unauthorized(new { Message = "Kullanıcı kimliği doğrulanamadı." });
+
+        var url = await _authService.UploadProfilePictureAsync(userId, file.OpenReadStream(), file.FileName, file.ContentType);
+        
+        return Ok(new { Url = url, Message = "Profil fotoğrafı güncellendi." });
     }
 }

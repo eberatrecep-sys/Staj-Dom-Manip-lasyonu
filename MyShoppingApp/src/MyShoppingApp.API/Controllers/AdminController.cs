@@ -1,3 +1,4 @@
+using Asp.Versioning;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyShoppingApp.Application.DTOs.Admin;
@@ -8,7 +9,8 @@ namespace MyShoppingApp.API.Controllers;
 // [ApiController]: Bu denetleyicinin (Controller) RESTful HTTP isteklerine cevap vereceğini belirtir.
 [ApiController]
 // [Route]: API isteklerinin yönlendirileceği genel URL şablonunu belirler ("api/admin").
-[Route("api/admin")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/admin")]
 // [Authorize]: Bu denetleyici içindeki tüm işlemlere erişmek için kullanıcının sisteme giriş yapmış olması (JWT taşıması) gerektiğini zorunlu kılar.
 [Authorize]
 public class AdminController : ControllerBase

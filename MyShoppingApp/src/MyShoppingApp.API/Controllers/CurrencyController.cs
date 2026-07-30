@@ -1,3 +1,4 @@
+using Asp.Versioning;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyShoppingApp.Application.Interfaces;
@@ -5,7 +6,8 @@ using MyShoppingApp.Application.Interfaces;
 namespace MyShoppingApp.API.Controllers;
 
 [ApiController]
-[Route("api")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}")]
 public class CurrencyController : ControllerBase
 {
     private readonly ICurrencyService _service;

@@ -8,10 +8,12 @@ namespace MyShoppingApp.Application.Services;
 public class ShoppingListService : IShoppingListService
 {
     private readonly IShoppingListRepository _repository;
+    private readonly IFileStorageService _fileStorageService;
 
-    public ShoppingListService(IShoppingListRepository repository)
+    public ShoppingListService(IShoppingListRepository repository, IFileStorageService fileStorageService)
     {
         _repository = repository;
+        _fileStorageService = fileStorageService;
     }
 
     public async Task<List<ShoppingList>> GetAllByUserAsync(int userId)
@@ -117,5 +119,46 @@ public class ShoppingListService : IShoppingListService
             ?? throw new KeyNotFoundException("Ürün bulunamadı.");
 
         await _repository.DeleteItemAsync(item);
+    }
+
+    public async Task<ShoppingList> ToggleFavoriteAsync(int id, int userId)
+    {
+        var list = await _repository.GetByIdWithItemsAsync(id)
+            ?? throw new KeyNotFoundException("Alışveriş listesi bulunamadı.");
+
+        var hasAccess = list.UserId == userId || list.SharedWithUsers.Any(u => u.Id == userId);
+        if (!hasAccess)
+            throw new UnauthorizedAccessException("Bu listeyi düzenleme yetkiniz yok.");
+
+        list.IsFavorite = !list.IsFavorite;
+        list.UpdatedAt = DateTime.UtcNow;
+
+        await _repository.UpdateAsync(list);
+        return list;
+    }
+
+    public async Task<string> UploadItemImageAsync(int listId, int itemId, int userId, Stream fileStream, string fileName, string contentType)
+    {
+        var list = await _repository.GetByIdWithItemsAsync(listId)
+            ?? throw new KeyNotFoundException("Liste bulunamadı.");
+
+        if (list.UserId != userId && !list.SharedWithUsers.Any(u => u.Id == userId))
+            throw new UnauthorizedAccessException("Yetkisiz erişim.");
+
+        var item = await _repository.GetItemByIdAsync(itemId)
+            ?? throw new KeyNotFoundException("Ürün bulunamadı.");
+
+        if (item.ListId != listId)
+            throw new InvalidOperationException("Ürün bu listeye ait değil.");
+
+        if (item.Images.Count >= 3)
+            throw new InvalidOperationException("Bir ürüne en fazla 3 fotoğraf eklenebilir.");
+
+        var url = await _fileStorageService.UploadFileAsync(fileStream, fileName, contentType);
+
+        item.Images.Add(new ItemImage { ImageUrl = url });
+        await _repository.UpdateItemAsync(item);
+
+        return url;
     }
 }

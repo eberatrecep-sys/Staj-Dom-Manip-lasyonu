@@ -8,7 +8,7 @@ export const ForgotPasswordForm = () => {
     const handleForgot = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:5050/api/auth/forgot-password', {
+            const response = await fetch('http://localhost:5050/api/v1/auth/forgot-password', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email })

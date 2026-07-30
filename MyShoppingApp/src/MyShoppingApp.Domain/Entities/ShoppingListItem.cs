@@ -10,4 +10,5 @@ public class ShoppingListItem
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     public ShoppingList List { get; set; } = null!;
+    public ICollection<ItemImage> Images { get; set; } = new List<ItemImage>();
 }

@@ -14,6 +14,7 @@ public class AppDbContext : DbContext
     public DbSet<SiteSettings> SiteSettings => Set<SiteSettings>();
     public DbSet<CurrencyRate> CurrencyRates => Set<CurrencyRate>();
     public DbSet<ListShareRequest> ListShareRequests => Set<ListShareRequest>();
+    public DbSet<ItemImage> ItemImages => Set<ItemImage>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -48,6 +49,16 @@ public class AppDbContext : DbContext
             entity.HasOne(e => e.List)
                   .WithMany(l => l.Items)
                   .HasForeignKey(e => e.ListId)
+                  .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // ItemImage
+        modelBuilder.Entity<ItemImage>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasOne(e => e.ShoppingListItem)
+                  .WithMany(i => i.Images)
+                  .HasForeignKey(e => e.ShoppingListItemId)
                   .OnDelete(DeleteBehavior.Cascade);
         });
 

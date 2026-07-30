@@ -15,11 +15,13 @@ public class AuthService : IAuthService
 {
     private readonly IUserRepository _userRepository;
     private readonly string _jwtSecret;
+    private readonly IFileStorageService _fileStorageService;
 
-    public AuthService(IUserRepository userRepository, string jwtSecret)
+    public AuthService(IUserRepository userRepository, string jwtSecret, IFileStorageService fileStorageService)
     {
         _userRepository = userRepository;
         _jwtSecret = jwtSecret;
+        _fileStorageService = fileStorageService;
     }
 
     public async Task<MessageResponseDto> RegisterAsync(RegisterDto dto)
@@ -82,6 +84,25 @@ public class AuthService : IAuthService
         await _userRepository.UpdateAsync(user);
 
         return new MessageResponseDto("Şifreniz başarıyla değiştirildi.");
+    }
+
+    public async Task<string> UploadProfilePictureAsync(int userId, Stream fileStream, string fileName, string contentType)
+    {
+        var user = await _userRepository.GetByIdAsync(userId) 
+            ?? throw new KeyNotFoundException("Kullanıcı bulunamadı.");
+
+        // Eski resmi sil
+        if (!string.IsNullOrEmpty(user.ProfilePictureUrl))
+        {
+            await _fileStorageService.DeleteFileAsync(user.ProfilePictureUrl);
+        }
+
+        var url = await _fileStorageService.UploadFileAsync(fileStream, fileName, contentType);
+        
+        user.ProfilePictureUrl = url;
+        await _userRepository.UpdateAsync(user);
+
+        return url;
     }
 
     private string GenerateJwtToken(User user)
