@@ -176,4 +176,11 @@ public class ShoppingListController : ControllerBase
             return BadRequest(new { error = ex.Message });
         }
     }
+
+    [HttpGet("suggestions")]
+    public async Task<IActionResult> GetSuggestions([FromQuery] string q)
+    {
+        var suggestions = await _service.GetItemSuggestionsAsync(GetUserId(), q);
+        return Ok(suggestions);
+    }
 }

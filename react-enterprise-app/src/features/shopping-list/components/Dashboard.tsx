@@ -1,8 +1,13 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect, useRef } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Header } from '../../../components/Header/Header';
 import { TabBar } from '../../../components/TabBar/TabBar';
 import { ListCard } from '../../../components/ListCard/ListCard';
+import { ShoppingForm } from './ShoppingForm';
+import { DesktopLayout } from '../../../components/DesktopLayout/DesktopLayout';
+import { useMediaQuery } from '../../../hooks/useMediaQuery';
+import { useDebounce } from '../../../hooks/useDebounce';
+import { useOnClickOutside } from '../../../hooks/useOnClickOutside';
 import emptyStateImg from '../../../assets/empty-state.png';
 import arrowImg from '../../../assets/arrow.png';
 
@@ -31,8 +36,51 @@ const parseJwt = (token: string) => {
 
 export const Dashboard = () => {
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
     const [lists, setLists] = useState<ShoppingList[]>([]);
-    const [activeTab, setActiveTab] = useState('Recents');
+    
+    // Masaüstünde URL'deki tab parametresi öncelikli olacak, yoksa state
+    const urlTab = searchParams.get('tab');
+    const [activeTab, setActiveTab] = useState(urlTab || 'Recents');
+    
+    // URL değiştiğinde aktif tab'ı güncelle (Desktop Sidebar geçişleri için)
+    useEffect(() => {
+        if (urlTab) setActiveTab(urlTab);
+        else setActiveTab('Recents');
+    }, [urlTab]);
+
+    const isDesktop = useMediaQuery('(min-width: 1024px)');
+
+    const [searchQuery, setSearchQuery] = useState('');
+    const [suggestions, setSuggestions] = useState<string[]>([]);
+    const [showSuggestions, setShowSuggestions] = useState(false);
+    const [selectedListId, setSelectedListId] = useState<string | null>(null);
+    const [selectedTag, setSelectedTag] = useState<string | null>(null);
+    
+    const debouncedSearch = useDebounce(searchQuery, 300);
+    const searchRef = useRef<HTMLDivElement>(null);
+    useOnClickOutside(searchRef, () => setShowSuggestions(false));
+
+    useEffect(() => {
+        const fetchSuggestions = async () => {
+            if (debouncedSearch.length < 2) {
+                setSuggestions([]);
+                return;
+            }
+            try {
+                const token = localStorage.getItem('token');
+                const res = await fetch(`http://localhost:5050/api/v1/shopping-list/suggestions?q=${debouncedSearch}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    setSuggestions(data);
+                    setShowSuggestions(true);
+                }
+            } catch(e) { }
+        };
+        fetchSuggestions();
+    }, [debouncedSearch]);
 
     const fetchLists = async () => {
         try {
@@ -79,8 +127,12 @@ export const Dashboard = () => {
             const newList = await response.json();
 
             if (response.ok && newList.id) {
-
-                navigate(`/list/${newList.id}`);
+                if (isDesktop) {
+                    setSelectedListId(newList.id.toString());
+                    fetchLists();
+                } else {
+                    navigate(`/list/${newList.id}`);
+                }
             } else {
                 fetchLists();
             }
@@ -108,16 +160,127 @@ export const Dashboard = () => {
     };
 
     const myUserId = localStorage.getItem('token') ? parseJwt(localStorage.getItem('token')!)?.userId : null;
-    const filteredLists = activeTab === 'Shared'
-        ? lists.filter(list => list.userId !== Number(myUserId))
-        : lists.filter(list => list.category === activeTab && list.userId === Number(myUserId));
+    let filteredLists = lists;
+    
+    if (activeTab === 'Shared') {
+        filteredLists = lists.filter(list => list.userId !== Number(myUserId));
+    } else if (activeTab === 'Drafts') {
+        // Mock filter for drafts
+        filteredLists = lists.filter(list => list.category === 'Drafts' && list.userId === Number(myUserId));
+    } else {
+        filteredLists = lists.filter(list => list.category !== 'Drafts' && list.userId === Number(myUserId));
+    }
+        
+    if (searchQuery) {
+        filteredLists = filteredLists.filter(list => 
+            list.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+            list.items.some(item => item.itemName.toLowerCase().includes(searchQuery.toLowerCase()))
+        );
+    }
 
-    return (
-        <div style={{ maxWidth: '414px', margin: '0 auto', padding: '16px', position: 'relative', minHeight: '100vh' }}>
-            <Header />
-            {lists.length > 0 && <TabBar activeTab={activeTab} onTabChange={setActiveTab} />}
+    const uniqueTags = Array.from(new Set(filteredLists.map(l => l.tag && l.tag !== 'General' ? l.tag : null).filter(Boolean))) as string[];
 
-            <div style={{ display: 'flex', flexDirection: 'column', flex: 1, gap: '16px', marginTop: '24px', minHeight: 'calc(100vh - 150px)', justifyContent: filteredLists.length === 0 ? 'center' : 'flex-start' }}>
+    if (selectedTag) {
+        filteredLists = filteredLists.filter(list => list.tag === selectedTag);
+    }
+
+    const content = (
+        <div style={{ maxWidth: isDesktop ? '100%' : '414px', margin: '0 auto', padding: isDesktop ? '0' : '16px', position: 'relative', minHeight: isDesktop ? 'auto' : '100vh', width: '100%' }} className={isDesktop ? "" : "dashboard-container"}>
+            {!isDesktop && <Header />}
+            {isDesktop && (
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+                    <h1 style={{ margin: 0, fontSize: '24px' }}>
+                        {activeTab === 'Shared' ? 'Paylaşılan Listeler' : activeTab === 'Drafts' ? 'Taslaklar' : 'Listelerim'}
+                    </h1>
+                    <button
+                        onClick={handleCreateList}
+                        style={{
+                            width: '40px',
+                            height: '40px',
+                            borderRadius: '8px',
+                            backgroundColor: '#7F56D9',
+                            border: 'none',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            cursor: 'pointer',
+                            color: '#FFF',
+                            fontSize: '20px',
+                            boxShadow: '0 1px 2px rgba(16, 24, 40, 0.05)'
+                        }}
+                        title="Yeni Liste Oluştur"
+                    >
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5v14M5 12h14" /></svg>
+                    </button>
+                </div>
+            )}
+            
+            <div ref={searchRef} style={{ position: 'relative', marginBottom: '16px', maxWidth: isDesktop ? '600px' : '100%' }}>
+                <input 
+                    type="text" 
+                    placeholder="Liste veya ürün ara (Örn: gy)" 
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onFocus={() => { if(suggestions.length > 0) setShowSuggestions(true); }}
+                    style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #EAECF0', boxSizing: 'border-box', backgroundColor: 'var(--bg-main)', color: 'inherit' }}
+                />
+                {showSuggestions && suggestions.length > 0 && (
+                    <div style={{ position: 'absolute', top: '100%', left: 0, right: 0, backgroundColor: 'var(--bg-main)', border: '1px solid #EAECF0', borderRadius: '8px', zIndex: 50, marginTop: '4px', boxShadow: '0 4px 6px rgba(0,0,0,0.1)' }}>
+                        {suggestions.map((sug, idx) => (
+                            <div 
+                                key={idx} 
+                                onClick={() => { setSearchQuery(sug); setShowSuggestions(false); }}
+                                style={{ padding: '10px 12px', cursor: 'pointer', borderBottom: idx === suggestions.length - 1 ? 'none' : '1px solid #EAECF0' }}
+                            >
+                                {sug}
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </div>
+
+            {/* Tag Filters */}
+            {uniqueTags.length > 0 && (
+                <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '8px', marginBottom: '8px', flexWrap: isDesktop ? 'wrap' : 'nowrap' }}>
+                    <button 
+                        onClick={() => setSelectedTag(null)}
+                        style={{
+                            padding: '6px 12px',
+                            borderRadius: '16px',
+                            border: '1px solid #EAECF0',
+                            backgroundColor: selectedTag === null ? '#7F56D9' : 'transparent',
+                            color: selectedTag === null ? 'white' : 'inherit',
+                            cursor: 'pointer',
+                            fontSize: '12px',
+                            whiteSpace: 'nowrap'
+                        }}
+                    >
+                        Tümü
+                    </button>
+                    {uniqueTags.map(tag => (
+                        <button 
+                            key={tag}
+                            onClick={() => setSelectedTag(selectedTag === tag ? null : tag)}
+                            style={{
+                                padding: '6px 12px',
+                                borderRadius: '16px',
+                                border: '1px solid #EAECF0',
+                                backgroundColor: selectedTag === tag ? '#7F56D9' : 'transparent',
+                                color: selectedTag === tag ? 'white' : 'inherit',
+                                cursor: 'pointer',
+                                fontSize: '12px',
+                                whiteSpace: 'nowrap'
+                            }}
+                        >
+                            {tag}
+                        </button>
+                    ))}
+                </div>
+            )}
+
+            {!isDesktop && lists.length > 0 && <TabBar activeTab={activeTab} onTabChange={setActiveTab} />}
+
+            <div className={isDesktop ? "list-cards-grid desktop-grid" : "list-cards-grid"} style={{ display: 'flex', flexDirection: 'column', flex: 1, gap: '16px', marginTop: '24px', minHeight: isDesktop ? 'auto' : 'calc(100vh - 150px)', justifyContent: filteredLists.length === 0 ? 'center' : 'flex-start' }}>
                 {filteredLists.length === 0 ? (
                     <div style={{
                         width: '361px',
@@ -163,8 +326,16 @@ export const Dashboard = () => {
                             item.images?.map((img: any) => img.imageUrl) || []
                         ) || [];
 
+                        const handleClick = () => {
+                            if (isDesktop) {
+                                setSelectedListId(list.id.toString());
+                            } else {
+                                navigate(`/list/${list.id}`);
+                            }
+                        };
+
                         return (
-                            <div key={list.id} onClick={() => navigate(`/list/${list.id}`)} style={{ cursor: 'pointer' }}>
+                            <div key={list.id} onClick={handleClick} style={{ cursor: 'pointer', border: isDesktop && selectedListId === list.id.toString() ? '2px solid #7F56D9' : 'none', borderRadius: '24px' }}>
                                 <ListCard
                                     title={list.title}
                                     count={totalItems}
@@ -180,46 +351,39 @@ export const Dashboard = () => {
                 )}
             </div>
 
-            {lists.length === 0 && (
-                <div style={{
-                    position: 'fixed',
-                    bottom: '175px',
-                    right: 'calc(50% - 207px + 30px)',
-                    width: '241.29px',
-                    height: '130.71px',
-                    opacity: 1,
-                    pointerEvents: 'none',
-                    // transform: 'rotate(+15deg)',//
-                    transformOrigin: 'center right',
-                    zIndex: 1
-                }}>
-                    <img src={arrowImg} alt="Arrow" style={{ width: '120%', height: '120%', objectFit: 'contain' }} />
-                </div>
-            )}
 
-            <button
-                onClick={handleCreateList}
-                style={{
-                    position: 'fixed',
-                    bottom: '32px',
-                    right: 'calc(50% - 207px + 16px)',
-                    width: '64px',
-                    height: '64px',
-                    borderRadius: '48px',
-                    backgroundColor: '#F9F5FF',
-                    border: 'none',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    cursor: 'pointer',
-                    boxShadow: '0px 2px 4px -2px rgba(16, 24, 40, 0.06), 0px 4px 8px -2px rgba(16, 24, 40, 0.10)',
-                    color: '#7F56D9',
-                    fontSize: '24px',
-                    zIndex: 100
-                }}
-            >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5v14M5 12h14" /></svg>
-            </button>
+
+
         </div>
     );
+
+    const splitPaneContent = (
+        <div style={{ display: 'flex', width: '100%', flex: 1, overflow: 'hidden' }}>
+            {/* Sol Panel: Listeler */}
+            <div style={{ width: '400px', flexShrink: 0, borderRight: '1px solid #EAECF0', paddingRight: '24px', overflowY: 'auto', paddingBottom: '32px' }}>
+                {content}
+            </div>
+            {/* Sağ Panel: Form/Detaylar */}
+            <div style={{ flex: '1', paddingLeft: '24px', overflowY: 'auto', display: 'flex', flexDirection: 'column', backgroundColor: 'var(--bg-main, #ffffff)', borderRadius: '24px' }}>
+                {selectedListId ? (
+                    <ShoppingForm 
+                        listId={selectedListId} 
+                        embedded={true} 
+                        onListDeleted={() => { 
+                            setSelectedListId(null); 
+                            fetchLists(); 
+                        }}
+                        onListUpdated={fetchLists}
+                    />
+                ) : (
+                    <div style={{ display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center', color: '#667085', flexDirection: 'column', gap: '16px' }}>
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#EAECF0" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
+                        <p style={{ fontSize: '16px', fontWeight: '500' }}>Detayları görüntülemek için sol taraftan bir liste seçin</p>
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+
+    return isDesktop ? <DesktopLayout>{splitPaneContent}</DesktopLayout> : content;
 };

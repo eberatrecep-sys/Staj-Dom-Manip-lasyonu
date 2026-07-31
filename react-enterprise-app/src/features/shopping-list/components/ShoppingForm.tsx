@@ -17,8 +17,16 @@ interface ListItem {
     images?: { id: number, imageUrl: string }[];
 }
 
-export const ShoppingForm = () => {
-    const { id } = useParams();
+interface ShoppingFormProps {
+    listId?: string;
+    embedded?: boolean;
+    onListDeleted?: () => void;
+    onListUpdated?: () => void;
+}
+
+export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUpdated }: ShoppingFormProps) => {
+    const params = useParams();
+    const id = listId || params.id;
     const navigate = useNavigate();
     const { t } = useTranslation();
     const [listName, setListName] = useState('');
@@ -84,6 +92,7 @@ export const ShoppingForm = () => {
                 },
                 body: JSON.stringify({ tag: newTag })
             });
+            if (onListUpdated) onListUpdated();
         } catch (error) {
             console.error("Tag güncellenemedi", error);
         }
@@ -126,6 +135,7 @@ export const ShoppingForm = () => {
         }
 
         fetchListDetails();
+        if (onListUpdated) onListUpdated();
         closePopup();
     };
 
@@ -144,12 +154,37 @@ export const ShoppingForm = () => {
             });
             if (response.ok) {
                 fetchListDetails(); // Yeniden yükle
+                if (onListUpdated) onListUpdated();
             } else {
                 const err = await response.json();
                 alert(err.error || err.Message || 'Resim yüklenemedi.');
             }
         } catch (error) {
             console.error("Resim yükleme hatası", error);
+        }
+    };
+
+    const handleRemoveItemImage = async (itemId: number, imageId: number) => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch(`http://localhost:5050/api/v1/shopping-list/${id}/items/${itemId}/images/${imageId}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (response.ok) {
+                if (editingItem && editingItem.id === itemId && editingItem.images) {
+                    setEditingItem({
+                        ...editingItem,
+                        images: editingItem.images.filter(img => img.id !== imageId)
+                    });
+                }
+                fetchListDetails();
+                if (onListUpdated) onListUpdated();
+            } else {
+                alert('Fotoğraf silinemedi.');
+            }
+        } catch (error) {
+            console.error("Fotoğraf silme hatası", error);
         }
     };
 
@@ -164,6 +199,7 @@ export const ShoppingForm = () => {
             body: JSON.stringify({ ...item, isCompleted: !item.isCompleted })
         });
         fetchListDetails();
+        if (onListUpdated) onListUpdated();
     };
 
     const deleteList = async () => {
@@ -173,7 +209,11 @@ export const ShoppingForm = () => {
             method: 'DELETE',
             headers: { 'Authorization': `Bearer ${token}` }
         });
-        navigate('/shopping-list');
+        if (onListDeleted) {
+            onListDeleted();
+        } else {
+            navigate('/shopping-list');
+        }
     };
 
     const handleMenuAction = async (action: string) => {
@@ -183,7 +223,7 @@ export const ShoppingForm = () => {
         if (action === 'delete') {
             deleteList();
         } else if (action === 'share') {
-            navigate(`/share/${id}`);
+            setIsSharePopupOpen(true);
         } else if (action === 'copy') {
             try {
                 const response = await fetch('http://localhost:5050/api/v1/shopping-list', {
@@ -251,68 +291,17 @@ export const ShoppingForm = () => {
     }
 
     return (
-        <div style={{ maxWidth: '414px', margin: '0 auto', padding: '16px', position: 'relative', minHeight: '100vh' }}>
+        <div style={{ maxWidth: embedded ? '100%' : '414px', margin: embedded ? '0' : '0 auto', padding: embedded ? '0 16px' : '16px', position: 'relative', minHeight: embedded ? 'auto' : '100vh', width: '100%', boxSizing: 'border-box' }}>
             {/* Üst Bar */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-                <button onClick={() => navigate(-1)} style={{ background: '#F9F5FF', border: 'none', borderRadius: '32px', width: '32px', height: '32px', display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer' }}>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9E77ED" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M12 19l-7-7 7-7" /></svg>
-                </button>
-
-                {/* Centered Avatar Group */}
-                <div
-                    style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '4px',
-                        width: '92px',
-                        height: '32px',
-                        cursor: 'pointer'
-                    }}
-                    onClick={() => setIsSharePopupOpen(true)}
-                >
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <img
-                            src={avatar2}
-                            alt="avatar"
-                            style={{
-                                width: '32px',
-                                height: '32px',
-                                borderRadius: '16px',
-                                border: '1.5px solid #FFFFFF',
-                                zIndex: 1,
-                                boxSizing: 'border-box'
-                            }}
-                        />
-                        <img
-                            src={avatar1}
-                            alt="avatar"
-                            style={{
-                                width: '32px',
-                                height: '32px',
-                                borderRadius: '16px',
-                                border: '1.5px solid #FFFFFF',
-                                marginLeft: '-8px',
-                                zIndex: 2,
-                                boxSizing: 'border-box'
-                            }}
-                        />
-                    </div>
-                    <button style={{
-                        width: '32px',
-                        height: '32px',
-                        borderRadius: '16px',
-                        border: '1px dashed #D0D5DD',
-                        background: '#FFFFFF',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        cursor: 'pointer',
-                        padding: 0,
-                        boxSizing: 'border-box'
-                    }}>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#667085" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                {!embedded && (
+                    <button onClick={() => navigate(-1)} style={{ background: '#F9F5FF', border: 'none', borderRadius: '32px', width: '32px', height: '32px', display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer' }}>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9E77ED" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M12 19l-7-7 7-7" /></svg>
                     </button>
-                </div>
+                )}
+                {embedded && <div style={{ width: '32px' }} />} {/* Placeholder */}
+
+
 
                 {/* Right menu button */}
                 <div style={{ position: 'relative' }}>
@@ -341,6 +330,7 @@ export const ShoppingForm = () => {
                         }}>
                             {[
                                 { label: 'Connect to Store', action: 'connect' },
+                                { label: 'Share List', action: 'share' },
                                 { label: 'Clear Checked Items', action: 'clear' },
                                 { label: 'Copy List', action: 'copy' },
                                 { label: 'Delete', action: 'delete' }
@@ -654,6 +644,41 @@ export const ShoppingForm = () => {
                                     style={{ width: '100%', height: '81px', padding: '10px 14px', borderRadius: '8px', border: '1px solid #D0D5DD', boxSizing: 'border-box', fontFamily: 'Inter, sans-serif', fontSize: '16px', color: '#667085', resize: 'none' }}
                                 />
                             </div>
+
+                            {/* Item Images Section for Edit */}
+                            {editingItem && editingItem.images && editingItem.images.length > 0 && (
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '4px' }}>
+                                    <label style={{ fontSize: '14px', fontWeight: '500', color: '#344054', fontFamily: 'Inter, sans-serif' }}>Fotoğraflar</label>
+                                    <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                                        {editingItem.images.map(img => (
+                                            <div key={img.id} style={{ position: 'relative', width: '64px', height: '64px' }}>
+                                                <img src={img.imageUrl} alt="Item" style={{ width: '100%', height: '100%', borderRadius: '8px', objectFit: 'cover', border: '1px solid #EAECF0' }} />
+                                                <button
+                                                    type="button"
+                                                    onClick={() => handleRemoveItemImage(editingItem.id, img.id)}
+                                                    style={{
+                                                        position: 'absolute',
+                                                        top: '-6px',
+                                                        right: '-6px',
+                                                        background: '#FEE4E2',
+                                                        border: 'none',
+                                                        borderRadius: '12px',
+                                                        width: '20px',
+                                                        height: '20px',
+                                                        display: 'flex',
+                                                        justifyContent: 'center',
+                                                        alignItems: 'center',
+                                                        cursor: 'pointer',
+                                                        color: '#D92D20'
+                                                    }}
+                                                >
+                                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                                </button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
 
                             <button type="submit" style={{
                                 width: '100%',

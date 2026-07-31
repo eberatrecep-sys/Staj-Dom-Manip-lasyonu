@@ -1,4 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
+import { useOnClickOutside } from '../../hooks/useOnClickOutside';
+import imageCompression from 'browser-image-compression';
+import { useNavigate } from 'react-router-dom';
 
 // JWT Token çözücü: Kullanıcının bilgilerini token'dan almak için kullanıyoruz.
 const parseJwt = (token: string) => {
@@ -23,9 +26,17 @@ export const Header = () => {
   const [profilePicUrl, setProfilePicUrl] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
+  const navigate = useNavigate();
+
+  const userMenuRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useOnClickOutside(userMenuRef, () => setShowUserMenu(false));
+  useOnClickOutside(dropdownRef, () => setShowDropdown(false));
+
   const handleLogout = () => {
     localStorage.removeItem('token');
-    window.location.href = '/login';
+    navigate('/login');
   };
 
   const fetchPendingRequests = async () => {
@@ -53,7 +64,6 @@ export const Header = () => {
       });
       if (response.ok) {
         setPendingRequests(prev => prev.filter(r => r.id !== id));
-        // Note: Ideal would be to trigger a refetch of lists in Dashboard.
       }
     } catch (error) {
       console.error(`İstek ${action} edilemedi`, error);
@@ -69,10 +79,21 @@ export const Header = () => {
   const handleProfilePicUpload = async () => {
     if (!selectedFile) return;
     
-    const formData = new FormData();
-    formData.append('file', selectedFile);
-    
     try {
+      // Sıkıştırma ayarları (maks 800x800, 1MB)
+      const options = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 800,
+        useWebWorker: true,
+      };
+      
+      console.log('Orjinal Dosya Boyutu:', selectedFile.size / 1024 / 1024, 'MB');
+      const compressedFile = await imageCompression(selectedFile, options);
+      console.log('Sıkıştırılmış Dosya Boyutu:', compressedFile.size / 1024 / 1024, 'MB');
+
+      const formData = new FormData();
+      formData.append('file', compressedFile);
+      
       const token = localStorage.getItem('token');
       const response = await fetch('http://localhost:5050/api/v1/auth/profile-picture', {
         method: 'POST',
@@ -104,8 +125,8 @@ export const Header = () => {
       const decoded = parseJwt(token);
       if (decoded) {
         setUserInfo({
-          name: decoded.name || decoded.username || decoded.sub || 'Kullanıcı',
-          email: decoded.email || ''
+          name: decoded.name || decoded.username || decoded.sub || decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'] || 'Kullanıcı',
+          email: decoded.email || decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'] || ''
         });
       }
     }
@@ -113,7 +134,7 @@ export const Header = () => {
 
   return (
     <div style={styles.container}>
-      <div style={{ ...styles.left, cursor: 'pointer', position: 'relative' }} onClick={() => setShowUserMenu(!showUserMenu)}>
+      <div ref={userMenuRef} style={{ ...styles.left, cursor: 'pointer', position: 'relative' }} onClick={() => setShowUserMenu(!showUserMenu)}>
         <img
           src={profilePicUrl || `https://ui-avatars.com/api/?name=${userInfo.name}&background=random`}
           alt="Profile"
@@ -146,7 +167,7 @@ export const Header = () => {
             <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11" />
           </svg>
         </button>
-        <div style={{ position: 'relative' }}>
+        <div ref={dropdownRef} style={{ position: 'relative' }}>
           <button style={styles.iconBtnGray} onClick={() => setShowDropdown(!showDropdown)}>
             {/* Bildirim (Bell) İkonu (Gri) */}
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#667085" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

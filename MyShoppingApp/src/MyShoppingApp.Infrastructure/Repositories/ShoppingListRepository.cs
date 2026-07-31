@@ -78,4 +78,16 @@ public class ShoppingListRepository : IShoppingListRepository
         _context.ShoppingListItems.Remove(item);
         await _context.SaveChangesAsync();
     }
+
+    public async Task<List<string>> GetItemSuggestionsAsync(int userId, string query)
+    {
+        var lowerQuery = query.ToLower();
+        return await _context.ShoppingListItems
+            .Include(i => i.List)
+            .Where(i => (i.List.UserId == userId || i.List.SharedWithUsers.Any(u => u.Id == userId)) && i.ItemName.ToLower().Contains(lowerQuery))
+            .Select(i => i.ItemName)
+            .Distinct()
+            .Take(10)
+            .ToListAsync();
+    }
 }

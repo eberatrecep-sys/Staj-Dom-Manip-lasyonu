@@ -13,4 +13,5 @@ public interface IShoppingListRepository
     Task<ShoppingListItem?> GetItemByIdAsync(int itemId);
     Task UpdateItemAsync(ShoppingListItem item);
     Task DeleteItemAsync(ShoppingListItem item);
+    Task<List<string>> GetItemSuggestionsAsync(int userId, string query);
 }

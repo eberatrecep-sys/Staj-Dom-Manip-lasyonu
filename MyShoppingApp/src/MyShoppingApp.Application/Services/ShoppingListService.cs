@@ -161,4 +161,12 @@ public class ShoppingListService : IShoppingListService
 
         return url;
     }
+
+    public async Task<List<string>> GetItemSuggestionsAsync(int userId, string query)
+    {
+        if (string.IsNullOrWhiteSpace(query) || query.Length < 2)
+            return new List<string>();
+
+        return await _repository.GetItemSuggestionsAsync(userId, query);
+    }
 }

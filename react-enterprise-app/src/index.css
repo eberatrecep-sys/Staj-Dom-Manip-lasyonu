@@ -20,6 +20,17 @@
     --radius-full: 200px;
 }
 
+[data-theme='dark'] {
+    --bg-main: #121212;
+    --primary-50: #2d1b54;
+    --primary-700: #9e77ed;
+    --gray-50: #1a1a1a;
+    --gray-100: #242424;
+    --gray-200: #333333;
+    --gray-500: #a0a0a0;
+    --gray-900: #ffffff;
+}
+
 body {
     background-color: var(--bg-main);
     font-family: var(--font-family);
@@ -42,14 +53,33 @@ body {
 
 @media (min-width: 1024px) {
     .app-container {
-        max-width: 1200px;
-        display: grid;
-        grid-template-columns: 414px 1fr;
-        gap: 64px;
-        justify-content: center;
-        padding-top: 48px;
+        max-width: 100%;
+        display: block;
+        padding-top: 0;
     }
     .desktop-widget {
-        display: block !important;
+        display: none !important;
     }
+}
+/* Responsive Media Queries (iPad & Desktop) */
+@media screen and (min-width: 768px) {
+  .dashboard-container {
+    max-width: 768px !important;
+  }
+  
+  .dashboard-container .list-cards-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 16px !important;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .dashboard-container {
+    max-width: 1024px !important;
+  }
+  
+  .dashboard-container .list-cards-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
 }

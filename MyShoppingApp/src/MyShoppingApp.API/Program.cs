@@ -63,6 +63,9 @@ builder.Services.AddScoped<IFileStorageService, FileStorageService>();
 // HttpClient sınıfını kullanan ICurrencyService/CurrencyService bağımlılığını kaydediyoruz.
 builder.Services.AddHttpClient<ICurrencyService, CurrencyService>();
 
+// Resim sıkıştırma arkaplan görevini kaydediyoruz.
+builder.Services.AddHostedService<MyShoppingApp.API.Services.ImageProcessingBackgroundService>();
+
 // ==========================================
 // 4. GÜVENLİK VE YETKİLENDİRME (JWT & AUTH)
 // ==========================================
