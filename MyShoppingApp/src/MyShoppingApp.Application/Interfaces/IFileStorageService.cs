@@ -11,4 +11,9 @@ public interface IFileStorageService
     /// Deletes a file from the storage.
     /// </summary>
     Task DeleteFileAsync(string fileUrl);
+
+    /// <summary>
+    /// Gets the file stream from the storage.
+    /// </summary>
+    Task<Stream> GetFileStreamAsync(string fileUrl);
 }

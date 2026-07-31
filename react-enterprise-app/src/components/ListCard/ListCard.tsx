@@ -37,12 +37,13 @@ export const ListCard = ({ title, count, completedCount = 0, tag = 'Kitchen item
             {itemImages.length > 5 && (
               <div style={styles.moreAvatar}>+{itemImages.length - 5}</div>
             )}
+            <button style={styles.addAvatar} onClick={(e) => { e.stopPropagation(); /* TODO: Open Share */ }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            </button>
           </>
         ) : (
           <>
-            <img src={avatar2} style={styles.avatar} alt="P1" />
-            <img src={avatar1} style={{ ...styles.avatar, marginLeft: '-10px' }} alt="P2" />
-            <div style={styles.moreAvatar}>+2</div>
+            {/* Boşken avatar gösterme, sadece paylaş butonu da kaldırılabilir ama kalsın isteniyorsa diye: */}
           </>
         )}
       </div>
@@ -105,27 +106,43 @@ const styles = {
   },
   avatars: {
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginTop: '4px'
   },
   avatar: {
-    width: '24px',
-    height: '24px',
+    width: '32px',
+    height: '32px',
     borderRadius: '50%',
     border: '2px solid white'
   },
   moreAvatar: {
-    width: '24px',
-    height: '24px',
+    width: '32px',
+    height: '32px',
     borderRadius: '50%',
     background: '#F3E8FF',
     color: '#7F56D9',
-    fontSize: '10px',
+    fontSize: '12px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     marginLeft: '-10px',
     border: '2px solid white',
     fontWeight: '600'
+  },
+  addAvatar: {
+    width: '32px',
+    height: '32px',
+    borderRadius: '50%',
+    background: 'transparent',
+    color: '#667085',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: '-10px',
+    border: '1px dashed #D0D5DD',
+    cursor: 'pointer',
+    backgroundColor: '#FFFFFF',
+    zIndex: 10
   },
   footer: {
     display: 'flex',

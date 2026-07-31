@@ -15,4 +15,5 @@ public interface IShoppingListService
     Task DeleteItemAsync(int listId, int itemId, int userId);
     Task<ShoppingList> ToggleFavoriteAsync(int id, int userId);
     Task<string> UploadItemImageAsync(int listId, int itemId, int userId, Stream fileStream, string fileName, string contentType);
+    Task<List<string>> GetItemSuggestionsAsync(int userId, string query);
 }

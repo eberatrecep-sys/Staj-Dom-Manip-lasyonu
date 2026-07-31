@@ -62,4 +62,21 @@ public class FileStorageService : IFileStorageService
 
         await _s3Client.DeleteObjectAsync(request);
     }
+
+    public async Task<Stream> GetFileStreamAsync(string fileUrl)
+    {
+        if (string.IsNullOrEmpty(fileUrl)) throw new ArgumentException("fileUrl cannot be null");
+        
+        var key = fileUrl.Split('/').LastOrDefault();
+        if (string.IsNullOrEmpty(key)) throw new ArgumentException("Invalid fileUrl");
+
+        var request = new GetObjectRequest
+        {
+            BucketName = _bucketName,
+            Key = key
+        };
+
+        var response = await _s3Client.GetObjectAsync(request);
+        return response.ResponseStream;
+    }
 }

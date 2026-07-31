@@ -30,6 +30,7 @@ public class AuthService : IAuthService
 
         var user = new User
         {
+            Name = dto.Name,
             Email = dto.Email,
             PasswordHash = passwordHash
         };
@@ -113,6 +114,8 @@ public class AuthService : IAuthService
         var claims = new[]
         {
             new Claim("userId", user.Id.ToString()),
+            new Claim("name", user.Name ?? string.Empty),
+            new Claim("email", user.Email ?? string.Empty),
             new Claim(ClaimTypes.Role, user.Role.ToString())
         };
 
