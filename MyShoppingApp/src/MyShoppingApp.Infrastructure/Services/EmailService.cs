@@ -8,14 +8,9 @@ using System.Threading.Tasks;
 
 namespace MyShoppingApp.Infrastructure.Services;
 
-public class EmailService : IEmailService
+public class EmailService(IConfiguration configuration) : IEmailService
 {
-    private readonly IConfiguration _configuration;
-
-    public EmailService(IConfiguration configuration)
-    {
-        _configuration = configuration;
-    }
+    private readonly IConfiguration _configuration = configuration;
 
     public async Task SendEmailAsync(string to, string subject, string body, bool isHtml = true)
     {
@@ -43,7 +38,7 @@ public class EmailService : IEmailService
     {
         // For simple implementation, we can send to BCC to avoid exposing emails to everyone
         // Or loop and send individually. Sending individually ensures better deliverability.
-        
+
         using var client = new SmtpClient();
         await client.ConnectAsync(_configuration["SmtpSettings:Server"] ?? "smtp.example.com", int.Parse(_configuration["SmtpSettings:Port"] ?? "587"), SecureSocketOptions.StartTls);
         await client.AuthenticateAsync(_configuration["SmtpSettings:Username"] ?? "", _configuration["SmtpSettings:Password"] ?? "");

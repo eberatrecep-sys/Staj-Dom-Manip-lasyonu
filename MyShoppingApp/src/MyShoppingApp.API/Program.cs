@@ -114,7 +114,6 @@ builder.Services.AddAuthorization(); // Yetkilendirme (Rol bazlı kontroller) se
 builder.Services.AddRateLimiter(options =>
 {
     options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
-    
     // Global (Default) Limit: IP başına dakikada 100 istek
     options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(httpContext =>
         RateLimitPartition.GetFixedWindowLimiter(
@@ -201,10 +200,7 @@ builder.Services.AddProblemDetails();
 // 6. CORS (CROSS-ORIGIN RESOURCE SHARING)
 // ==========================================
 // Frontend uygulamamız (localhost:5173 veya GitHub Pages) buraya istek atabilsin diye tüm kökenlere (origins) izin veriyoruz.
-builder.Services.AddCors(options =>
-{
-    options.AddDefaultPolicy(policy => policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
-});
+builder.Services.AddCors(options => options.AddDefaultPolicy(policy => policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
 
 // Swagger (OpenAPI) belgelerini oluşturmak için servisi ekliyoruz.
 builder.Services.AddOpenApi();
