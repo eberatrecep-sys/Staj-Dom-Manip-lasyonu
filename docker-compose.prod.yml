@@ -1,0 +1,118 @@
+version: '3.8'
+
+services:
+  # --- Reverse Proxy (Caddy) ---
+  caddy:
+    image: caddy:2-alpine
+    container_name: shopping_caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - shopping_prod_network
+
+  # --- Backend API ---
+  backend-api:
+    build:
+      context: ./MyShoppingApp
+      dockerfile: Dockerfile
+    container_name: shopping_prod_backend
+    restart: unless-stopped
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__DefaultConnection=Host=postgres-db;Port=5432;Database=shopping_dotnet_db;Username=prod_user;Password=prod_password
+      - ConnectionStrings__Redis=redis:6379
+      - JwtSettings__Secret=your_very_secure_secret_key_here!
+      - S3__ServiceUrl=http://minio-s3:9000
+      - S3__AccessKey=minioadmin
+      - S3__SecretKey=minioadmin
+      - S3__BucketName=myshoppingapp
+      - S3__PublicUrlPrefix=https://api.shoppingapp.ebrsoft.com.tr/s3/ # Optional: if you want to expose minio, Caddy would need to route this.
+    depends_on:
+      - postgres-db
+      - redis
+      - minio-s3
+    networks:
+      - shopping_prod_network
+
+  # --- Databases & Infrastructure ---
+  postgres-db:
+    image: postgres:15-alpine
+    container_name: shopping_prod_postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=prod_user
+      - POSTGRES_PASSWORD=prod_password
+      - POSTGRES_DB=shopping_dotnet_db
+    volumes:
+      - postgres_prod_data:/var/lib/postgresql/data
+    networks:
+      - shopping_prod_network
+
+  redis:
+    image: redis:alpine
+    container_name: shopping_prod_redis
+    restart: unless-stopped
+    networks:
+      - shopping_prod_network
+
+  minio-s3:
+    image: minio/minio
+    container_name: shopping_prod_minio
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      - MINIO_ROOT_USER=minioadmin
+      - MINIO_ROOT_PASSWORD=minioadmin
+    volumes:
+      - minio_prod_data:/data
+    networks:
+      - shopping_prod_network
+
+  seq-logger:
+    image: datalust/seq:latest
+    container_name: shopping_prod_seq
+    restart: unless-stopped
+    environment:
+      - ACCEPT_EULA=Y
+      - SEQ_FIRSTRUN_ADMINPASSWORD=Admin123!
+    volumes:
+      - seq_prod_data:/data
+    networks:
+      - shopping_prod_network
+
+  # --- Frontend Applications ---
+  admin-panel:
+    build:
+      context: ./front-end-monorepo/packages/admin-panel
+      dockerfile: Dockerfile
+    container_name: shopping_prod_admin
+    restart: unless-stopped
+    networks:
+      - shopping_prod_network
+
+  customer-app:
+    build:
+      context: ./front-end-monorepo/packages/customer-app
+      dockerfile: Dockerfile
+    container_name: shopping_prod_customer
+    restart: unless-stopped
+    networks:
+      - shopping_prod_network
+
+volumes:
+  postgres_prod_data:
+  minio_prod_data:
+  seq_prod_data:
+  caddy_data:
+  caddy_config:
+
+networks:
+  shopping_prod_network:
+    driver: bridge

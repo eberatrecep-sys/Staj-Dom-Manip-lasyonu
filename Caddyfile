@@ -1,0 +1,11 @@
+api.shoppingapp.ebrsoft.com.tr {
+    reverse_proxy backend-api:8080
+}
+
+admin.shoppingapp.ebrsoft.com.tr {
+    reverse_proxy admin-panel:80
+}
+
+shoppingapp.ebrsoft.com.tr {
+    reverse_proxy customer-app:80
+}
