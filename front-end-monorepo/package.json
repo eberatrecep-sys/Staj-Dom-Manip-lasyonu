@@ -1,0 +1,14 @@
+{
+  "name": "front-end-monorepo",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev -w react-enterprise-app\" \"npm run dev -w admin-panel\"",
+    "build": "npm run build --workspaces"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.4"
+  }
+}

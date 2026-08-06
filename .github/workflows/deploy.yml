@@ -1,0 +1,58 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: ["main", "feature/react-enterprise-gecis", "feature/ui-updates"]
+  workflow_run:
+    workflows: ["Auto Create Pull Request"]
+    types:
+      - completed
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_branch || github.ref }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: 'react-enterprise-app/package-lock.json'
+
+      - name: Install Dependencies & Build React App
+        run: |
+          echo "React Enterprise App derleniyor..."
+          cd react-enterprise-app
+          npm ci
+          npm run build
+          # React Router için 404 yönlendirmesi ekliyoruz
+          cp dist/index.html dist/404.html
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './react-enterprise-app/dist'
+
+      - name: Deploy to GitHub Actions
+        id: deployment
+        uses: actions/deploy-pages@v4

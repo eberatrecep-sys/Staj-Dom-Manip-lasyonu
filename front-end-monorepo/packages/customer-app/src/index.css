@@ -1,0 +1,85 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+    --bg-main: #FFFFFF;
+    --primary-50: #F9F5FF;
+    --primary-700: #7F56D9;
+    --gray-50: #F9FAFB;
+    --gray-100: #F2F4F7;
+    --gray-200: #EAECF0;
+    --gray-500: #667085;
+    --gray-900: #101828;
+    
+    --font-family: 'Inter', sans-serif;
+    
+    --radius-sm: 8px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --radius-xl: 36px;
+    --radius-pill: 48px;
+    --radius-full: 200px;
+}
+
+[data-theme='dark'] {
+    --bg-main: #121212;
+    --primary-50: #2d1b54;
+    --primary-700: #9e77ed;
+    --gray-50: #1a1a1a;
+    --gray-100: #242424;
+    --gray-200: #333333;
+    --gray-500: #a0a0a0;
+    --gray-900: #ffffff;
+}
+
+body {
+    background-color: var(--bg-main);
+    font-family: var(--font-family);
+    color: var(--gray-900);
+    margin: 0;
+    padding: 0;
+}
+
+*:focus-visible {
+    outline: 2px solid var(--primary-700);
+    outline-offset: 2px;
+}
+
+.app-container {
+    max-width: 414px;
+    margin: 0 auto;
+    position: relative;
+    min-height: 100vh;
+}
+
+@media (min-width: 1024px) {
+    .app-container {
+        max-width: 100%;
+        display: block;
+        padding-top: 0;
+    }
+    .desktop-widget {
+        display: none !important;
+    }
+}
+/* Responsive Media Queries (iPad & Desktop) */
+@media screen and (min-width: 768px) {
+  .dashboard-container {
+    max-width: 768px !important;
+  }
+  
+  .dashboard-container .list-cards-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 16px !important;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .dashboard-container {
+    max-width: 1024px !important;
+  }
+  
+  .dashboard-container .list-cards-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
