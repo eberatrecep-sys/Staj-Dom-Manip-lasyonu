@@ -30,10 +30,16 @@ services:
     restart: unless-stopped
     # PORT AÇMIYORUZ! Sadece Nginx buraya erişecek.
 
-  frontend:
+  customer-app:
     build:
-      context: ./front-end-monorepo
-      dockerfile: Dockerfile.prod
+      context: ./front-end-monorepo/packages/customer-app
+      dockerfile: Dockerfile
+    restart: unless-stopped
+
+  admin-panel:
+    build:
+      context: ./front-end-monorepo/packages/admin-panel
+      dockerfile: Dockerfile
     restart: unless-stopped
 
   nginx:
@@ -44,7 +50,8 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:
-      - frontend
+      - customer-app
+      - admin-panel
       - backend
     restart: unless-stopped
 
