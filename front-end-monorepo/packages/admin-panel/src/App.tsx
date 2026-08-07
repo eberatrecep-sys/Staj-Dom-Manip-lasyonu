@@ -16,7 +16,7 @@ const PublicRoute = ({ children }: { children: JSX.Element }) => {
 function App() {
   return (
     <AuthProvider>
-      <Router>
+      <Router basename={import.meta.env.BASE_URL}>
         <Routes>
           <Route 
             path="/login" 
