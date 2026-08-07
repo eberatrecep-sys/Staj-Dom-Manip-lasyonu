@@ -27,6 +27,8 @@ public class AuthController : ControllerBase
     // [HttpPost("register")]: POST metoduyla "api/auth/register" adresine gelen istekleri dinler.
     [HttpPost("register")]
     [EnableRateLimiting("AuthLimit")]
+    [ProducesResponseType(typeof(MessageResponseDto), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(object), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Register([FromBody] RegisterDto dto)
     {
         try
@@ -45,6 +47,10 @@ public class AuthController : ControllerBase
 
     [HttpPost("login")]
     [EnableRateLimiting("AuthLimit")]
+    [ProducesResponseType(typeof(LoginResponseDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(object), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(object), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(object), 505)]
     public async Task<IActionResult> Login([FromBody] LoginDto dto)
     {
         try
@@ -70,8 +76,28 @@ public class AuthController : ControllerBase
         }
     }
 
+    [HttpPost("oauth-login")]
+    [EnableRateLimiting("AuthLimit")]
+    [ProducesResponseType(typeof(LoginResponseDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(object), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> OAuthLogin([FromBody] OAuthLoginDto dto)
+    {
+        try
+        {
+            var result = await _authService.OAuthLoginAsync(dto);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { error = ex.Message });
+        }
+    }
+
     [HttpPost("forgot-password")]
     [EnableRateLimiting("AuthLimit")]
+    [ProducesResponseType(typeof(MessageResponseDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(object), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(object), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto dto)
     {
         try
@@ -91,16 +117,41 @@ public class AuthController : ControllerBase
 
     [HttpPost("reset-password")]
     [EnableRateLimiting("AuthLimit")]
+    [ProducesResponseType(typeof(MessageResponseDto), StatusCodes.Status200OK)]
     public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto dto)
     {
         var response = await _authService.ResetPasswordAsync(dto);
         return Ok(response);
     }
 
+    [HttpPost("resend-otp")]
+    [EnableRateLimiting("AuthLimit")]
+    [ProducesResponseType(typeof(MessageResponseDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(object), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> ResendOtp([FromBody] ResendOtpRequestDto dto)
+    {
+        try
+        {
+            var response = await _authService.ResendOtpAsync(dto.Email, dto.Purpose);
+            return Ok(response);
+        }
+        catch (KeyNotFoundException)
+        {
+            return NotFound(new { error = "Kullanıcı bulunamadı." });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { error = "Sunucu hatası: " + ex.Message });
+        }
+    }
+
     [HttpPost("profile-picture")]
     [MyShoppingApp.API.Attributes.AllowedExtensions(new[] { ".jpg", ".jpeg", ".png" })]
     [MyShoppingApp.API.Attributes.MaxFileSize(5 * 1024 * 1024)] // 5MB
     [EnableRateLimiting("UploadLimit")]
+    [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(object), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(object), StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> UploadProfilePicture(IFormFile file)
     {
         if (file == null || file.Length == 0)
@@ -118,6 +169,9 @@ public class AuthController : ControllerBase
     [HttpPost("request-delete-account")]
     [Microsoft.AspNetCore.Authorization.Authorize]
     [EnableRateLimiting("AuthLimit")]
+    [ProducesResponseType(typeof(MessageResponseDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(object), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(object), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> RequestAccountDeletion()
     {
         try
@@ -138,6 +192,10 @@ public class AuthController : ControllerBase
     [HttpPost("confirm-delete-account")]
     [Microsoft.AspNetCore.Authorization.Authorize]
     [EnableRateLimiting("AuthLimit")]
+    [ProducesResponseType(typeof(MessageResponseDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(object), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(object), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(object), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> ConfirmAccountDeletion([FromBody] ConfirmDeleteAccountDto dto)
     {
         try

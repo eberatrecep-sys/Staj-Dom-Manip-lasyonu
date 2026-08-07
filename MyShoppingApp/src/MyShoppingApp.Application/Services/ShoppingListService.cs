@@ -38,10 +38,10 @@ public class ShoppingListService : IShoppingListService
     {
         var list = new ShoppingList
         {
-            Title = dto.Title ?? "New List",
-            Category = dto.Category ?? "Recents",
-            Tag = dto.Tag,
-            UserId = userId
+            UserId = userId,
+            Title = dto.Title!,
+            Category = dto.Category!,
+            Tag = dto.Tag
         };
 
         return SignUrls(await _repository.CreateAsync(list));

@@ -14,6 +14,7 @@ using System.Threading.RateLimiting;
 using Serilog;
 using MyShoppingApp.API.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
+using FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -195,6 +196,11 @@ builder.Services.AddApiVersioning(options =>
 // 5.1 GLOBAL EXCEPTION HANDLER
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
+
+// ==========================================
+// 5.2 FLUENT VALIDATION
+// ==========================================
+builder.Services.AddValidatorsFromAssemblyContaining<MyShoppingApp.Application.Validators.CreateListDtoValidator>();
 
 // ==========================================
 // 6. CORS (CROSS-ORIGIN RESOURCE SHARING)

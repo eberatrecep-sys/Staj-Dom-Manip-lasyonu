@@ -12,4 +12,6 @@ public interface IAuthService
     Task<string> UploadProfilePictureAsync(int userId, Stream fileStream, string fileName, string contentType);
     Task<MessageResponseDto> RequestAccountDeletionAsync(int userId);
     Task<MessageResponseDto> ConfirmAccountDeletionAsync(int userId, string otp);
+    Task<MessageResponseDto> ResendOtpAsync(string email, string purpose);
+    Task<LoginResponseDto> OAuthLoginAsync(OAuthLoginDto dto);
 }

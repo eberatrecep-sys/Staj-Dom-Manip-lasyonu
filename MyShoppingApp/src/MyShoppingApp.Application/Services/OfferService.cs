@@ -3,6 +3,7 @@ using MyShoppingApp.Application.Interfaces;
 using MyShoppingApp.Domain.Entities;
 using MyShoppingApp.Domain.Interfaces;
 using Microsoft.Extensions.Caching.Hybrid;
+using Microsoft.Extensions.Logging;
 
 namespace MyShoppingApp.Application.Services;
 
@@ -13,6 +14,7 @@ public class OfferService : IOfferService
     private readonly HybridCache _hybridCache;
     private readonly IEmailService _emailService;
     private readonly IUserRepository _userRepository;
+    private readonly ILogger<OfferService> _logger;
     private const string ActiveOffersCacheKey = "offers_active";
 
     public OfferService(
@@ -20,13 +22,15 @@ public class OfferService : IOfferService
         IFileStorageService fileStorageService,
         HybridCache hybridCache,
         IEmailService emailService,
-        IUserRepository userRepository)
+        IUserRepository userRepository,
+        ILogger<OfferService> logger)
     {
         _offerRepository = offerRepository;
         _fileStorageService = fileStorageService;
         _hybridCache = hybridCache;
         _emailService = emailService;
         _userRepository = userRepository;
+        _logger = logger;
     }
 
     public async Task<IEnumerable<OfferDto>> GetAllOffersAsync()
@@ -150,7 +154,7 @@ public class OfferService : IOfferService
             catch (Exception ex)
             {
                 // In production, we should log this failure and continue
-                Console.WriteLine($"Failed to send email to {user.Email}: {ex.Message}");
+                _logger.LogError(ex, "Failed to send email to {Email}", user.Email);
             }
         }
 

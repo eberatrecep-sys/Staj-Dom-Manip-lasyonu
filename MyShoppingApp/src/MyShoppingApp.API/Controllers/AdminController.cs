@@ -27,6 +27,8 @@ public class AdminController : ControllerBase
     // [Authorize(Roles = "SUPER_ADMIN")]: Sadece sisteme giriş yapmış olan VE rolü "SUPER_ADMIN" olan kullanıcıların bu uç noktayı çağırabilmesini sağlar.
     [HttpGet("db-view")]
     [Authorize(Roles = "SUPER_ADMIN")]
+    [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(object), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetDbView()
     {
         try
@@ -43,6 +45,8 @@ public class AdminController : ControllerBase
     [HttpPut("role")]
     [Authorize(Roles = "SUPER_ADMIN")]
     [EnableRateLimiting("WriteLimit")]
+    [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(object), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> UpdateRole([FromBody] UpdateRoleDto dto)
     {
         try
@@ -58,6 +62,9 @@ public class AdminController : ControllerBase
 
     [HttpDelete("users/{id}")]
     [Authorize(Roles = "SUPER_ADMIN")]
+    [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(object), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(object), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> DeleteUser(int id)
     {
         try
@@ -77,6 +84,8 @@ public class AdminController : ControllerBase
 
     [HttpGet("stats")]
     [Authorize(Roles = "SUPER_ADMIN")]
+    [ProducesResponseType(typeof(SystemStatsDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(object), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetSystemStats()
     {
         try

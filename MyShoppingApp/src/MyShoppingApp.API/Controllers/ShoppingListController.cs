@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using MyShoppingApp.Application.DTOs.ShoppingList;
 using MyShoppingApp.Application.Interfaces;
+using MyShoppingApp.Domain.Entities;
 
 namespace MyShoppingApp.API.Controllers;
 
@@ -24,6 +25,7 @@ public class ShoppingListController : ControllerBase
     private int GetUserId() => int.Parse(User.FindFirstValue("userId")!);
 
     [HttpGet]
+    [ProducesResponseType(typeof(IEnumerable<ShoppingList>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll()
     {
         var lists = await _service.GetAllByUserAsync(GetUserId());
@@ -31,6 +33,8 @@ public class ShoppingListController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [ProducesResponseType(typeof(ShoppingList), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(object), StatusCodes.Status403Forbidden)]
     public async Task<IActionResult> GetById(int id)
     {
         try
@@ -46,6 +50,8 @@ public class ShoppingListController : ControllerBase
 
     [HttpPost]
     [EnableRateLimiting("WriteLimit")]
+    [ProducesResponseType(typeof(ShoppingList), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(object), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create([FromBody] CreateListDto dto)
     {
         var list = await _service.CreateAsync(dto, GetUserId());
@@ -54,6 +60,9 @@ public class ShoppingListController : ControllerBase
 
     [HttpPut("{id}")]
     [EnableRateLimiting("WriteLimit")]
+    [ProducesResponseType(typeof(ShoppingList), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(object), StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(typeof(object), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> Update(int id, [FromBody] UpdateListDto dto)
     {
         try
@@ -73,6 +82,9 @@ public class ShoppingListController : ControllerBase
 
     [HttpDelete("{id}")]
     [EnableRateLimiting("WriteLimit")]
+    [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(object), StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(typeof(object), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> Delete(int id)
     {
         try
@@ -111,6 +123,8 @@ public class ShoppingListController : ControllerBase
 
     [HttpPost("{id}/items")]
     [EnableRateLimiting("WriteLimit")]
+    [ProducesResponseType(typeof(ShoppingListItem), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(object), StatusCodes.Status403Forbidden)]
     public async Task<IActionResult> AddItem(int id, [FromBody] CreateItemDto dto)
     {
         try
@@ -187,6 +201,7 @@ public class ShoppingListController : ControllerBase
     }
 
     [HttpGet("suggestions")]
+    [ProducesResponseType(typeof(IEnumerable<string>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetSuggestions([FromQuery] string q)
     {
         var suggestions = await _service.GetItemSuggestionsAsync(GetUserId(), q);

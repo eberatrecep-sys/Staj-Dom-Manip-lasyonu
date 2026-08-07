@@ -1,0 +1,31 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - prod # Sadece prod branch'ine push yapılınca çalışır
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Deploy via SSH to VPS
+      uses: appleboy/ssh-action@v0.1.10
+      with:
+        host: ${{ secrets.VPS_IP }}
+        username: ${{ secrets.VPS_USERNAME }}
+        key: ${{ secrets.VPS_SSH_KEY }}
+        script: |
+          cd /var/www/MyShoppingApp
+          # Son kodları prod branch'inden çek
+          git pull origin prod
+          
+          # Docker arka planda yeni buildleri alarak sadece değişen servisleri günceller
+          docker-compose -f docker-compose.yml up --build -d
+          
+          # Gereksiz/eski imajları temizle (Sunucuda yer kaplamaması için)
+          docker image prune -f
