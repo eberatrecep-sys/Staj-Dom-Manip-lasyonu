@@ -25,7 +25,7 @@ jobs:
           git pull origin prod
           
           # Docker arka planda yeni buildleri alarak sadece değişen servisleri günceller
-          docker-compose -f docker-compose.yml up --build -d
+          docker compose -f docker-compose.yml up --build -d
           
           # Gereksiz/eski imajları temizle (Sunucuda yer kaplamaması için)
           docker image prune -f
