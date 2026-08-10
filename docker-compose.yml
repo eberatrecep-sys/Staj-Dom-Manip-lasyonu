@@ -12,6 +12,18 @@ services:
     restart: unless-stopped
     # Portları DIŞARI AÇMIYORUZ (Sadece docker ağı içinden erişilebilir)
 
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@ebrsoft.com.tr
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
+    restart: unless-stopped
+
+
   redis:
     image: redis:alpine
     restart: unless-stopped
