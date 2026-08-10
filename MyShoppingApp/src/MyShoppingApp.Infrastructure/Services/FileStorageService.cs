@@ -100,12 +100,22 @@ public class FileStorageService : IFileStorageService
             Protocol = Protocol.HTTP // MinIO localhost için zorunlu
         };
 
-        // For MinIO compatibility
+        string generatedUrl;
         if (_s3Client is AmazonS3Client s3Client)
         {
-             return s3Client.GetPreSignedURL(request);
+             generatedUrl = s3Client.GetPreSignedURL(request);
+        }
+        else
+        {
+             generatedUrl = _s3Client.GetPreSignedURL(request);
         }
 
-        return _s3Client.GetPreSignedURL(request);
+        // Replace internal ServiceUrl with PublicUrlPrefix base URL
+        // generatedUrl: http://minio:9000/myshoppingapp/file...
+        // We want: http://api.shoppingapp.ebrsoft.com.tr/myshoppingapp/file...
+        var uri = new Uri(generatedUrl);
+        var pathAndQuery = uri.PathAndQuery;
+        
+        return $"{_publicUrlPrefix.TrimEnd('/')}{pathAndQuery.Replace($"/{_bucketName}", "")}";
     }
 }
