@@ -63,7 +63,7 @@ const styles = {
     },
     glassCard: {
         backgroundColor: 'var(--bg-main)',
-        border: '1px solid #EAECF0',
+        backgroundColor: 'transparent', color: 'inherit', border: '1px solid var(--gray-200)',
         borderRadius: '16px',
         padding: '40px',
         width: '100%',
@@ -96,7 +96,7 @@ const styles = {
     input: {
         padding: '12px 16px',
         borderRadius: '8px',
-        border: '1px solid #D0D5DD',
+        backgroundColor: 'transparent', color: 'inherit', border: '1px solid var(--gray-200)',
         background: 'var(--bg-main)',
         color: 'var(--gray-900)',
         fontSize: '16px',

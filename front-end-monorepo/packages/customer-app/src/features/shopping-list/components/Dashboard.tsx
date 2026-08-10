@@ -222,10 +222,10 @@ export const Dashboard = () => {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     onFocus={() => { if(suggestions.length > 0) setShowSuggestions(true); }}
-                    style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid var(--gray-200)', boxSizing: 'border-box', backgroundColor: 'var(--bg-main)', color: 'inherit' }}
+                    style={{ width: '100%', padding: '12px', borderRadius: '8px', backgroundColor: 'transparent', color: 'inherit', border: '1px solid var(--gray-200)', boxSizing: 'border-box', backgroundColor: 'var(--bg-main)', color: 'inherit' }}
                 />
                 {showSuggestions && suggestions.length > 0 && (
-                    <div style={{ position: 'absolute', top: '100%', left: 0, right: 0, backgroundColor: 'var(--bg-main)', border: '1px solid var(--gray-200)', borderRadius: '8px', zIndex: 50, marginTop: '4px', boxShadow: '0 4px 6px rgba(0,0,0,0.1)' }}>
+                    <div style={{ position: 'absolute', top: '100%', left: 0, right: 0, backgroundColor: 'var(--bg-main)', backgroundColor: 'transparent', color: 'inherit', border: '1px solid var(--gray-200)', borderRadius: '8px', zIndex: 50, marginTop: '4px', boxShadow: '0 4px 6px rgba(0,0,0,0.1)' }}>
                         {suggestions.map((sug, idx) => (
                             <div 
                                 key={idx} 
@@ -247,7 +247,7 @@ export const Dashboard = () => {
                         style={{
                             padding: '6px 12px',
                             borderRadius: '16px',
-                            border: '1px solid var(--gray-200)',
+                            backgroundColor: 'transparent', color: 'inherit', border: '1px solid var(--gray-200)',
                             backgroundColor: selectedTag === null ? 'var(--primary-700)' : 'transparent',
                             color: selectedTag === null ? 'var(--bg-main)' : 'inherit',
                             cursor: 'pointer',
@@ -264,7 +264,7 @@ export const Dashboard = () => {
                             style={{
                                 padding: '6px 12px',
                                 borderRadius: '16px',
-                                border: '1px solid var(--gray-200)',
+                                backgroundColor: 'transparent', color: 'inherit', border: '1px solid var(--gray-200)',
                                 backgroundColor: selectedTag === tag ? 'var(--primary-700)' : 'transparent',
                                 color: selectedTag === tag ? 'var(--bg-main)' : 'inherit',
                                 cursor: 'pointer',

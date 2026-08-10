@@ -139,7 +139,7 @@ export const DesktopLayout: React.FC<DesktopLayoutProps> = ({ children }) => {
   return (
     <div className={`desktop-layout-wrapper ${isDark ? 'dark-theme' : ''}`} style={styles.wrapper}>
       {/* Sidebar */}
-      <aside style={{ ...styles.sidebar, backgroundColor: isDark ? '#1a1a1a' : 'var(--bg-main)', borderRight: isDark ? '1px solid #333' : '1px solid #eaecf0' }}>
+      <aside style={{ ...styles.sidebar, backgroundColor: isDark ? '#1a1a1a' : 'var(--bg-main)', borderRight: isDark ? '1px solid #333' : '1px solid var(--gray-200)' }}>
         <div style={styles.profileArea}>
           <img 
             src={profilePicUrl || `https://ui-avatars.com/api/?name=${userInfo.name}&background=random`} 
@@ -153,14 +153,14 @@ export const DesktopLayout: React.FC<DesktopLayoutProps> = ({ children }) => {
           {/* Header Butonları (Sağ taraftan alınan ikonlar) */}
           <div style={{ display: 'flex', gap: '8px', marginTop: '16px', marginBottom: '8px' }}>
             <button style={styles.iconBtnPurple} onClick={() => navigate('/campaigns')} title="Kampanyalar">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9E77ED" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary-700)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="12" cy="8" r="6" />
                 <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11" />
               </svg>
             </button>
             <div ref={dropdownRef} style={{ position: 'relative' }}>
               <button style={styles.iconBtnGray} onClick={() => setShowDropdown(!showDropdown)}>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#667085" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gray-500)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
                   <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
                 </svg>
@@ -188,7 +188,7 @@ export const DesktopLayout: React.FC<DesktopLayoutProps> = ({ children }) => {
             </div>
           </div>
 
-          <div style={{ height: '1px', backgroundColor: isDark ? '#333' : '#eaecf0', width: '100%', margin: '8px 0' }} />
+          <div style={{ height: '1px', backgroundColor: isDark ? '#333' : 'var(--gray-200)', width: '100%', margin: '8px 0' }} />
         </div>
         
         <nav style={styles.nav}>
@@ -210,7 +210,7 @@ export const DesktopLayout: React.FC<DesktopLayoutProps> = ({ children }) => {
         </nav>
 
         <div style={styles.footer}>
-          <button onClick={toggleTheme} style={{ ...styles.themeToggle, backgroundColor: isDark ? '#333' : '#f9fafb', color: isDark ? '#fff' : 'var(--gray-900)' }}>
+          <button onClick={toggleTheme} style={{ ...styles.themeToggle, backgroundColor: isDark ? '#333' : 'var(--gray-50)', color: isDark ? '#fff' : 'var(--gray-900)' }}>
             {isDark ? (
                 <><svg width="18" height="18" style={{marginRight: '8px'}} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg> Açık Tema</>
             ) : (
@@ -224,7 +224,7 @@ export const DesktopLayout: React.FC<DesktopLayoutProps> = ({ children }) => {
       </aside>
 
       {/* Main Content Area */}
-      <main style={{ ...styles.mainContent, backgroundColor: isDark ? '#121212' : '#f9fafb', color: isDark ? '#fff' : 'var(--gray-900)' }}>
+      <main style={{ ...styles.mainContent, backgroundColor: isDark ? '#121212' : 'var(--gray-50)', color: isDark ? '#fff' : 'var(--gray-900)' }}>
         {children}
       </main>
 
@@ -266,7 +266,7 @@ export const DesktopLayout: React.FC<DesktopLayoutProps> = ({ children }) => {
                 padding: '6px',
                 backgroundColor: 'var(--gray-50)',
                 color: 'var(--gray-900)',
-                border: '1px solid var(--gray-200)',
+                backgroundColor: 'transparent', color: 'inherit', border: '1px solid var(--gray-200)',
                 borderRadius: '6px',
                 fontSize: '12px',
                 cursor: 'pointer',
@@ -351,7 +351,7 @@ const styles = {
   themeToggle: {
     padding: '12px',
     borderRadius: '8px',
-    border: '1px solid #eaecf0',
+    backgroundColor: 'transparent', color: 'inherit', border: '1px solid var(--gray-200)',
     cursor: 'pointer',
     fontWeight: '500',
     display: 'flex',
@@ -364,7 +364,7 @@ const styles = {
     borderRadius: '8px',
     border: 'none',
     backgroundColor: '#fef3f2',
-    color: '#d92d20',
+    color: 'var(--gray-900)',
     cursor: 'pointer',
     fontWeight: '600',
     display: 'flex',
@@ -392,7 +392,7 @@ const styles = {
   },
   iconBtnGray: {
     background: 'var(--gray-50)',
-    border: '1px solid var(--gray-200)',
+    backgroundColor: 'transparent', color: 'inherit', border: '1px solid var(--gray-200)',
     borderRadius: '36px',
     width: '40px',
     height: '40px',
@@ -405,7 +405,7 @@ const styles = {
     position: 'absolute' as const,
     top: '-4px',
     right: '-4px',
-    backgroundColor: '#D92D20',
+    backgroundColor: 'var(--gray-900)',
     color: 'var(--bg-main)',
     fontSize: '10px',
     fontWeight: 'bold',
@@ -424,7 +424,7 @@ const styles = {
     backgroundColor: 'var(--bg-main)',
     borderRadius: '12px',
     boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-    border: '1px solid var(--gray-200)',
+    backgroundColor: 'transparent', color: 'inherit', border: '1px solid var(--gray-200)',
     zIndex: 1000,
     padding: '12px',
     textAlign: 'left' as const
@@ -466,7 +466,7 @@ const styles = {
     padding: '6px',
     backgroundColor: 'var(--gray-50)',
     color: 'var(--gray-900)',
-    border: '1px solid #EAECF0',
+    backgroundColor: 'transparent', color: 'inherit', border: '1px solid var(--gray-200)',
     borderRadius: '6px',
     fontSize: '12px',
     cursor: 'pointer'
@@ -486,6 +486,6 @@ const styles = {
     borderRadius: '12px',
     width: '320px',
     boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
-    border: '1px solid var(--gray-200)'
+    backgroundColor: 'transparent', color: 'inherit', border: '1px solid var(--gray-200)'
   }
 };

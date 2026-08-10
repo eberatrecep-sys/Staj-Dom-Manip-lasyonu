@@ -23,7 +23,7 @@ export const ListCard = ({ title, count, completedCount = 0, tag = 'Kitchen item
           onClick={onToggleFavorite}
           title="Favorilere Ekle"
         >
-          <svg width="14" height="13" viewBox="0 0 24 24" fill={isFavorite ? "#9E77ED" : "none"} stroke={isFavorite ? "#9E77ED" : "#D0D5DD"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <svg width="14" height="13" viewBox="0 0 24 24" fill={isFavorite ? "var(--primary-700)" : "none"} stroke={isFavorite ? "var(--primary-700)" : "var(--gray-200)"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
           </svg>
         </button>
@@ -64,7 +64,7 @@ const styles = {
     background: 'var(--bg-main)',
     borderRadius: '16px',
     padding: '16px',
-    border: '1px solid var(--gray-200)',
+    backgroundColor: 'transparent', color: 'inherit', border: '1px solid var(--gray-200)',
     boxShadow: '0 2px 4px rgba(0,0,0,0.02)',
     display: 'flex',
     flexDirection: 'column' as const,

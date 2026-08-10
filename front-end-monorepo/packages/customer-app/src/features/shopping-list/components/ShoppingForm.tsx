@@ -296,7 +296,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
                 {!embedded && (
                     <button onClick={() => navigate(-1)} style={{ background: 'var(--primary-50)', border: 'none', borderRadius: '32px', width: '32px', height: '32px', display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer' }}>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9E77ED" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M12 19l-7-7 7-7" /></svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--primary-700)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M12 19l-7-7 7-7" /></svg>
                     </button>
                 )}
                 {embedded && <div style={{ width: '32px' }} />} {/* Placeholder */}
@@ -309,7 +309,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
                         onClick={(e) => { e.stopPropagation(); setIsMenuOpen(!isMenuOpen); }}
                         style={{ background: 'var(--primary-50)', border: 'none', borderRadius: '32px', width: '32px', height: '32px', display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer' }}
                     >
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9E77ED" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="1.5" /><circle cx="12" cy="5" r="1.5" /><circle cx="12" cy="19" r="1.5" /></svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--primary-700)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="1.5" /><circle cx="12" cy="5" r="1.5" /><circle cx="12" cy="19" r="1.5" /></svg>
                     </button>
 
                     {isMenuOpen && (
@@ -436,7 +436,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
                     {items.length === 0 ? (
                         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '48px 0', textAlign: 'center' }}>
                             <div style={{ width: '48px', height: '48px', background: 'var(--primary-50)', borderRadius: '24px', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '16px' }}>
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7F56D9" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary-700)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                             </div>
                             <h3 style={{ margin: '0 0 8px 0', fontSize: '18px', fontWeight: '600', color: 'var(--gray-900)' }}>No items yet</h3>
                             <p style={{ margin: '0 0 24px 0', fontSize: '14px', color: 'var(--gray-500)', maxWidth: '240px' }}>
@@ -454,7 +454,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
                                     height: '52px',
                                     padding: '16px',
                                     borderRadius: '8px',
-                                    border: isChecked ? '1px solid #D6BBFB' : '1px solid #EAECF0',
+                                    border: isChecked ? '1px solid var(--primary-700)' : '1px solid var(--gray-200)',
                                     backgroundColor: isChecked ? 'var(--primary-50)' : 'var(--bg-main)',
                                     boxSizing: 'border-box'
                                 }}>
@@ -475,7 +475,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
                                                 width: '16px',
                                                 height: '16px',
                                                 borderRadius: '4px',
-                                                border: isChecked ? '1px solid #7F56D9' : '1px solid #D0D5DD',
+                                                border: isChecked ? '1px solid var(--primary-700)' : '1px solid var(--gray-200)',
                                                 backgroundColor: isChecked ? 'var(--primary-50)' : 'var(--bg-main)',
                                                 display: 'flex',
                                                 justifyContent: 'center',
@@ -484,7 +484,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
                                             }}
                                         >
                                             {isChecked && (
-                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#7F56D9" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--primary-700)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
                                             )}
                                         </div>
                                         <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '8px' }}>
@@ -588,7 +588,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
                                 width: '32px', height: '32px', borderRadius: '32px', background: 'var(--primary-50)', border: 'none',
                                 display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer', padding: '8px'
                             }}>
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7F56D9" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--primary-700)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                             </button>
                         </div>
 
@@ -599,7 +599,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
                                     type="text"
                                     placeholder="Butter"
                                     {...register('productName')}
-                                    style={{ width: '100%', height: '44px', padding: '10px 14px', borderRadius: '8px', border: '1px solid #D0D5DD', boxSizing: 'border-box', fontFamily: 'Inter, sans-serif', fontSize: '16px' }}
+                                    style={{ width: '100%', height: '44px', padding: '10px 14px', borderRadius: '8px', backgroundColor: 'transparent', color: 'inherit', border: '1px solid var(--gray-200)', boxSizing: 'border-box', fontFamily: 'Inter, sans-serif', fontSize: '16px' }}
                                 />
                                 {errors.productName && <span style={{ color: 'red', fontSize: '12px' }}>{errors.productName.message}</span>}
                             </div>
@@ -611,7 +611,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
                                         type="number"
                                         placeholder={editingItem ? "9999" : ""}
                                         {...register('quantity', { valueAsNumber: true })}
-                                        style={{ width: '100%', height: '44px', padding: '10px 14px', borderRadius: '8px', border: '1px solid #D0D5DD', boxSizing: 'border-box', fontFamily: 'Inter, sans-serif', fontSize: '16px' }}
+                                        style={{ width: '100%', height: '44px', padding: '10px 14px', borderRadius: '8px', backgroundColor: 'transparent', color: 'inherit', border: '1px solid var(--gray-200)', boxSizing: 'border-box', fontFamily: 'Inter, sans-serif', fontSize: '16px' }}
                                     />
                                     {errors.quantity && <span style={{ color: 'red', fontSize: '12px' }}>{errors.quantity.message}</span>}
                                 </div>
@@ -620,7 +620,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
                                     <input
                                         type="text"
                                         placeholder={editingItem ? "9999" : ""}
-                                        style={{ width: '100%', height: '44px', padding: '10px 14px', borderRadius: '8px', border: '1px solid #D0D5DD', boxSizing: 'border-box', fontFamily: 'Inter, sans-serif', fontSize: '16px' }}
+                                        style={{ width: '100%', height: '44px', padding: '10px 14px', borderRadius: '8px', backgroundColor: 'transparent', color: 'inherit', border: '1px solid var(--gray-200)', boxSizing: 'border-box', fontFamily: 'Inter, sans-serif', fontSize: '16px' }}
                                     />
                                 </div>
                             </div>
@@ -632,7 +632,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
                                     <input
                                         type="text"
                                         placeholder={editingItem ? "99999" : ""}
-                                        style={{ width: '100%', height: '44px', padding: '10px 14px 10px 32px', borderRadius: '8px', border: '1px solid #D0D5DD', boxSizing: 'border-box', fontFamily: 'Inter, sans-serif', fontSize: '16px' }}
+                                        style={{ width: '100%', height: '44px', padding: '10px 14px 10px 32px', borderRadius: '8px', backgroundColor: 'transparent', color: 'inherit', border: '1px solid var(--gray-200)', boxSizing: 'border-box', fontFamily: 'Inter, sans-serif', fontSize: '16px' }}
                                     />
                                 </div>
                             </div>
@@ -641,7 +641,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
                                 <label style={{ fontSize: '14px', fontWeight: '500', lineHeight: '20px', color: 'var(--gray-900)', fontFamily: 'Inter, sans-serif' }}>Description</label>
                                 <textarea
                                     placeholder="Enter a description..."
-                                    style={{ width: '100%', height: '81px', padding: '10px 14px', borderRadius: '8px', border: '1px solid #D0D5DD', boxSizing: 'border-box', fontFamily: 'Inter, sans-serif', fontSize: '16px', color: 'var(--gray-500)', resize: 'none' }}
+                                    style={{ width: '100%', height: '81px', padding: '10px 14px', borderRadius: '8px', backgroundColor: 'transparent', color: 'inherit', border: '1px solid var(--gray-200)', boxSizing: 'border-box', fontFamily: 'Inter, sans-serif', fontSize: '16px', color: 'var(--gray-500)', resize: 'none' }}
                                 />
                             </div>
 
@@ -652,7 +652,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
                                     <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
                                         {editingItem.images.map(img => (
                                             <div key={img.id} style={{ position: 'relative', width: '64px', height: '64px' }}>
-                                                <img src={img.imageUrl} alt="Item" style={{ width: '100%', height: '100%', borderRadius: '8px', objectFit: 'cover', border: '1px solid #EAECF0' }} />
+                                                <img src={img.imageUrl} alt="Item" style={{ width: '100%', height: '100%', borderRadius: '8px', objectFit: 'cover', backgroundColor: 'transparent', color: 'inherit', border: '1px solid var(--gray-200)' }} />
                                                 <button
                                                     type="button"
                                                     onClick={() => handleRemoveItemImage(editingItem.id, img.id)}
@@ -660,7 +660,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
                                                         position: 'absolute',
                                                         top: '-6px',
                                                         right: '-6px',
-                                                        background: '#FEE4E2',
+                                                        background: 'var(--gray-50)',
                                                         border: 'none',
                                                         borderRadius: '12px',
                                                         width: '20px',
@@ -669,7 +669,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
                                                         justifyContent: 'center',
                                                         alignItems: 'center',
                                                         cursor: 'pointer',
-                                                        color: '#D92D20'
+                                                        color: 'var(--gray-900)'
                                                     }}
                                                 >
                                                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
@@ -737,7 +737,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
                                 width: '32px', height: '32px', borderRadius: '32px', background: 'var(--primary-50)', border: 'none',
                                 display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer', padding: '8px'
                             }}>
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7F56D9" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--primary-700)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                             </button>
                         </div>
 
@@ -750,7 +750,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
                             height: '44px',
                             padding: '10px 14px',
                             borderRadius: '8px',
-                            border: '1px solid #D0D5DD',
+                            backgroundColor: 'transparent', color: 'inherit', border: '1px solid var(--gray-200)',
                             boxSizing: 'border-box',
                             gap: '8px'
                         }}>

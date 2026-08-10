@@ -104,7 +104,7 @@ const styles = {
     textAlign: 'center' as const,
     padding: '40px',
     color: '#6b7280',
-    background: '#f9fafb',
+    background: 'var(--gray-50)',
     borderRadius: '12px'
   },
   grid: {

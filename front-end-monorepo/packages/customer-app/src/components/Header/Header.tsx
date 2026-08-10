@@ -224,7 +224,7 @@ export const Header = () => {
       <div style={styles.right}>
         <button style={styles.iconBtnPurple} onClick={() => navigate('/campaigns')} title="Kampanyalar">
           {/* Badge/Award İkonu (Mor) */}
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9E77ED" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary-700)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="12" cy="8" r="6" />
             <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11" />
           </svg>
@@ -232,7 +232,7 @@ export const Header = () => {
         <div ref={dropdownRef} style={{ position: 'relative' }}>
           <button style={styles.iconBtnGray} onClick={() => setShowDropdown(!showDropdown)}>
             {/* Bildirim (Bell) İkonu (Gri) */}
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#667085" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gray-500)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
               <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
             </svg>
@@ -300,14 +300,14 @@ export const Header = () => {
           <div style={styles.modalContent} onClick={e => e.stopPropagation()}>
             {deleteStep === 1 ? (
               <>
-                <h3 style={{marginTop: 0, color: '#D92D20'}}>Hesabı Sil</h3>
+                <h3 style={{marginTop: 0, color: 'var(--gray-900)'}}>Hesabı Sil</h3>
                 <p style={{fontSize: '14px', color: 'var(--gray-500)'}}>
                   Hesabınızı silmek istediğinize emin misiniz? Bu işlem geri alınamaz. 
                   Devam ederseniz e-posta adresinize bir onay kodu (OTP) gönderilecektir.
                 </p>
                 <button 
                   onClick={handleRequestDeleteAccount} 
-                  style={{...styles.btnReject, display: 'block', marginTop: '20px', width: '100%', backgroundColor: '#D92D20', color: 'var(--bg-main)', border: 'none'}}
+                  style={{...styles.btnReject, display: 'block', marginTop: '20px', width: '100%', backgroundColor: 'var(--gray-900)', color: 'var(--bg-main)', border: 'none'}}
                 >
                   Onay Kodu Gönder
                 </button>
@@ -332,7 +332,7 @@ export const Header = () => {
                     padding: '10px',
                     marginTop: '10px',
                     borderRadius: '6px',
-                    border: '1px solid #D0D5DD',
+                    backgroundColor: 'transparent', color: 'inherit', border: '1px solid var(--gray-200)',
                     boxSizing: 'border-box'
                   }}
                 />
@@ -344,7 +344,7 @@ export const Header = () => {
                     display: 'block', 
                     marginTop: '20px', 
                     width: '100%', 
-                    backgroundColor: '#D92D20', 
+                    backgroundColor: 'var(--gray-900)', 
                     color: 'var(--bg-main)', 
                     border: 'none',
                     opacity: deleteOtp.length === 6 ? 1 : 0.5,
@@ -419,7 +419,7 @@ const styles = {
   },
   iconBtnGray: {
     background: 'var(--gray-50)',
-    border: '1px solid #EAECF0',
+    backgroundColor: 'transparent', color: 'inherit', border: '1px solid var(--gray-200)',
     borderRadius: '36px',
     width: '40px',
     height: '40px',
@@ -432,7 +432,7 @@ const styles = {
     position: 'absolute' as const,
     top: '-4px',
     right: '-4px',
-    backgroundColor: '#D92D20',
+    backgroundColor: 'var(--gray-900)',
     color: 'var(--bg-main)',
     fontSize: '10px',
     fontWeight: 'bold',
@@ -451,7 +451,7 @@ const styles = {
     backgroundColor: 'var(--bg-main)',
     borderRadius: '12px',
     boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-    border: '1px solid #EAECF0',
+    backgroundColor: 'transparent', color: 'inherit', border: '1px solid var(--gray-200)',
     zIndex: 1000,
     padding: '12px'
   },
@@ -459,7 +459,7 @@ const styles = {
     margin: '0 0 8px 0',
     fontSize: '14px',
     color: 'var(--gray-900)',
-    borderBottom: '1px solid #EAECF0',
+    borderBottom: '1px solid var(--gray-200)',
     paddingBottom: '8px'
   },
   requestItem: {
@@ -492,7 +492,7 @@ const styles = {
     padding: '6px',
     backgroundColor: 'var(--gray-50)',
     color: 'var(--gray-900)',
-    border: '1px solid #EAECF0',
+    backgroundColor: 'transparent', color: 'inherit', border: '1px solid var(--gray-200)',
     borderRadius: '6px',
     fontSize: '12px',
     cursor: 'pointer'
@@ -504,7 +504,7 @@ const styles = {
     backgroundColor: 'var(--bg-main)',
     borderRadius: '8px',
     boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-    border: '1px solid #EAECF0',
+    backgroundColor: 'transparent', color: 'inherit', border: '1px solid var(--gray-200)',
     zIndex: 1000,
     minWidth: '150px',
     padding: '8px'
@@ -513,7 +513,7 @@ const styles = {
     width: '100%',
     padding: '8px 12px',
     backgroundColor: '#FEF3F2',
-    color: '#D92D20',
+    color: 'var(--gray-900)',
     border: 'none',
     borderRadius: '6px',
     fontSize: '14px',
@@ -526,7 +526,7 @@ const styles = {
     width: '100%',
     padding: '8px 12px',
     backgroundColor: 'transparent',
-    color: '#D92D20',
+    color: 'var(--gray-900)',
     border: 'none',
     borderRadius: '6px',
     fontSize: '14px',
