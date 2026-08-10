@@ -29,3 +29,6 @@ jobs:
           
           # Gereksiz/eski imajları temizle (Sunucuda yer kaplamaması için)
           docker image prune -f
+          
+          # Nginx DNS önbelleğini temizlemek için nginx'i yeniden başlat (502 hatalarını önler)
+          docker compose restart nginx
