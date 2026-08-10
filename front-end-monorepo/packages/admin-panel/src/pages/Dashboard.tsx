@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { HubConnectionBuilder } from '@microsoft/signalr';
 
 interface Offer {
   id: number;
@@ -32,7 +33,28 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     fetchOffers();
     fetchStats();
-  }, []);
+
+    // SignalR bağlantısı kurulumu
+    const connection = new HubConnectionBuilder()
+      .withUrl(import.meta.env.VITE_API_URL.replace('/api/v1', '') + '/hubs/adminstats', {
+        accessTokenFactory: () => token || ''
+      })
+      .withAutomaticReconnect()
+      .build();
+
+    connection.start()
+      .then(() => console.log('SignalR Connected'))
+      .catch(err => console.error('SignalR Connection Error: ', err));
+
+    connection.on('StatsUpdated', () => {
+      console.log('StatsUpdated event received. Fetching new stats...');
+      fetchStats();
+    });
+
+    return () => {
+      connection.stop();
+    };
+  }, [token]);
 
   const fetchStats = async () => {
     try {

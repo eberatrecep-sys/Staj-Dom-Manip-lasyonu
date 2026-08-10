@@ -15,6 +15,9 @@ using Serilog;
 using MyShoppingApp.API.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using FluentValidation;
+using MyShoppingApp.API.Hubs;
+using MyShoppingApp.API.Services;
+using MyShoppingApp.Application.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -54,6 +57,7 @@ builder.Services.AddScoped<IShoppingListRepository, ShoppingListRepository>();
 builder.Services.AddScoped<ISiteSettingsRepository, SiteSettingsRepository>();
 builder.Services.AddScoped<ICurrencyRateRepository, CurrencyRateRepository>();
 builder.Services.AddScoped<IShareRepository, ShareRepository>();
+builder.Services.AddScoped<IStatsNotificationService, StatsNotificationService>();
 
 builder.Services.AddScoped<IAuthService>(sp =>
     new AuthService(
@@ -175,6 +179,8 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
     });
 
+builder.Services.AddSignalR();
+
 // ==========================================
 // 5.1 API VERSİYONLAMA
 // ==========================================
@@ -241,6 +247,7 @@ app.UseRateLimiter(); // Hız Sınırlandırma (Rate Limiter)
 app.UseAuthentication(); // Kullanıcının kim olduğunu doğrula (JWT oku)
 app.UseAuthorization();  // Kullanıcının bu işlemi yapmaya izni var mı denetle (Rol kontrolü)
 app.MapControllers();    // İstekleri ilgili Controller sınıflarına yönlendir
+app.MapHub<AdminStatsHub>("/hubs/adminstats");
 
 // Sunucuyu başlatıyoruz. (Port ayarları launchSettings.json veya Docker içerisinden okunur)
 app.Run();

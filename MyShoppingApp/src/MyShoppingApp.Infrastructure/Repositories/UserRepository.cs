@@ -2,16 +2,19 @@ using Microsoft.EntityFrameworkCore;
 using MyShoppingApp.Domain.Entities;
 using MyShoppingApp.Domain.Interfaces;
 using MyShoppingApp.Infrastructure.Context;
+using MyShoppingApp.Application.Interfaces;
 
 namespace MyShoppingApp.Infrastructure.Repositories;
 
 public class UserRepository : IUserRepository
 {
     private readonly AppDbContext _context;
+    private readonly IStatsNotificationService _statsNotificationService;
 
-    public UserRepository(AppDbContext context)
+    public UserRepository(AppDbContext context, IStatsNotificationService statsNotificationService)
     {
         _context = context;
+        _statsNotificationService = statsNotificationService;
     }
 
     public async Task<User?> GetByIdAsync(int id)
@@ -42,6 +45,7 @@ public class UserRepository : IUserRepository
     {
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
+        await _statsNotificationService.NotifyStatsUpdatedAsync();
         return user;
     }
 
@@ -49,5 +53,6 @@ public class UserRepository : IUserRepository
     {
         _context.Users.Update(user);
         await _context.SaveChangesAsync();
+        await _statsNotificationService.NotifyStatsUpdatedAsync();
     }
 }

@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MyShoppingApp.Application.Interfaces;
+using MyShoppingApp.Application.Interfaces;
 using MyShoppingApp.Domain.Entities;
 using MyShoppingApp.Infrastructure.Context;
 
@@ -8,10 +9,12 @@ namespace MyShoppingApp.Infrastructure.Repositories;
 public class OfferRepository : IOfferRepository
 {
     private readonly AppDbContext _context;
+    private readonly IStatsNotificationService _statsNotificationService;
 
-    public OfferRepository(AppDbContext context)
+    public OfferRepository(AppDbContext context, IStatsNotificationService statsNotificationService)
     {
         _context = context;
+        _statsNotificationService = statsNotificationService;
     }
 
     public async Task<Offer?> GetByIdAsync(int id)
@@ -39,6 +42,7 @@ public class OfferRepository : IOfferRepository
     {
         await _context.Offers.AddAsync(offer);
         await _context.SaveChangesAsync();
+        await _statsNotificationService.NotifyStatsUpdatedAsync();
         return offer;
     }
 
@@ -52,5 +56,6 @@ public class OfferRepository : IOfferRepository
     {
         _context.Offers.Remove(offer);
         await _context.SaveChangesAsync();
+        await _statsNotificationService.NotifyStatsUpdatedAsync();
     }
 }
