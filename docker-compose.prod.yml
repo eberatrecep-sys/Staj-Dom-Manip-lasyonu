@@ -33,7 +33,7 @@ services:
       - S3__AccessKey=minioadmin
       - S3__SecretKey=minioadmin
       - S3__BucketName=myshoppingapp
-      - S3__PublicUrlPrefix=https://api.shoppingapp.ebrsoft.com.tr/s3/ # Optional: if you want to expose minio, Caddy would need to route this.
+      - S3__PublicUrlPrefix=https://shoppingapp.ebrsoft.com.tr/s3/
     depends_on:
       - postgres-db
       - redis
