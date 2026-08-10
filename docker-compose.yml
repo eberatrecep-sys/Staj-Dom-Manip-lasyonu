@@ -10,7 +10,8 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     restart: unless-stopped
-    # Portları DIŞARI AÇMIYORUZ (Sadece docker ağı içinden erişilebilir)
+    ports:
+      - "5432:5432"
 
   pgadmin:
     image: dpage/pgadmin4
