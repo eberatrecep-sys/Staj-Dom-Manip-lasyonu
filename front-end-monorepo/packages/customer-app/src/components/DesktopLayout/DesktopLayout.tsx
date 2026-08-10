@@ -266,7 +266,7 @@ export const DesktopLayout: React.FC<DesktopLayoutProps> = ({ children }) => {
                 padding: '6px',
                 backgroundColor: 'var(--gray-50)',
                 color: 'var(--gray-900)',
-                backgroundColor: 'transparent', color: 'inherit', border: '1px solid var(--gray-200)',
+                border: '1px solid var(--gray-200)',
                 borderRadius: '6px',
                 fontSize: '12px',
                 cursor: 'pointer',
@@ -351,7 +351,7 @@ const styles = {
   themeToggle: {
     padding: '12px',
     borderRadius: '8px',
-    backgroundColor: 'transparent', color: 'inherit', border: '1px solid var(--gray-200)',
+    border: '1px solid var(--gray-200)',
     cursor: 'pointer',
     fontWeight: '500',
     display: 'flex',
@@ -392,7 +392,7 @@ const styles = {
   },
   iconBtnGray: {
     background: 'var(--gray-50)',
-    backgroundColor: 'transparent', color: 'inherit', border: '1px solid var(--gray-200)',
+    border: '1px solid var(--gray-200)',
     borderRadius: '36px',
     width: '40px',
     height: '40px',
@@ -423,8 +423,8 @@ const styles = {
     width: '240px',
     backgroundColor: 'var(--bg-main)',
     borderRadius: '12px',
-    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-    backgroundColor: 'transparent', color: 'inherit', border: '1px solid var(--gray-200)',
+    boxShadow: '0 4px 12px rgba(0,0,0,0.4)',
+    border: '1px solid var(--gray-200)',
     zIndex: 1000,
     padding: '12px',
     textAlign: 'left' as const
@@ -466,7 +466,7 @@ const styles = {
     padding: '6px',
     backgroundColor: 'var(--gray-50)',
     color: 'var(--gray-900)',
-    backgroundColor: 'transparent', color: 'inherit', border: '1px solid var(--gray-200)',
+    border: '1px solid var(--gray-200)',
     borderRadius: '6px',
     fontSize: '12px',
     cursor: 'pointer'
@@ -485,7 +485,7 @@ const styles = {
     padding: '24px',
     borderRadius: '12px',
     width: '320px',
-    boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
-    backgroundColor: 'transparent', color: 'inherit', border: '1px solid var(--gray-200)'
+    boxShadow: '0 4px 20px rgba(0,0,0,0.4)',
+    border: '1px solid var(--gray-200)'
   }
 };

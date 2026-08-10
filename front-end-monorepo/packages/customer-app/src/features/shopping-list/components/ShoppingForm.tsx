@@ -577,7 +577,8 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
                         display: 'flex',
                         flexDirection: 'column',
                         gap: '16px',
-                        boxShadow: '0px 4px 6px -2px rgba(16, 24, 40, 0.03), 0px 12px 16px -4px rgba(16, 24, 40, 0.08)',
+                        boxShadow: '0px 12px 24px -4px rgba(0, 0, 0, 0.4), 0px 4px 8px -2px rgba(0, 0, 0, 0.2)',
+                        border: '1px solid var(--gray-200)',
                         boxSizing: 'border-box'
                     }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: '32px' }}>
@@ -599,7 +600,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
                                     type="text"
                                     placeholder="Butter"
                                     {...register('productName')}
-                                    style={{ width: '100%', height: '44px', padding: '10px 14px', borderRadius: '8px', backgroundColor: 'transparent', color: 'inherit', border: '1px solid var(--gray-200)', boxSizing: 'border-box', fontFamily: 'Inter, sans-serif', fontSize: '16px' }}
+                                    style={{ width: '100%', height: '44px', padding: '10px 14px', borderRadius: '8px', backgroundColor: 'var(--gray-50)', color: 'inherit', border: '1px solid var(--gray-200)', boxSizing: 'border-box', fontFamily: 'Inter, sans-serif', fontSize: '16px' }}
                                 />
                                 {errors.productName && <span style={{ color: 'red', fontSize: '12px' }}>{errors.productName.message}</span>}
                             </div>
@@ -611,7 +612,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
                                         type="number"
                                         placeholder={editingItem ? "9999" : ""}
                                         {...register('quantity', { valueAsNumber: true })}
-                                        style={{ width: '100%', height: '44px', padding: '10px 14px', borderRadius: '8px', backgroundColor: 'transparent', color: 'inherit', border: '1px solid var(--gray-200)', boxSizing: 'border-box', fontFamily: 'Inter, sans-serif', fontSize: '16px' }}
+                                        style={{ width: '100%', height: '44px', padding: '10px 14px', borderRadius: '8px', backgroundColor: 'var(--gray-50)', color: 'inherit', border: '1px solid var(--gray-200)', boxSizing: 'border-box', fontFamily: 'Inter, sans-serif', fontSize: '16px' }}
                                     />
                                     {errors.quantity && <span style={{ color: 'red', fontSize: '12px' }}>{errors.quantity.message}</span>}
                                 </div>
@@ -620,7 +621,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
                                     <input
                                         type="text"
                                         placeholder={editingItem ? "9999" : ""}
-                                        style={{ width: '100%', height: '44px', padding: '10px 14px', borderRadius: '8px', backgroundColor: 'transparent', color: 'inherit', border: '1px solid var(--gray-200)', boxSizing: 'border-box', fontFamily: 'Inter, sans-serif', fontSize: '16px' }}
+                                        style={{ width: '100%', height: '44px', padding: '10px 14px', borderRadius: '8px', backgroundColor: 'var(--gray-50)', color: 'inherit', border: '1px solid var(--gray-200)', boxSizing: 'border-box', fontFamily: 'Inter, sans-serif', fontSize: '16px' }}
                                     />
                                 </div>
                             </div>
@@ -632,7 +633,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
                                     <input
                                         type="text"
                                         placeholder={editingItem ? "99999" : ""}
-                                        style={{ width: '100%', height: '44px', padding: '10px 14px 10px 32px', borderRadius: '8px', backgroundColor: 'transparent', color: 'inherit', border: '1px solid var(--gray-200)', boxSizing: 'border-box', fontFamily: 'Inter, sans-serif', fontSize: '16px' }}
+                                        style={{ width: '100%', height: '44px', padding: '10px 14px 10px 32px', borderRadius: '8px', backgroundColor: 'var(--gray-50)', color: 'inherit', border: '1px solid var(--gray-200)', boxSizing: 'border-box', fontFamily: 'Inter, sans-serif', fontSize: '16px' }}
                                     />
                                 </div>
                             </div>
@@ -641,7 +642,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
                                 <label style={{ fontSize: '14px', fontWeight: '500', lineHeight: '20px', color: 'var(--gray-900)', fontFamily: 'Inter, sans-serif' }}>Description</label>
                                 <textarea
                                     placeholder="Enter a description..."
-                                    style={{ width: '100%', height: '81px', padding: '10px 14px', borderRadius: '8px', backgroundColor: 'transparent', color: 'inherit', border: '1px solid var(--gray-200)', boxSizing: 'border-box', fontFamily: 'Inter, sans-serif', fontSize: '16px', color: 'var(--gray-500)', resize: 'none' }}
+                                    style={{ width: '100%', height: '81px', padding: '10px 14px', borderRadius: '8px', backgroundColor: 'var(--gray-50)', color: 'inherit', border: '1px solid var(--gray-200)', boxSizing: 'border-box', fontFamily: 'Inter, sans-serif', fontSize: '16px', color: 'var(--gray-500)', resize: 'none' }}
                                 />
                             </div>
 
@@ -652,7 +653,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
                                     <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
                                         {editingItem.images.map(img => (
                                             <div key={img.id} style={{ position: 'relative', width: '64px', height: '64px' }}>
-                                                <img src={img.imageUrl} alt="Item" style={{ width: '100%', height: '100%', borderRadius: '8px', objectFit: 'cover', backgroundColor: 'transparent', color: 'inherit', border: '1px solid var(--gray-200)' }} />
+                                                <img src={img.imageUrl} alt="Item" style={{ width: '100%', height: '100%', borderRadius: '8px', objectFit: 'cover', backgroundColor: 'var(--gray-50)', color: 'inherit', border: '1px solid var(--gray-200)' }} />
                                                 <button
                                                     type="button"
                                                     onClick={() => handleRemoveItemImage(editingItem.id, img.id)}
@@ -725,7 +726,8 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
                         display: 'flex',
                         flexDirection: 'column',
                         gap: '16px',
-                        boxShadow: '0px 4px 6px -2px rgba(16, 24, 40, 0.03), 0px 12px 16px -4px rgba(16, 24, 40, 0.08)',
+                        boxShadow: '0px 12px 24px -4px rgba(0, 0, 0, 0.4), 0px 4px 8px -2px rgba(0, 0, 0, 0.2)',
+                        border: '1px solid var(--gray-200)',
                         boxSizing: 'border-box'
                     }}>
                         {/* Header */}
@@ -750,7 +752,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
                             height: '44px',
                             padding: '10px 14px',
                             borderRadius: '8px',
-                            backgroundColor: 'transparent', color: 'inherit', border: '1px solid var(--gray-200)',
+                            backgroundColor: 'var(--gray-50)', color: 'inherit', border: '1px solid var(--gray-200)',
                             boxSizing: 'border-box',
                             gap: '8px'
                         }}>
