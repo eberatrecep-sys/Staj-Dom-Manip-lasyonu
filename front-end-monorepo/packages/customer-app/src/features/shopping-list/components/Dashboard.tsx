@@ -198,7 +198,7 @@ export const Dashboard = () => {
                             width: '40px',
                             height: '40px',
                             borderRadius: '8px',
-                            backgroundColor: '#7F56D9',
+                            backgroundColor: 'var(--primary-700)',
                             border: 'none',
                             display: 'flex',
                             justifyContent: 'center',
@@ -249,7 +249,7 @@ export const Dashboard = () => {
                             borderRadius: '16px',
                             border: '1px solid var(--gray-200)',
                             backgroundColor: selectedTag === null ? 'var(--primary-700)' : 'transparent',
-                            color: selectedTag === null ? 'white' : 'inherit',
+                            color: selectedTag === null ? 'var(--bg-main)' : 'inherit',
                             cursor: 'pointer',
                             fontSize: '12px',
                             whiteSpace: 'nowrap'
@@ -266,7 +266,7 @@ export const Dashboard = () => {
                                 borderRadius: '16px',
                                 border: '1px solid var(--gray-200)',
                                 backgroundColor: selectedTag === tag ? 'var(--primary-700)' : 'transparent',
-                                color: selectedTag === tag ? 'white' : 'inherit',
+                                color: selectedTag === tag ? 'var(--bg-main)' : 'inherit',
                                 cursor: 'pointer',
                                 fontSize: '12px',
                                 whiteSpace: 'nowrap'

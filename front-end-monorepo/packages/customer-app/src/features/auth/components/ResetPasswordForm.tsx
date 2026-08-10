@@ -58,11 +58,11 @@ const styles = {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#F9FAFB',
+        backgroundColor: 'var(--gray-50)',
         fontFamily: "'Inter', sans-serif"
     },
     glassCard: {
-        backgroundColor: '#FFFFFF',
+        backgroundColor: 'var(--bg-main)',
         border: '1px solid #EAECF0',
         borderRadius: '16px',
         padding: '40px',
@@ -70,19 +70,19 @@ const styles = {
         maxWidth: '400px',
         boxShadow: '0px 4px 6px -2px rgba(16, 24, 40, 0.03), 0px 12px 16px -4px rgba(16, 24, 40, 0.08)',
         textAlign: 'center' as const,
-        color: '#101828'
+        color: 'var(--gray-900)'
     },
     title: {
         marginTop: 0,
         marginBottom: '8px',
         fontSize: '28px',
         fontWeight: '700',
-        color: '#101828'
+        color: 'var(--gray-900)'
     },
     subtitle: {
         fontSize: '14px',
         marginBottom: '24px',
-        color: '#667085'
+        color: 'var(--gray-500)'
     },
     form: {
         display: 'flex',
@@ -97,21 +97,21 @@ const styles = {
         padding: '12px 16px',
         borderRadius: '8px',
         border: '1px solid #D0D5DD',
-        background: '#FFFFFF',
-        color: '#101828',
+        background: 'var(--bg-main)',
+        color: 'var(--gray-900)',
         fontSize: '16px',
         outline: 'none',
         transition: 'all 0.2s ease',
         boxSizing: 'border-box' as const,
         '::placeholder': {
-            color: '#667085'
+            color: 'var(--gray-500)'
         }
     },
     button: {
         padding: '12px',
         borderRadius: '8px',
         border: 'none',
-        background: '#7F56D9',
+        background: 'var(--primary-700)',
         color: '#fff',
         fontSize: '16px',
         fontWeight: '600',

@@ -113,7 +113,7 @@ const styles = {
     gap: '24px'
   },
   card: {
-    backgroundColor: '#ffffff',
+    backgroundColor: 'var(--bg-main)',
     borderRadius: '16px',
     overflow: 'hidden',
     boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
@@ -167,8 +167,8 @@ const styles = {
   cardBtn: {
     width: '100%',
     padding: '10px',
-    backgroundColor: '#7F56D9',
-    color: '#ffffff',
+    backgroundColor: 'var(--primary-700)',
+    color: 'var(--bg-main)',
     border: 'none',
     borderRadius: '8px',
     fontWeight: '500',

@@ -295,7 +295,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
             {/* Üst Bar */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
                 {!embedded && (
-                    <button onClick={() => navigate(-1)} style={{ background: '#F9F5FF', border: 'none', borderRadius: '32px', width: '32px', height: '32px', display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer' }}>
+                    <button onClick={() => navigate(-1)} style={{ background: 'var(--primary-50)', border: 'none', borderRadius: '32px', width: '32px', height: '32px', display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer' }}>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9E77ED" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M12 19l-7-7 7-7" /></svg>
                     </button>
                 )}
@@ -307,7 +307,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
                 <div style={{ position: 'relative' }}>
                     <button
                         onClick={(e) => { e.stopPropagation(); setIsMenuOpen(!isMenuOpen); }}
-                        style={{ background: '#F9F5FF', border: 'none', borderRadius: '32px', width: '32px', height: '32px', display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer' }}
+                        style={{ background: 'var(--primary-50)', border: 'none', borderRadius: '32px', width: '32px', height: '32px', display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer' }}
                     >
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9E77ED" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="1.5" /><circle cx="12" cy="5" r="1.5" /><circle cx="12" cy="19" r="1.5" /></svg>
                     </button>
@@ -318,7 +318,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
                             top: '40px',
                             right: '0',
                             width: '209px',
-                            backgroundColor: '#FFFFFF',
+                            backgroundColor: 'var(--bg-main)',
                             borderRadius: '32px',
                             padding: '24px 16px',
                             display: 'flex',
@@ -342,13 +342,13 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
                                         fontSize: '16px',
                                         fontWeight: '600',
                                         lineHeight: '24px',
-                                        color: '#344054',
+                                        color: 'var(--gray-900)',
                                         fontFamily: 'Inter, sans-serif',
                                         cursor: 'pointer',
                                         borderRadius: '4px',
                                         transition: 'background-color 0.2s'
                                     }}
-                                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#F9FAFB'}
+                                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--gray-50)'}
                                     onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                                     onClick={(e) => {
                                         e.stopPropagation();
@@ -365,10 +365,10 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
 
             {/* Liste Başlığı ve İstatistikler */}
             <div style={{ marginBottom: '32px' }}>
-                <h2 style={{ fontSize: '24px', fontWeight: '700', lineHeight: '32px', color: '#344054', margin: '0 0 16px 0', fontFamily: 'Inter, sans-serif' }}>
+                <h2 style={{ fontSize: '24px', fontWeight: '700', lineHeight: '32px', color: 'var(--gray-900)', margin: '0 0 16px 0', fontFamily: 'Inter, sans-serif' }}>
                     {listName || 'Grocery Shopping List'}
                 </h2>
-                <div style={{ display: 'flex', width: '100%', height: '20px', justifyContent: 'space-between', alignItems: 'center', color: '#667085', fontSize: '14px', fontFamily: 'Inter, sans-serif' }}>
+                <div style={{ display: 'flex', width: '100%', height: '20px', justifyContent: 'space-between', alignItems: 'center', color: 'var(--gray-500)', fontSize: '14px', fontFamily: 'Inter, sans-serif' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '4px', height: '20px' }}>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
                         <span>List {items.filter(i => i.isCompleted).length}/{items.length} Completed</span>
@@ -392,7 +392,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
                             style={{
                                 border: 'none',
                                 background: 'transparent',
-                                color: '#667085',
+                                color: 'var(--gray-500)',
                                 fontSize: '14px',
                                 fontFamily: 'Inter, sans-serif',
                                 outline: 'none',
@@ -407,7 +407,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
                                     setIsTagEditing(false);
                                 }}
                                 style={{
-                                    background: '#7F56D9',
+                                    background: 'var(--primary-700)',
                                     border: 'none',
                                     borderRadius: '50%',
                                     width: '18px',
@@ -435,11 +435,11 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
                 <div style={{ marginTop: '24px', display: 'flex', flexDirection: 'column', gap: '16px', width: '361px' }}>
                     {items.length === 0 ? (
                         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '48px 0', textAlign: 'center' }}>
-                            <div style={{ width: '48px', height: '48px', background: '#F9F5FF', borderRadius: '24px', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '16px' }}>
+                            <div style={{ width: '48px', height: '48px', background: 'var(--primary-50)', borderRadius: '24px', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '16px' }}>
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7F56D9" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                             </div>
-                            <h3 style={{ margin: '0 0 8px 0', fontSize: '18px', fontWeight: '600', color: '#101828' }}>No items yet</h3>
-                            <p style={{ margin: '0 0 24px 0', fontSize: '14px', color: '#667085', maxWidth: '240px' }}>
+                            <h3 style={{ margin: '0 0 8px 0', fontSize: '18px', fontWeight: '600', color: 'var(--gray-900)' }}>No items yet</h3>
+                            <p style={{ margin: '0 0 24px 0', fontSize: '14px', color: 'var(--gray-500)', maxWidth: '240px' }}>
                                 Add items to your shopping list to keep track of what you need to buy.
                             </p>
                         </div>
@@ -455,7 +455,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
                                     padding: '16px',
                                     borderRadius: '8px',
                                     border: isChecked ? '1px solid #D6BBFB' : '1px solid #EAECF0',
-                                    backgroundColor: isChecked ? '#F9F5FF' : '#FCFCFD',
+                                    backgroundColor: isChecked ? 'var(--primary-50)' : 'var(--bg-main)',
                                     boxSizing: 'border-box'
                                 }}>
                                     <div
@@ -476,7 +476,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
                                                 height: '16px',
                                                 borderRadius: '4px',
                                                 border: isChecked ? '1px solid #7F56D9' : '1px solid #D0D5DD',
-                                                backgroundColor: isChecked ? '#F9F5FF' : '#FFFFFF',
+                                                backgroundColor: isChecked ? 'var(--primary-50)' : 'var(--bg-main)',
                                                 display: 'flex',
                                                 justifyContent: 'center',
                                                 alignItems: 'center',
@@ -492,7 +492,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
                                                 fontSize: '14px',
                                                 fontWeight: '500',
                                                 lineHeight: '20px',
-                                                color: isChecked ? '#7F56D9' : '#344054',
+                                                color: isChecked ? 'var(--primary-700)' : 'var(--gray-900)',
                                                 fontFamily: 'Inter, sans-serif',
                                                 textDecoration: isChecked ? 'line-through' : 'none'
                                             }}>
@@ -520,8 +520,8 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
                                                 title="Fotoğraf Ekle"
                                             />
                                             <button style={{
-                                                width: '24px', height: '24px', borderRadius: '12px', background: '#F9F5FF', border: 'none',
-                                                display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#7F56D9', cursor: 'pointer'
+                                                width: '24px', height: '24px', borderRadius: '12px', background: 'var(--primary-50)', border: 'none',
+                                                display: 'flex', justifyContent: 'center', alignItems: 'center', color: 'var(--primary-700)', cursor: 'pointer'
                                             }}>
                                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
                                             </button>
@@ -538,8 +538,8 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
                             width: '361px',
                             height: '52px',
                             padding: '16px',
-                            background: '#7F56D9',
-                            color: 'white',
+                            background: 'var(--primary-700)',
+                            color: 'var(--bg-main)',
                             border: 'none',
                             borderRadius: '8px',
                             fontSize: '16px',
@@ -571,7 +571,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
                 }}>
                     <div style={{
                         width: '361px',
-                        backgroundColor: '#FFFFFF',
+                        backgroundColor: 'var(--bg-main)',
                         borderRadius: '32px',
                         padding: '24px',
                         display: 'flex',
@@ -581,11 +581,11 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
                         boxSizing: 'border-box'
                     }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: '32px' }}>
-                            <h2 style={{ margin: 0, fontSize: '24px', fontWeight: '700', lineHeight: '32px', fontFamily: 'Inter, sans-serif', color: '#101828' }}>
+                            <h2 style={{ margin: 0, fontSize: '24px', fontWeight: '700', lineHeight: '32px', fontFamily: 'Inter, sans-serif', color: 'var(--gray-900)' }}>
                                 {editingItem ? 'Edit Item' : 'Add New Item'}
                             </h2>
                             <button onClick={closePopup} style={{
-                                width: '32px', height: '32px', borderRadius: '32px', background: '#F9F5FF', border: 'none',
+                                width: '32px', height: '32px', borderRadius: '32px', background: 'var(--primary-50)', border: 'none',
                                 display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer', padding: '8px'
                             }}>
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7F56D9" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
@@ -594,7 +594,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
 
                         <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                                <label style={{ fontSize: '14px', fontWeight: '500', lineHeight: '20px', color: '#344054', fontFamily: 'Inter, sans-serif' }}>Item name</label>
+                                <label style={{ fontSize: '14px', fontWeight: '500', lineHeight: '20px', color: 'var(--gray-900)', fontFamily: 'Inter, sans-serif' }}>Item name</label>
                                 <input
                                     type="text"
                                     placeholder="Butter"
@@ -606,7 +606,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
 
                             <div style={{ display: 'flex', gap: '12px', justifyContent: 'space-between' }}>
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', width: '150.5px' }}>
-                                    <label style={{ fontSize: '14px', fontWeight: '500', lineHeight: '20px', color: '#344054', fontFamily: 'Inter, sans-serif' }}>Quantity</label>
+                                    <label style={{ fontSize: '14px', fontWeight: '500', lineHeight: '20px', color: 'var(--gray-900)', fontFamily: 'Inter, sans-serif' }}>Quantity</label>
                                     <input
                                         type="number"
                                         placeholder={editingItem ? "9999" : ""}
@@ -616,7 +616,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
                                     {errors.quantity && <span style={{ color: 'red', fontSize: '12px' }}>{errors.quantity.message}</span>}
                                 </div>
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', width: '150.5px' }}>
-                                    <label style={{ fontSize: '14px', fontWeight: '500', lineHeight: '20px', color: '#344054', fontFamily: 'Inter, sans-serif' }}>Unit</label>
+                                    <label style={{ fontSize: '14px', fontWeight: '500', lineHeight: '20px', color: 'var(--gray-900)', fontFamily: 'Inter, sans-serif' }}>Unit</label>
                                     <input
                                         type="text"
                                         placeholder={editingItem ? "9999" : ""}
@@ -626,9 +626,9 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
                             </div>
 
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                                <label style={{ fontSize: '14px', fontWeight: '500', lineHeight: '20px', color: '#344054', fontFamily: 'Inter, sans-serif' }}>Price</label>
+                                <label style={{ fontSize: '14px', fontWeight: '500', lineHeight: '20px', color: 'var(--gray-900)', fontFamily: 'Inter, sans-serif' }}>Price</label>
                                 <div style={{ position: 'relative' }}>
-                                    <span style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#667085', fontFamily: 'Inter, sans-serif', fontSize: '16px' }}>₹</span>
+                                    <span style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: 'var(--gray-500)', fontFamily: 'Inter, sans-serif', fontSize: '16px' }}>₹</span>
                                     <input
                                         type="text"
                                         placeholder={editingItem ? "99999" : ""}
@@ -638,17 +638,17 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
                             </div>
 
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                                <label style={{ fontSize: '14px', fontWeight: '500', lineHeight: '20px', color: '#344054', fontFamily: 'Inter, sans-serif' }}>Description</label>
+                                <label style={{ fontSize: '14px', fontWeight: '500', lineHeight: '20px', color: 'var(--gray-900)', fontFamily: 'Inter, sans-serif' }}>Description</label>
                                 <textarea
                                     placeholder="Enter a description..."
-                                    style={{ width: '100%', height: '81px', padding: '10px 14px', borderRadius: '8px', border: '1px solid #D0D5DD', boxSizing: 'border-box', fontFamily: 'Inter, sans-serif', fontSize: '16px', color: '#667085', resize: 'none' }}
+                                    style={{ width: '100%', height: '81px', padding: '10px 14px', borderRadius: '8px', border: '1px solid #D0D5DD', boxSizing: 'border-box', fontFamily: 'Inter, sans-serif', fontSize: '16px', color: 'var(--gray-500)', resize: 'none' }}
                                 />
                             </div>
 
                             {/* Item Images Section for Edit */}
                             {editingItem && editingItem.images && editingItem.images.length > 0 && (
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '4px' }}>
-                                    <label style={{ fontSize: '14px', fontWeight: '500', color: '#344054', fontFamily: 'Inter, sans-serif' }}>Fotoğraflar</label>
+                                    <label style={{ fontSize: '14px', fontWeight: '500', color: 'var(--gray-900)', fontFamily: 'Inter, sans-serif' }}>Fotoğraflar</label>
                                     <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
                                         {editingItem.images.map(img => (
                                             <div key={img.id} style={{ position: 'relative', width: '64px', height: '64px' }}>
@@ -684,8 +684,8 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
                                 width: '100%',
                                 height: '52px',
                                 padding: '16px',
-                                background: '#7F56D9',
-                                color: 'white',
+                                background: 'var(--primary-700)',
+                                color: 'var(--bg-main)',
                                 border: 'none',
                                 borderRadius: '8px',
                                 fontSize: '16px',
@@ -719,7 +719,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
                 }}>
                     <div style={{
                         width: '361px',
-                        backgroundColor: '#FFFFFF',
+                        backgroundColor: 'var(--bg-main)',
                         borderRadius: '16px',
                         padding: '16px',
                         display: 'flex',
@@ -730,11 +730,11 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
                     }}>
                         {/* Header */}
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: '32px' }}>
-                            <h2 style={{ margin: 0, fontSize: '24px', fontWeight: '700', lineHeight: '32px', fontFamily: 'Inter, sans-serif', color: '#344054' }}>
+                            <h2 style={{ margin: 0, fontSize: '24px', fontWeight: '700', lineHeight: '32px', fontFamily: 'Inter, sans-serif', color: 'var(--gray-900)' }}>
                                 Share
                             </h2>
                             <button onClick={() => setIsSharePopupOpen(false)} style={{
-                                width: '32px', height: '32px', borderRadius: '32px', background: '#F9F5FF', border: 'none',
+                                width: '32px', height: '32px', borderRadius: '32px', background: 'var(--primary-50)', border: 'none',
                                 display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer', padding: '8px'
                             }}>
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7F56D9" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
@@ -766,7 +766,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
                                     flexGrow: 1,
                                     fontFamily: 'Inter, sans-serif',
                                     fontSize: '16px',
-                                    color: '#667085',
+                                    color: 'var(--gray-500)',
                                     padding: 0
                                 }}
                             />
@@ -774,7 +774,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
                                 onClick={handleInvite}
                                 style={{
                                 display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer',
-                                color: '#7F56D9', fontSize: '14px', fontWeight: '600', fontFamily: 'Inter, sans-serif'
+                                color: 'var(--primary-700)', fontSize: '14px', fontWeight: '600', fontFamily: 'Inter, sans-serif'
                             }}>
                                 <span>Gönder</span>
                             </div>
@@ -782,24 +782,24 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
 
                         {/* Invite List */}
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                            <h3 style={{ margin: 0, fontSize: '14px', fontWeight: '500', color: '#667085', fontFamily: 'Inter, sans-serif' }}>Invite</h3>
+                            <h3 style={{ margin: 0, fontSize: '14px', fontWeight: '500', color: 'var(--gray-500)', fontFamily: 'Inter, sans-serif' }}>Invite</h3>
 
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                                     <img src={avatar2} alt="Anjali Arora" style={{ width: '40px', height: '40px', borderRadius: '50%' }} />
-                                    <span style={{ fontSize: '14px', fontWeight: '500', color: '#344054', fontFamily: 'Inter, sans-serif' }}>Anjali Arora</span>
+                                    <span style={{ fontSize: '14px', fontWeight: '500', color: 'var(--gray-900)', fontFamily: 'Inter, sans-serif' }}>Anjali Arora</span>
                                 </div>
-                                <span style={{ fontSize: '14px', fontWeight: '500', color: '#667085', fontFamily: 'Inter, sans-serif' }}>Owner</span>
+                                <span style={{ fontSize: '14px', fontWeight: '500', color: 'var(--gray-500)', fontFamily: 'Inter, sans-serif' }}>Owner</span>
                             </div>
 
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                                     <img src={avatar1} alt="Shiya Singh" style={{ width: '40px', height: '40px', borderRadius: '50%' }} />
-                                    <span style={{ fontSize: '14px', fontWeight: '500', color: '#344054', fontFamily: 'Inter, sans-serif' }}>Shiya Singh</span>
+                                    <span style={{ fontSize: '14px', fontWeight: '500', color: 'var(--gray-900)', fontFamily: 'Inter, sans-serif' }}>Shiya Singh</span>
                                 </div>
                                 <div style={{
                                     display: 'flex', alignItems: 'center', gap: '4px', cursor: 'pointer',
-                                    color: '#667085', fontSize: '14px', fontWeight: '500', fontFamily: 'Inter, sans-serif'
+                                    color: 'var(--gray-500)', fontSize: '14px', fontWeight: '500', fontFamily: 'Inter, sans-serif'
                                 }}>
                                     <span>Edit</span>
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>

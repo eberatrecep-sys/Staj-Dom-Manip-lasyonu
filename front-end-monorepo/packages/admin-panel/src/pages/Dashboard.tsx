@@ -180,7 +180,7 @@ const Dashboard: React.FC = () => {
               gap: '20px', 
               marginBottom: '2rem',
               padding: '1rem',
-              backgroundColor: 'white',
+              backgroundColor: 'var(--bg-main)',
               borderRadius: '8px',
               boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
             }}>

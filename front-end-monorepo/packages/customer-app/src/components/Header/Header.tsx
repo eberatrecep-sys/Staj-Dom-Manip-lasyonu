@@ -265,7 +265,7 @@ export const Header = () => {
         <div style={styles.modalOverlay} onClick={() => { setShowProfileModal(false); setSelectedFile(null); }}>
           <div style={styles.modalContent} onClick={e => e.stopPropagation()}>
             <h3 style={{marginTop: 0}}>Profil Resmini Değiştir</h3>
-            <p style={{fontSize: '14px', color: '#667085'}}>JPEG veya PNG dosyası seçin (Maks. 5MB).</p>
+            <p style={{fontSize: '14px', color: 'var(--gray-500)'}}>JPEG veya PNG dosyası seçin (Maks. 5MB).</p>
             <input 
               type="file" 
               accept="image/png, image/jpeg" 
@@ -301,13 +301,13 @@ export const Header = () => {
             {deleteStep === 1 ? (
               <>
                 <h3 style={{marginTop: 0, color: '#D92D20'}}>Hesabı Sil</h3>
-                <p style={{fontSize: '14px', color: '#667085'}}>
+                <p style={{fontSize: '14px', color: 'var(--gray-500)'}}>
                   Hesabınızı silmek istediğinize emin misiniz? Bu işlem geri alınamaz. 
                   Devam ederseniz e-posta adresinize bir onay kodu (OTP) gönderilecektir.
                 </p>
                 <button 
                   onClick={handleRequestDeleteAccount} 
-                  style={{...styles.btnReject, display: 'block', marginTop: '20px', width: '100%', backgroundColor: '#D92D20', color: 'white', border: 'none'}}
+                  style={{...styles.btnReject, display: 'block', marginTop: '20px', width: '100%', backgroundColor: '#D92D20', color: 'var(--bg-main)', border: 'none'}}
                 >
                   Onay Kodu Gönder
                 </button>
@@ -318,7 +318,7 @@ export const Header = () => {
             ) : (
               <>
                 <h3 style={{marginTop: 0}}>Onay Kodu (OTP)</h3>
-                <p style={{fontSize: '14px', color: '#667085'}}>
+                <p style={{fontSize: '14px', color: 'var(--gray-500)'}}>
                   E-posta adresinize gönderilen 6 haneli kodu girin.
                 </p>
                 <input 
@@ -345,7 +345,7 @@ export const Header = () => {
                     marginTop: '20px', 
                     width: '100%', 
                     backgroundColor: '#D92D20', 
-                    color: 'white', 
+                    color: 'var(--bg-main)', 
                     border: 'none',
                     opacity: deleteOtp.length === 6 ? 1 : 0.5,
                     cursor: deleteOtp.length === 6 ? 'pointer' : 'not-allowed'
@@ -392,14 +392,14 @@ const styles = {
     fontSize: '14px',
     fontWeight: '600',
     lineHeight: '20px',
-    color: '#344054',
+    color: 'var(--gray-900)',
     fontFamily: 'Inter, sans-serif'
   },
   email: {
     fontSize: '12px',
     fontWeight: '400',
     lineHeight: '18px',
-    color: '#667085',
+    color: 'var(--gray-500)',
     fontFamily: 'Inter, sans-serif'
   },
   right: {
@@ -407,7 +407,7 @@ const styles = {
     gap: '8px'
   },
   iconBtnPurple: {
-    background: '#F9F5FF',
+    background: 'var(--primary-50)',
     border: 'none',
     borderRadius: '36px',
     width: '40px',
@@ -418,7 +418,7 @@ const styles = {
     cursor: 'pointer'
   },
   iconBtnGray: {
-    background: '#F9FAFB',
+    background: 'var(--gray-50)',
     border: '1px solid #EAECF0',
     borderRadius: '36px',
     width: '40px',
@@ -433,7 +433,7 @@ const styles = {
     top: '-4px',
     right: '-4px',
     backgroundColor: '#D92D20',
-    color: 'white',
+    color: 'var(--bg-main)',
     fontSize: '10px',
     fontWeight: 'bold',
     width: '16px',
@@ -448,7 +448,7 @@ const styles = {
     top: '48px',
     right: '0',
     width: '280px',
-    backgroundColor: 'white',
+    backgroundColor: 'var(--bg-main)',
     borderRadius: '12px',
     boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
     border: '1px solid #EAECF0',
@@ -458,7 +458,7 @@ const styles = {
   dropdownTitle: {
     margin: '0 0 8px 0',
     fontSize: '14px',
-    color: '#344054',
+    color: 'var(--gray-900)',
     borderBottom: '1px solid #EAECF0',
     paddingBottom: '8px'
   },
@@ -480,8 +480,8 @@ const styles = {
   btnAccept: {
     flex: 1,
     padding: '6px',
-    backgroundColor: '#7F56D9',
-    color: 'white',
+    backgroundColor: 'var(--primary-700)',
+    color: 'var(--bg-main)',
     border: 'none',
     borderRadius: '6px',
     fontSize: '12px',
@@ -490,8 +490,8 @@ const styles = {
   btnReject: {
     flex: 1,
     padding: '6px',
-    backgroundColor: '#F9FAFB',
-    color: '#344054',
+    backgroundColor: 'var(--gray-50)',
+    color: 'var(--gray-900)',
     border: '1px solid #EAECF0',
     borderRadius: '6px',
     fontSize: '12px',
@@ -501,7 +501,7 @@ const styles = {
     position: 'absolute' as const,
     top: '48px',
     left: '0',
-    backgroundColor: 'white',
+    backgroundColor: 'var(--bg-main)',
     borderRadius: '8px',
     boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
     border: '1px solid #EAECF0',
@@ -546,7 +546,7 @@ const styles = {
     zIndex: 2000
   },
   modalContent: {
-    backgroundColor: 'white',
+    backgroundColor: 'var(--bg-main)',
     padding: '24px',
     borderRadius: '12px',
     width: '320px',
