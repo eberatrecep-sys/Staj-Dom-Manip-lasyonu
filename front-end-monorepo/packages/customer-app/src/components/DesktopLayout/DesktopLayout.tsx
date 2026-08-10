@@ -121,12 +121,18 @@ export const DesktopLayout: React.FC<DesktopLayoutProps> = ({ children }) => {
           name: decoded.name || decoded.username || decoded.sub || decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'] || 'Kullanıcı',
           email: decoded.email || decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'] || ''
         });
+        if (decoded.profilePictureUrl && !savedPic) {
+          setProfilePicUrl(decoded.profilePictureUrl);
+          localStorage.setItem('profilePicUrl', decoded.profilePictureUrl);
+        }
       }
     }
   }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    localStorage.removeItem('profilePicUrl');
     navigate('/login');
   };
 
@@ -226,13 +232,13 @@ export const DesktopLayout: React.FC<DesktopLayoutProps> = ({ children }) => {
       {showProfileModal && (
         <div style={styles.modalOverlay} onClick={() => { setShowProfileModal(false); setSelectedFile(null); }}>
           <div style={styles.modalContent} onClick={e => e.stopPropagation()}>
-            <h3 style={{marginTop: 0, color: '#101828'}}>Profil Resmini Değiştir</h3>
-            <p style={{fontSize: '14px', color: '#667085'}}>JPEG veya PNG dosyası seçin (Maks. 1MB).</p>
+            <h3 style={{marginTop: 0, color: 'var(--gray-900)'}}>Profil Resmini Değiştir</h3>
+            <p style={{fontSize: '14px', color: 'var(--gray-500)'}}>JPEG veya PNG dosyası seçin (Maks. 1MB).</p>
             <input 
               type="file" 
               accept="image/png, image/jpeg" 
               onChange={handleFileSelect} 
-              style={{marginTop: '10px', color: '#101828'}}
+              style={{marginTop: '10px', color: 'var(--gray-900)'}}
             />
             
             <button 
@@ -240,7 +246,7 @@ export const DesktopLayout: React.FC<DesktopLayoutProps> = ({ children }) => {
               disabled={!selectedFile}
               style={{
                 padding: '6px',
-                backgroundColor: '#7F56D9',
+                backgroundColor: 'var(--primary-700)',
                 color: 'white',
                 border: 'none',
                 borderRadius: '6px',
@@ -258,9 +264,9 @@ export const DesktopLayout: React.FC<DesktopLayoutProps> = ({ children }) => {
               onClick={() => { setShowProfileModal(false); setSelectedFile(null); }} 
               style={{
                 padding: '6px',
-                backgroundColor: '#F9FAFB',
-                color: '#344054',
-                border: '1px solid #EAECF0',
+                backgroundColor: 'var(--gray-50)',
+                color: 'var(--gray-900)',
+                border: '1px solid var(--gray-200)',
                 borderRadius: '6px',
                 fontSize: '12px',
                 cursor: 'pointer',
@@ -374,7 +380,7 @@ const styles = {
     flexDirection: 'column' as const
   },
   iconBtnPurple: {
-    background: '#F9F5FF',
+    background: 'var(--primary-50)',
     border: 'none',
     borderRadius: '36px',
     width: '40px',
@@ -385,8 +391,8 @@ const styles = {
     cursor: 'pointer'
   },
   iconBtnGray: {
-    background: '#F9FAFB',
-    border: '1px solid #EAECF0',
+    background: 'var(--gray-50)',
+    border: '1px solid var(--gray-200)',
     borderRadius: '36px',
     width: '40px',
     height: '40px',
@@ -415,10 +421,10 @@ const styles = {
     top: '48px',
     left: '0',
     width: '240px',
-    backgroundColor: 'white',
+    backgroundColor: 'var(--bg-main)',
     borderRadius: '12px',
     boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-    border: '1px solid #EAECF0',
+    border: '1px solid var(--gray-200)',
     zIndex: 1000,
     padding: '12px',
     textAlign: 'left' as const
@@ -426,8 +432,8 @@ const styles = {
   dropdownTitle: {
     margin: '0 0 8px 0',
     fontSize: '14px',
-    color: '#344054',
-    borderBottom: '1px solid #EAECF0',
+    color: 'var(--gray-900)',
+    borderBottom: '1px solid var(--gray-200)',
     paddingBottom: '8px'
   },
   requestItem: {
@@ -475,10 +481,11 @@ const styles = {
     zIndex: 2000
   },
   modalContent: {
-    backgroundColor: 'white',
+    backgroundColor: 'var(--bg-main)',
     padding: '24px',
     borderRadius: '12px',
     width: '320px',
-    boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
+    boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+    border: '1px solid var(--gray-200)'
   }
 };

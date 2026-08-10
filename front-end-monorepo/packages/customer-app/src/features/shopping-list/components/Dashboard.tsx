@@ -222,15 +222,15 @@ export const Dashboard = () => {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     onFocus={() => { if(suggestions.length > 0) setShowSuggestions(true); }}
-                    style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #EAECF0', boxSizing: 'border-box', backgroundColor: 'var(--bg-main)', color: 'inherit' }}
+                    style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid var(--gray-200)', boxSizing: 'border-box', backgroundColor: 'var(--bg-main)', color: 'inherit' }}
                 />
                 {showSuggestions && suggestions.length > 0 && (
-                    <div style={{ position: 'absolute', top: '100%', left: 0, right: 0, backgroundColor: 'var(--bg-main)', border: '1px solid #EAECF0', borderRadius: '8px', zIndex: 50, marginTop: '4px', boxShadow: '0 4px 6px rgba(0,0,0,0.1)' }}>
+                    <div style={{ position: 'absolute', top: '100%', left: 0, right: 0, backgroundColor: 'var(--bg-main)', border: '1px solid var(--gray-200)', borderRadius: '8px', zIndex: 50, marginTop: '4px', boxShadow: '0 4px 6px rgba(0,0,0,0.1)' }}>
                         {suggestions.map((sug, idx) => (
                             <div 
                                 key={idx} 
                                 onClick={() => { setSearchQuery(sug); setShowSuggestions(false); }}
-                                style={{ padding: '10px 12px', cursor: 'pointer', borderBottom: idx === suggestions.length - 1 ? 'none' : '1px solid #EAECF0' }}
+                                style={{ padding: '10px 12px', cursor: 'pointer', borderBottom: idx === suggestions.length - 1 ? 'none' : '1px solid var(--gray-200)' }}
                             >
                                 {sug}
                             </div>
@@ -247,8 +247,8 @@ export const Dashboard = () => {
                         style={{
                             padding: '6px 12px',
                             borderRadius: '16px',
-                            border: '1px solid #EAECF0',
-                            backgroundColor: selectedTag === null ? '#7F56D9' : 'transparent',
+                            border: '1px solid var(--gray-200)',
+                            backgroundColor: selectedTag === null ? 'var(--primary-700)' : 'transparent',
                             color: selectedTag === null ? 'white' : 'inherit',
                             cursor: 'pointer',
                             fontSize: '12px',
@@ -264,8 +264,8 @@ export const Dashboard = () => {
                             style={{
                                 padding: '6px 12px',
                                 borderRadius: '16px',
-                                border: '1px solid #EAECF0',
-                                backgroundColor: selectedTag === tag ? '#7F56D9' : 'transparent',
+                                border: '1px solid var(--gray-200)',
+                                backgroundColor: selectedTag === tag ? 'var(--primary-700)' : 'transparent',
                                 color: selectedTag === tag ? 'white' : 'inherit',
                                 cursor: 'pointer',
                                 fontSize: '12px',
@@ -293,10 +293,10 @@ export const Dashboard = () => {
                         margin: '0 auto',
                         gap: '16px',
                         borderRadius: '24px',
-                        border: '1px dashed #EAECF0',
+                        border: '1px dashed var(--gray-200)',
                         padding: '24px',
                         boxSizing: 'border-box',
-                        backgroundColor: '#ffffff',
+                        backgroundColor: 'var(--bg-main)',
                         position: 'relative',
                         zIndex: 10
                     }}>
@@ -308,10 +308,10 @@ export const Dashboard = () => {
                             onError={(e) => { e.currentTarget.src = 'https://cdni.iconscout.com/illustration/premium/thumb/folder-with-cross-mark-4279226-3561332.png' }}
                         />
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                            <h3 style={{ margin: 0, fontSize: '20px', fontWeight: '600', lineHeight: '30px', color: '#101828', fontFamily: 'Inter, sans-serif' }}>
+                            <h3 style={{ margin: 0, fontSize: '20px', fontWeight: '600', lineHeight: '30px', color: 'var(--gray-900)', fontFamily: 'Inter, sans-serif' }}>
                                 Start by creating list
                             </h3>
-                            <p style={{ margin: 0, fontSize: '14px', fontWeight: '400', lineHeight: '20px', color: '#667085', fontFamily: 'Inter, sans-serif' }}>
+                            <p style={{ margin: 0, fontSize: '14px', fontWeight: '400', lineHeight: '20px', color: 'var(--gray-500)', fontFamily: 'Inter, sans-serif' }}>
                                 Your smart shopping list will shown here. start by creating a new list
                             </p>
                         </div>
@@ -335,7 +335,7 @@ export const Dashboard = () => {
                         };
 
                         return (
-                            <div key={list.id} onClick={handleClick} style={{ cursor: 'pointer', border: isDesktop && selectedListId === list.id.toString() ? '2px solid #7F56D9' : 'none', borderRadius: '24px' }}>
+                            <div key={list.id} onClick={handleClick} style={{ cursor: 'pointer', border: isDesktop && selectedListId === list.id.toString() ? '2px solid var(--primary-700)' : 'none', borderRadius: '24px' }}>
                                 <ListCard
                                     title={list.title}
                                     count={totalItems}
@@ -360,11 +360,11 @@ export const Dashboard = () => {
     const splitPaneContent = (
         <div style={{ display: 'flex', width: '100%', flex: 1, overflow: 'hidden' }}>
             {/* Sol Panel: Listeler */}
-            <div style={{ width: '400px', flexShrink: 0, borderRight: '1px solid #EAECF0', paddingRight: '24px', overflowY: 'auto', paddingBottom: '32px' }}>
+            <div style={{ width: '400px', flexShrink: 0, borderRight: '1px solid var(--gray-200)', paddingRight: '24px', overflowY: 'auto', paddingBottom: '32px' }}>
                 {content}
             </div>
             {/* Sağ Panel: Form/Detaylar */}
-            <div style={{ flex: '1', paddingLeft: '24px', overflowY: 'auto', display: 'flex', flexDirection: 'column', backgroundColor: 'var(--bg-main, #ffffff)', borderRadius: '24px' }}>
+            <div style={{ flex: '1', paddingLeft: '24px', overflowY: 'auto', display: 'flex', flexDirection: 'column', backgroundColor: 'var(--bg-main)', borderRadius: '24px' }}>
                 {selectedListId ? (
                     <ShoppingForm 
                         listId={selectedListId} 
@@ -376,8 +376,8 @@ export const Dashboard = () => {
                         onListUpdated={fetchLists}
                     />
                 ) : (
-                    <div style={{ display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center', color: '#667085', flexDirection: 'column', gap: '16px' }}>
-                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#EAECF0" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
+                    <div style={{ display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center', color: 'var(--gray-500)', flexDirection: 'column', gap: '16px' }}>
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--gray-200)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
                         <p style={{ fontSize: '16px', fontWeight: '500' }}>Detayları görüntülemek için sol taraftan bir liste seçin</p>
                     </div>
                 )}

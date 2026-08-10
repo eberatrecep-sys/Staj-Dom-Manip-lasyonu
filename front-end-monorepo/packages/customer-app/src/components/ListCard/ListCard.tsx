@@ -61,10 +61,10 @@ export const ListCard = ({ title, count, completedCount = 0, tag = 'Kitchen item
 
 const styles = {
   card: {
-    background: 'var(--card-bg)',
-    borderRadius: 'var(--radius-card)',
+    background: 'var(--bg-main)',
+    borderRadius: '16px',
     padding: '16px',
-    border: '1px solid #E5E7EB',
+    border: '1px solid var(--gray-200)',
     boxShadow: '0 2px 4px rgba(0,0,0,0.02)',
     display: 'flex',
     flexDirection: 'column' as const,
@@ -77,7 +77,7 @@ const styles = {
     alignItems: 'flex-start'
   },
   heartBtn: {
-    background: '#F9FAFB',
+    background: 'var(--gray-50)',
     border: 'none',
     width: '24px',
     height: '24px',
@@ -88,7 +88,7 @@ const styles = {
     cursor: 'pointer'
   },
   heartBtnActive: {
-    background: '#F4EBFF',
+    background: 'var(--primary-50)',
     border: 'none',
     width: '24px',
     height: '24px',
@@ -102,7 +102,7 @@ const styles = {
     margin: 0,
     fontSize: '16px',
     fontWeight: '600',
-    color: '#344054'
+    color: 'var(--gray-900)'
   },
   avatars: {
     display: 'flex',
@@ -119,14 +119,14 @@ const styles = {
     width: '32px',
     height: '32px',
     borderRadius: '50%',
-    background: '#F3E8FF',
-    color: '#7F56D9',
+    background: 'var(--primary-50)',
+    color: 'var(--primary-700)',
     fontSize: '12px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     marginLeft: '-10px',
-    border: '2px solid white',
+    border: '2px solid var(--bg-main)',
     fontWeight: '600'
   },
   addAvatar: {
@@ -134,23 +134,23 @@ const styles = {
     height: '32px',
     borderRadius: '50%',
     background: 'transparent',
-    color: '#667085',
+    color: 'var(--gray-500)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     marginLeft: '-10px',
-    border: '1px dashed #D0D5DD',
+    border: '1px dashed var(--gray-200)',
     cursor: 'pointer',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'var(--bg-main)',
     zIndex: 10
   },
   footer: {
     display: 'flex',
     justifyContent: 'space-between',
-    borderTop: '1px solid #F3F4F6',
+    borderTop: '1px solid var(--gray-200)',
     paddingTop: '12px',
     fontSize: '12px',
-    color: '#667085'
+    color: 'var(--gray-500)'
   },
   footerItem: {
     display: 'flex',

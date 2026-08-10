@@ -114,7 +114,7 @@ public class AuthService : IAuthService
         user.ProfilePictureUrl = url;
         await _userRepository.UpdateAsync(user);
 
-        return _fileStorageService.GenerateSignedUrl(url, TimeSpan.FromHours(1));
+        return url;
     }
 
     public async Task<MessageResponseDto> RequestAccountDeletionAsync(int userId)
@@ -238,13 +238,18 @@ public class AuthService : IAuthService
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSecret));
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-        var claims = new[]
+        var claims = new List<Claim>
         {
             new Claim("userId", user.Id.ToString()),
             new Claim("name", user.Name ?? string.Empty),
             new Claim("email", user.Email ?? string.Empty),
             new Claim(ClaimTypes.Role, user.Role.ToString())
         };
+
+        if (!string.IsNullOrEmpty(user.ProfilePictureUrl))
+        {
+            claims.Add(new Claim("profilePictureUrl", user.ProfilePictureUrl));
+        }
 
         var token = new JwtSecurityToken(
             expires: DateTime.UtcNow.AddDays(1),

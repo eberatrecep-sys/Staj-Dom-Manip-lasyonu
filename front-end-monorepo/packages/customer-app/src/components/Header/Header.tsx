@@ -39,6 +39,8 @@ export const Header = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    localStorage.removeItem('profilePicUrl');
     navigate('/login');
   };
 
@@ -177,6 +179,10 @@ export const Header = () => {
           name: decoded.name || decoded.username || decoded.sub || decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'] || 'Kullanıcı',
           email: decoded.email || decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'] || ''
         });
+        if (decoded.profilePictureUrl && !savedPic) {
+          setProfilePicUrl(decoded.profilePictureUrl);
+          localStorage.setItem('profilePicUrl', decoded.profilePictureUrl);
+        }
       }
     }
   }, []);
