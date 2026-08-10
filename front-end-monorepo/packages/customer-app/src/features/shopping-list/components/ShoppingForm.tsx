@@ -37,6 +37,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
     const [editingItem, setEditingItem] = useState<ListItem | null>(null);
     const [tagName, setTagName] = useState('');
     const [isTagEditing, setIsTagEditing] = useState(false);
+    const [isTitleEditing, setIsTitleEditing] = useState(false);
     const [targetEmail, setTargetEmail] = useState('');
 
     const closePopup = () => {
@@ -90,11 +91,32 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ tag: newTag })
+                body: JSON.stringify({ tag: newTag, title: listName })
             });
             if (onListUpdated) onListUpdated();
         } catch (error) {
             console.error("Tag güncellenemedi", error);
+        }
+    };
+
+    const handleTitleUpdate = async (newTitle: string) => {
+        if (!newTitle.trim()) {
+            setListName('Grocery Shopping List');
+            newTitle = 'Grocery Shopping List';
+        }
+        try {
+            const token = localStorage.getItem('token');
+            await fetch(`${import.meta.env.VITE_API_URL}/shopping-list/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ tag: tagName, title: newTitle })
+            });
+            if (onListUpdated) onListUpdated();
+        } catch (error) {
+            console.error("Başlık güncellenemedi", error);
         }
     };
 
@@ -365,9 +387,54 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
 
             {/* Liste Başlığı ve İstatistikler */}
             <div style={{ marginBottom: '32px' }}>
-                <h2 style={{ fontSize: '24px', fontWeight: '700', lineHeight: '32px', color: 'var(--gray-900)', margin: '0 0 16px 0', fontFamily: 'Inter, sans-serif' }}>
-                    {listName || 'Grocery Shopping List'}
-                </h2>
+                {isTitleEditing ? (
+                    <input 
+                        type="text" 
+                        value={listName}
+                        onChange={(e) => setListName(e.target.value)}
+                        onBlur={() => {
+                            setIsTitleEditing(false);
+                            handleTitleUpdate(listName);
+                        }}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                                setIsTitleEditing(false);
+                                handleTitleUpdate(listName);
+                            }
+                        }}
+                        autoFocus
+                        style={{ 
+                            fontSize: '24px', 
+                            fontWeight: '700', 
+                            lineHeight: '32px', 
+                            color: 'var(--gray-900)', 
+                            margin: '0 0 16px 0', 
+                            fontFamily: 'Inter, sans-serif',
+                            border: '1px solid var(--gray-300)',
+                            borderRadius: '8px',
+                            padding: '4px 8px',
+                            width: '100%',
+                            outline: 'none'
+                        }} 
+                    />
+                ) : (
+                    <h2 
+                        onClick={() => setIsTitleEditing(true)}
+                        style={{ 
+                            fontSize: '24px', 
+                            fontWeight: '700', 
+                            lineHeight: '32px', 
+                            color: 'var(--gray-900)', 
+                            margin: '0 0 16px 0', 
+                            fontFamily: 'Inter, sans-serif',
+                            cursor: 'pointer',
+                            display: 'inline-block'
+                        }}
+                        title="Click to edit title"
+                    >
+                        {listName || 'Grocery Shopping List'}
+                    </h2>
+                )}
                 <div style={{ display: 'flex', width: '100%', height: '20px', justifyContent: 'space-between', alignItems: 'center', color: 'var(--gray-500)', fontSize: '14px', fontFamily: 'Inter, sans-serif' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '4px', height: '20px' }}>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>

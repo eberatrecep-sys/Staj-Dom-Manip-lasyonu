@@ -55,7 +55,9 @@ public class ShoppingListService : IShoppingListService
         if (list.UserId != userId && !list.SharedWithUsers.Any(u => u.Id == userId))
             throw new UnauthorizedAccessException("Yetkisiz işlem.");
 
+        list.Title = dto.Title ?? list.Title;
         list.Tag = dto.Tag;
+        
         list.UpdatedAt = DateTime.UtcNow;
         await _repository.UpdateAsync(list);
         return SignUrls(list);
