@@ -1,10 +1,12 @@
+using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using MyShoppingApp.Application.Interfaces;
 
 namespace MyShoppingApp.API.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/offers")]
 public class OffersController : ControllerBase
 {
     private readonly IOfferService _offerService;
