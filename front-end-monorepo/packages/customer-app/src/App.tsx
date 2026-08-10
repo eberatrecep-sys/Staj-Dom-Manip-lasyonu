@@ -20,7 +20,7 @@ function App() {
   const [appTitle, setAppTitle] = useState('Yükleniyor...');
 
   useEffect(() => {
-    fetch('http://localhost:5050/api/v1/settings/title')
+    fetch(import.meta.env.VITE_API_URL + '/settings/title')
       .then(res => res.json())
       .then(data => setAppTitle(data.title))
       .catch(() => setAppTitle('Alışveriş Uygulaması'));

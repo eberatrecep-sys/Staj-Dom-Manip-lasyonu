@@ -20,7 +20,7 @@ export const CampaignsPage: React.FC = () => {
   useEffect(() => {
     const fetchCampaigns = async () => {
       try {
-        const response = await fetch('http://localhost:5050/api/offers');
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/offers`);
         if (response.ok) {
           const data = await response.json();
           if (Array.isArray(data)) {

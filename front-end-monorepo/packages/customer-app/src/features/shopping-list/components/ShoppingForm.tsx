@@ -67,7 +67,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
     const fetchListDetails = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch(`http://localhost:5050/api/v1/shopping-list/${id}`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/shopping-list/${id}`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const data = await response.json();
@@ -84,7 +84,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
     const handleTagUpdate = async (newTag: string) => {
         try {
             const token = localStorage.getItem('token');
-            await fetch(`http://localhost:5050/api/v1/shopping-list/${id}`, {
+            await fetch(`${import.meta.env.VITE_API_URL}/shopping-list/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -115,7 +115,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
     const onSubmit = async (data: FormData) => {
         const token = localStorage.getItem('token');
         if (editingItem) {
-            await fetch(`http://localhost:5050/api/v1/shopping-list/${id}/items/${editingItem.id}`, {
+            await fetch(`${import.meta.env.VITE_API_URL}/shopping-list/${id}/items/${editingItem.id}`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -124,7 +124,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
                 body: JSON.stringify({ ...editingItem, itemName: data.productName, amount: data.quantity })
             });
         } else {
-            await fetch(`http://localhost:5050/api/v1/shopping-list/${id}/items`, {
+            await fetch(`${import.meta.env.VITE_API_URL}/shopping-list/${id}/items`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -147,7 +147,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
         
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch(`http://localhost:5050/api/v1/shopping-list/${id}/items/${itemId}/images`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/shopping-list/${id}/items/${itemId}/images`, {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${token}` },
                 body: formData
@@ -167,7 +167,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
     const handleRemoveItemImage = async (itemId: number, imageId: number) => {
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch(`http://localhost:5050/api/v1/shopping-list/${id}/items/${itemId}/images/${imageId}`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/shopping-list/${id}/items/${itemId}/images/${imageId}`, {
                 method: 'DELETE',
                 headers: { 'Authorization': `Bearer ${token}` }
             });
@@ -190,7 +190,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
 
     const toggleCompletion = async (item: ListItem) => {
         const token = localStorage.getItem('token');
-        await fetch(`http://localhost:5050/api/v1/shopping-list/${id}/items/${item.id}`, {
+        await fetch(`${import.meta.env.VITE_API_URL}/shopping-list/${id}/items/${item.id}`, {
             method: 'PUT',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -205,7 +205,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
     const deleteList = async () => {
         if (!window.confirm("Bu listeyi silmek istediğinize emin misiniz?")) return;
         const token = localStorage.getItem('token');
-        await fetch(`http://localhost:5050/api/v1/shopping-list/${id}`, {
+        await fetch(`${import.meta.env.VITE_API_URL}/shopping-list/${id}`, {
             method: 'DELETE',
             headers: { 'Authorization': `Bearer ${token}` }
         });
@@ -226,7 +226,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
             setIsSharePopupOpen(true);
         } else if (action === 'copy') {
             try {
-                const response = await fetch('http://localhost:5050/api/v1/shopping-list', {
+                const response = await fetch(import.meta.env.VITE_API_URL + '/shopping-list', {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -242,7 +242,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
             const completedItems = items.filter((item) => item.isCompleted);
             for (const item of completedItems) {
                 try {
-                    await fetch(`http://localhost:5050/api/v1/shopping-list/${id}/items/${item.id}`, {
+                    await fetch(`${import.meta.env.VITE_API_URL}/shopping-list/${id}/items/${item.id}`, {
                         method: 'DELETE',
                         headers: { 'Authorization': `Bearer ${token}` }
                     });
@@ -260,7 +260,7 @@ export const ShoppingForm = ({ listId, embedded = false, onListDeleted, onListUp
         if (!targetEmail) return;
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch('http://localhost:5050/api/v1/share/invite', {
+            const response = await fetch(import.meta.env.VITE_API_URL + '/share/invite', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,

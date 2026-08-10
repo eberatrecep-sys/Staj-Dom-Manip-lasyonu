@@ -69,7 +69,7 @@ export const Dashboard = () => {
             }
             try {
                 const token = localStorage.getItem('token');
-                const res = await fetch(`http://localhost:5050/api/v1/shopping-list/suggestions?q=${debouncedSearch}`, {
+                const res = await fetch(`${import.meta.env.VITE_API_URL}/shopping-list/suggestions?q=${debouncedSearch}`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 if (res.ok) {
@@ -85,7 +85,7 @@ export const Dashboard = () => {
     const fetchLists = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch('http://localhost:5050/api/v1/shopping-list', {
+            const response = await fetch(import.meta.env.VITE_API_URL + '/shopping-list', {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             if (response.status === 401 || response.status === 403) {
@@ -109,7 +109,7 @@ export const Dashboard = () => {
         const token = localStorage.getItem('token');
 
         try {
-            const response = await fetch('http://localhost:5050/api/v1/shopping-list', {
+            const response = await fetch(import.meta.env.VITE_API_URL + '/shopping-list', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -145,7 +145,7 @@ export const Dashboard = () => {
         e.stopPropagation(); // Kart tıklamasını (navigasyon) engelle
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch(`http://localhost:5050/api/v1/shopping-list/${listId}/favorite`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/shopping-list/${listId}/favorite`, {
                 method: 'PUT',
                 headers: { 'Authorization': `Bearer ${token}` }
             });

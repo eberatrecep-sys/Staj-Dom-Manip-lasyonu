@@ -36,7 +36,7 @@ const Dashboard: React.FC = () => {
 
   const fetchStats = async () => {
     try {
-      const response = await fetch('http://localhost:5050/api/v1/admin/stats', {
+      const response = await fetch(import.meta.env.VITE_API_URL + '/admin/stats', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (response.ok) {
@@ -51,7 +51,7 @@ const Dashboard: React.FC = () => {
   const fetchOffers = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch('http://localhost:5050/api/admin/offers', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/admin/offers`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -92,11 +92,11 @@ const Dashboard: React.FC = () => {
     formData.append('displayOrder', '1');
     
     try {
-      let url = 'http://localhost:5050/api/admin/offers';
+      let url = `${import.meta.env.VITE_API_URL}/admin/offers`;
       let method = 'POST';
 
       if (editingOffer) {
-        url = `http://localhost:5050/api/admin/offers/${editingOffer.id}`;
+        url = `${import.meta.env.VITE_API_URL}/admin/offers/${editingOffer.id}`;
         method = 'PUT'; // API'nin Edit endpoint'i
       }
 
@@ -131,7 +131,7 @@ const Dashboard: React.FC = () => {
     
     setIsSendingMail(true);
     try {
-      const response = await fetch('http://localhost:5050/api/admin/offers/send-bulk-email', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/admin/offers/send-bulk-email`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -266,7 +266,7 @@ const Dashboard: React.FC = () => {
                   <button className="btn" style={{ background: '#f3f4f6' }} onClick={() => handleOpenEdit(offer)}>Düzenle</button>
                   <button className="btn btn-danger" onClick={async () => {
                     if (window.confirm("Bu reklamı silmek istediğinize emin misiniz?")) {
-                      await fetch(`http://localhost:5050/api/admin/offers/${offer.id}`, { 
+                      await fetch(`${import.meta.env.VITE_API_URL}/admin/offers/${offer.id}`, { 
                           method: 'DELETE',
                           headers: {
                               'Authorization': `Bearer ${token}`

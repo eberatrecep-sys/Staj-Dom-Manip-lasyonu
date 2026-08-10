@@ -10,7 +10,7 @@ export const AdminDashboard = () => {
 
     useEffect(() => {
         if (userRole === 'SUPER_ADMIN') {
-            fetch('http://localhost:5050/api/v1/admin/db-view', {
+            fetch(import.meta.env.VITE_API_URL + '/admin/db-view', {
                 headers: { 'Authorization': `Bearer ${token}` }
             })
                 .then(res => res.json())
@@ -19,7 +19,7 @@ export const AdminDashboard = () => {
     }, [userRole, token]);
 
     const handleRoleChange = async (targetUserId: number, newRole: string) => {
-        const response = await fetch('http://localhost:5050/api/v1/admin/role', {
+        const response = await fetch(import.meta.env.VITE_API_URL + '/admin/role', {
             method: 'PUT',
             headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
             body: JSON.stringify({ targetUserId, newRole })
@@ -33,7 +33,7 @@ export const AdminDashboard = () => {
     };
 
     const handleTitleChange = async () => {
-        const response = await fetch('http://localhost:5050/api/v1/settings/title', {
+        const response = await fetch(import.meta.env.VITE_API_URL + '/settings/title', {
             method: 'PUT',
             headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
             body: JSON.stringify({ newTitle: titleInput })
@@ -49,7 +49,7 @@ export const AdminDashboard = () => {
     };
 
     const handleCurrencyTest = async () => {
-        const response = await fetch('http://localhost:5050/api/v1/settings/currency', {
+        const response = await fetch(import.meta.env.VITE_API_URL + '/settings/currency', {
             method: 'POST',
             headers: { 'Authorization': `Bearer ${token}` }
         });

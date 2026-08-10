@@ -46,7 +46,7 @@ export const Header = () => {
     try {
       const token = localStorage.getItem('token');
       if (!token) return;
-      const response = await fetch('http://localhost:5050/api/v1/share/pending', {
+      const response = await fetch(import.meta.env.VITE_API_URL + '/share/pending', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (response.ok) {
@@ -61,7 +61,7 @@ export const Header = () => {
   const handleAction = async (id: number, action: 'accept' | 'reject') => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5050/api/v1/share/${id}/${action}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/share/${id}/${action}`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -98,7 +98,7 @@ export const Header = () => {
       formData.append('file', compressedFile);
       
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5050/api/v1/auth/profile-picture', {
+      const response = await fetch(import.meta.env.VITE_API_URL + '/auth/profile-picture', {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}` },
         body: formData
@@ -118,7 +118,7 @@ export const Header = () => {
   const handleRequestDeleteAccount = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5050/api/v1/auth/request-delete-account', {
+      const response = await fetch(import.meta.env.VITE_API_URL + '/auth/request-delete-account', {
         method: 'POST',
         headers: { 
           'Authorization': `Bearer ${token}`,
@@ -140,7 +140,7 @@ export const Header = () => {
   const handleConfirmDeleteAccount = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5050/api/v1/auth/confirm-delete-account', {
+      const response = await fetch(import.meta.env.VITE_API_URL + '/auth/confirm-delete-account', {
         method: 'POST',
         headers: { 
           'Authorization': `Bearer ${token}`,
