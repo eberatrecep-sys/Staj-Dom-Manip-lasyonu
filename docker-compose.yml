@@ -32,7 +32,7 @@ services:
       - minio
     entrypoint: >
       /bin/sh -c "
-      /usr/bin/mc config host add myminio http://minio:9000 minioadmin minioadmin;
+      /usr/bin/mc alias set myminio http://minio:9000 minioadmin minioadmin;
       /usr/bin/mc mb myminio/myshoppingapp || true;
       /usr/bin/mc anonymous set public myminio/myshoppingapp;
       exit 0;
