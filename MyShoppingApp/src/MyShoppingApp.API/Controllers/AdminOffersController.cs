@@ -1,3 +1,4 @@
+using Asp.Versioning;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyShoppingApp.Application.DTOs;
@@ -6,8 +7,9 @@ using MyShoppingApp.Application.Interfaces;
 namespace MyShoppingApp.API.Controllers;
 
 [ApiController]
-[Route("api/admin/offers")]
-// [Authorize(Roles = "ADMIN")] // Geçici olarak mock login için devredışı
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/admin/offers")]
+[Authorize(Roles = "SUPER_ADMIN")]
 public class AdminOffersController : ControllerBase
 {
     private readonly IOfferService _offerService;
